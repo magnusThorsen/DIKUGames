@@ -32,7 +32,8 @@ namespace Breakout {
             return value;
         }
 
-
-
+        public void BlockHit(){
+            DecHealth();
+        }
     }
 }
