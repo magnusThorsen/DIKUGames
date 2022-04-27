@@ -81,12 +81,12 @@ public class TestPlayer{
 
     [Test]
     public void TestShapeRectangular() {
-        Assert.True();
+        Assert.IsTrue(shape.Extent.X != shape.Extent.Y);
     }
 
     [Test]
     public void TestPlayerEntity() {
-        Assert.AreEqual(typeof(Player), typeof(Entity));
+        Assert.IsTrue(typeof(Player).IsAssignableFrom(typeof(Entity)) == true);
     }
 
 
