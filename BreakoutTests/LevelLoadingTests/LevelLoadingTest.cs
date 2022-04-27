@@ -53,17 +53,17 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestMapFirstElm(){
-        Assert.AreEqual(levelLoader.map.First(), "-");
+        Assert.AreEqual(levelLoader.map.First(), "-/n");
     }
 
     [Test]
     public void TestMetaFirstElm(){
-        Assert.AreEqual(levelLoader.map.First(), "Name: LEVEL 1");
+        Assert.AreEqual(levelLoader.map.First(), "Name: LEVEL 1/n");
     }
 
     [Test]
     public void TestLegendFirstElm(){
-        Assert.AreEqual(levelLoader.map.First(), "%) blue-block.png");
+        Assert.AreEqual(levelLoader.map.First(), "%) blue-block.png/n");
     }
 
 
