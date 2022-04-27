@@ -36,8 +36,35 @@ public class LevelLoadingTest{
         Assert.AreEqual(blocks[0].shape.Position, Vec2F(0.0f + 1 * 1.0f/12, 0.9f - 2 * (1.0f/12)/3));
     }
 
+    [Test]
+    public void TestMapaDataType(){
+        Assert.AreEqual(typeof(List<char>), typeof(levelLoader.map));
+    }
     
+    [Test]
+    public void TestMetaDataType(){
+        Assert.AreEqual(typeof(List<string>), typeof(levelLoader.meta));
+    }
 
+    [Test]
+    public void TestLegendDataType(){
+        Assert.AreEqual(typeof(List<string>), typeof(levelLoader.legend));
+    }
+
+    [Test]
+    public void TestMapFirstElm(){
+        Assert.AreEqual(levelLoader.map.First(), "-");
+    }
+
+    [Test]
+    public void TestMetaFirstElm(){
+        Assert.AreEqual(levelLoader.map.First(), "Name: LEVEL 1");
+    }
+
+    [Test]
+    public void TestLegendFirstElm(){
+        Assert.AreEqual(levelLoader.map.First(), "%) blue-block.png");
+    }
 
 
 
