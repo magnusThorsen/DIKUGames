@@ -81,7 +81,7 @@ public class TestPlayer{
 
     [Test]
     public void TestShapeRectangular() {
-
+        Assert.True();
     }
 
     [Test]
