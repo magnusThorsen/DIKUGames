@@ -33,7 +33,8 @@ namespace Breakout {
         private void ReadAscii(string filename){
             bool a = true;
             int b = 0;
-            string[] FileLines = System.IO.File.ReadAllLines(filename);
+            try{
+                string[] FileLines = System.IO.File.ReadAllLines(filename);
             foreach (string line in FileLines){  
                 switch (line){
                     case "Map:": case "Map/": case "Meta:": case "Meta/": case "Legend:": case "Legend/":
@@ -61,7 +62,12 @@ namespace Breakout {
                         default: break;
                     }
                 }
+
                 
+            }
+            }
+            catch (FileNotFoundException ex){
+                System.Console.WriteLine(ex);
             }
         }
                             
@@ -101,13 +107,6 @@ namespace Breakout {
                 } else {return true;}
             }
             return false;
-            /*
-            Hardened: #
-            PowerUp: 2
-            PowerUp: i
-            PowerUp: #
-            Unbreakable: Y  
-            */
         }
 
 
@@ -120,15 +119,10 @@ namespace Breakout {
         }
         
 
-
         public EntityContainer<Block> LoadLevel(string filename){
             ReadAscii(filename);
             AddBlocks();
             return Blocks;
-        }
-
-
-
-                
+        } 
     }
 }

@@ -26,7 +26,12 @@ namespace Breakout {
             if (health == 0){
                 DeleteEntity();
             }
-        } 
+        }
+
+        public int GetValue(){
+            return value;
+        }
+
 
 
     }
