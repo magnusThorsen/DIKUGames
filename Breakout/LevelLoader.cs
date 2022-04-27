@@ -29,7 +29,10 @@ namespace Breakout {
             legend = new List<string>{};
         }
 
-       
+        /// <summary>
+        /// Takes an ascii file and inserts it into three strings, map, meta and legends. Only Takes Working Ascii Files, but handles FileNotFound.
+        /// </summary>
+        /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
             bool a = true;
             int b = 0;
@@ -71,7 +74,9 @@ namespace Breakout {
             }
         }
                             
-
+        /// <summary>
+        /// Adds blocks to the EntityContainer blocks, and handles meta data accordingly.
+        /// </summary>
         private void AddBlocks(){
             string pngStr = new string("");
             foreach (char charElm in map){
@@ -99,7 +104,11 @@ namespace Breakout {
             }
         }
 
-
+        /// <summary>
+        /// Handles meta chars. Checks if a char is in the meta sections og the Ascii file.
+        /// </summary>
+        /// <param name="c">A char</param>
+        /// <returns></returns>
         private bool MetaHandler(char c){
             foreach(string strElm in meta){
                 if (c == strElm[strElm.Length-1]){
@@ -109,7 +118,9 @@ namespace Breakout {
             return false;
         }
 
-
+        /// <summary>
+        /// increments x and if x is bigger than 12 it resets x to 0 and increments y.
+        /// </summary>
         private void IncXnY(){
             x++;
             if (x == 12){
@@ -118,7 +129,12 @@ namespace Breakout {
             }
         }
         
-
+        /// <summary>
+        /// Reads the specified Asciifile and calls the ReadAscii function on it, Adds the blocks 
+        /// and returns an entitycontainer now woth blocks
+        /// </summary>
+        /// <param name="filename">A string with the name of an Ascii file</param>
+        /// <returns></returns>
         public EntityContainer<Block> LoadLevel(string filename){
             ReadAscii(filename);
             AddBlocks();

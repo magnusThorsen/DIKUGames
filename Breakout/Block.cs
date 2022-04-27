@@ -17,10 +17,18 @@ namespace Breakout {
             value = 1;
         }
 
+
+        /// <summary>
+        /// Returs the health of the Block.
+        /// </summary>
+        /// <returns>the health of the block in int</returns>
         public int GetHealth() {
             return health;
         }
 
+        /// <summary>
+        /// Decreases the health field.
+        /// </summary>
         private void DecHealth(){
             health--;
             if (health == 0){
@@ -28,10 +36,17 @@ namespace Breakout {
             }
         }
 
-        public int GetValue(){
+        /// <summary>
+        /// Returns the value field. Only there not to get warning for now.
+        /// </summary>
+        /// <returns></returns>
+        private int GetValue(){
             return value;
         }
 
+        /// <summary>
+        /// A public method to register a block is hit.
+        /// </summary>
         public void BlockHit(){
             DecHealth();
         }
