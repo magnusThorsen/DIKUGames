@@ -3,10 +3,8 @@ using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using DIKUArcade.Events;
 using DIKUArcade.Math;
-
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-using DIKUArcade.State;
 using System.IO;
 using System.Collections.Generic;
 
@@ -17,6 +15,8 @@ namespace Breakout {
     public class Game : DIKUGame, IGameEventProcessor {
         
         private Player player; 
+        private LevelLoader levelLoader;
+        private EntityContainer<Block> blocks {get; set;}
 
         public Game(WindowArgs windowArgs) : base(windowArgs) {
             BreakoutBus.GetBus().InitializeEventBus(new List<GameEventType> { GameEventType.InputEvent, 
@@ -27,6 +27,11 @@ namespace Breakout {
             BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
             window.SetKeyEventHandler(KeyHandler);
+
+            blocks = new EntityContainer<Block>(288);
+            levelLoader = new LevelLoader();
+
+
         }
 
         private void KeyHandler(KeyboardAction action, KeyboardKey key) {
@@ -43,10 +48,12 @@ namespace Breakout {
 
         public override void Render() {
             player.Render();
+            blocks.RenderEntities();
         }
 
         public override void Update() {
             player.Move();
+            NewLevel();
             BreakoutBus.GetBus().ProcessEventsSequentially(); 
         }
 
@@ -104,5 +111,12 @@ namespace Breakout {
                 }
             }
         }
+
+        public void NewLevel(){
+            if (blocks.CountEntities() <= 0) {
+                blocks = levelLoader.LoadLevel(@"Assets/Levels/level1.txt");
+            }
+        }
+
     }
 }
