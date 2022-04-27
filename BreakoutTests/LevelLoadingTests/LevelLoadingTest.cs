@@ -15,13 +15,8 @@ namespace BreakoutTests;
 public class LevelLoadingTest{
     private LevelLoader levelLoader;
     private EntityContainer<Block> blocks;
-
-
-    public LevelLoadingTest() {
-        
+    public LevelLoadingTest() {   
     }
-
-
 
     [SetUp]
     public void Setup(){
@@ -31,12 +26,13 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestFileNotFound(){
-        Assert.AreEqual(Blocks, levelLoader.LoadLevel("NotFile.txt"));
+        Assert.AreEqual(Blocks, levelLoader.LoadLevel("FileNot Found.txt"));
     }
 
 
     [Test]
     public void TestCorrectPosition(){
-        Assert.AreEqual(Blocks, levelLoader.LoadLevel("NotFile.txt"));
+        blocks = levelLoader.LoadLevel("/../../Breakout/Assets/Images/level1.txt");
+        Assert.AreEqual(blocks[0].shape.Position, Vec2F(0.0f + 1 * 1.0f/12, 0.9f - 2 * (1.0f/12)/3));
     }
 }

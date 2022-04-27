@@ -117,6 +117,5 @@ namespace Breakout {
                 blocks = levelLoader.LoadLevel(@"Assets/Levels/level1.txt");
             }
         }
-
     }
 }
