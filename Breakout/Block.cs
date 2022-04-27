@@ -21,7 +21,7 @@ namespace Breakout {
             return health;
         }
 
-        public void DecHealth(){
+        private void DecHealth(){
             health--;
             if (health == 0){
                 DeleteEntity();
