@@ -26,14 +26,21 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestFileNotFound(){
-        Assert.AreEqual(Blocks, levelLoader.LoadLevel("FileNot Found.txt"));
+        Assert.AreEqual(blocks, levelLoader.LoadLevel("FileNot Found.txt"));
     }
 
 
     [Test]
     public void TestCorrectPosition(){
+        Block a;
+        int b;
         blocks = levelLoader.LoadLevel("/../../Breakout/Assets/Images/level1.txt");
-        Assert.AreEqual(blocks[0].shape.Position, Vec2F(0.0f + 1 * 1.0f/12, 0.9f - 2 * (1.0f/12)/3));
+        foreach(Block elm in blocks){
+            if (b != 1){
+            
+            }
+        }
+        Assert.AreEqual(blocks.First().shape.Position, Vec2F(0.0f + 1 * 1.0f/12, 0.9f - 2 * (1.0f/12)/3));
     }
 
     [Test]
