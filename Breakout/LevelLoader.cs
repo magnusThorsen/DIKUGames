@@ -90,10 +90,12 @@ namespace Breakout {
                             foreach(string strElm in legend){
                                 if (charElm == strElm[0]){
                                     pngStr = strElm.Remove(0, 3);
-                                    Blocks.AddEntity(new Block(
+                                    var newBlock = new Block(
                                         new DynamicShape(new Vec2F(0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
                                         new Vec2F(1.0f/12, (1.0f/12)/3f)),
-                                        new Image(@"Assets/Images/" + pngStr)));
+                                        new Image(@"Assets/Images/" + pngStr));
+                                    Blocks.AddEntity(newBlock);
+                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                                 }
                             }
                         }
@@ -142,7 +144,7 @@ namespace Breakout {
         } 
 
         /// <summary>
-        /// May only be used to test AsciiReader
+        /// May only be used to test AsciiReader. 
         /// </summary>
         /// <param name="filename">The file to test AsciiReaderWith</param>
         public void OnlyUsedForTestingPrivateReadAscii(string filename){

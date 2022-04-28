@@ -1,12 +1,10 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-using System.IO;
-using System.Collections.Generic;
-using DIKUArcade.Math;
+using DIKUArcade.Events;
 
 namespace Breakout {
 
-    public class Block : Entity {
+    public class Block : Entity, IGameEventProcessor {
         public Shape shape {get;}
         private int health; 
         private int value;
@@ -44,11 +42,21 @@ namespace Breakout {
             return value;
         }
 
-        /// <summary>
-        /// A public method to register a block is hit.
-        /// </summary>
-        public void BlockHit(){
-            DecHealth();
+        public void ProcessEvent(GameEvent gameEvent){
+            if (gameEvent.EventType == GameEventType.InputEvent) { //Checks if it a InputEvent
+                switch (gameEvent.Message) { //switches on message, only does something with 
+                                             //KeyPress and KeyRelease
+                    case "Hit":
+                        DecHealth();
+                        break;
+                    default: break;
+                }
+            } 
         }
+
+
+
+
+
     }
 }

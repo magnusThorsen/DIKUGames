@@ -87,7 +87,7 @@ namespace Breakout {
         /// </summary>
         /// <param name="gameEvent">the gamevent to process.</param>
         public void ProcessEvent(GameEvent gameEvent) {
-            if (gameEvent.EventType == GameEventType.PlayerEvent) { //Checks if it a InputEvent
+            if (gameEvent.EventType == GameEventType.PlayerEvent) { //Checks if it a PlayerEvent
                 switch (gameEvent.Message) { //switches on message, only does something with 
                                              //KeyPress and KeyRelease
                     case "KeyPress":
