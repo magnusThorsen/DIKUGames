@@ -105,8 +105,7 @@ namespace Breakout {
                         }
                         IncXnY();
                     break;
-                }
-                
+                } 
             }
         }
 
