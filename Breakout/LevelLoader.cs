@@ -30,7 +30,8 @@ namespace Breakout {
         }
 
         /// <summary>
-        /// Takes an ascii file and inserts it into three strings, map, meta and legends. Only Takes Working Ascii Files, but handles FileNotFound.
+        /// Takes an ascii file and inserts it into three strings, map, meta and legends. 
+        /// Only Takes Working Ascii Files, but handles FileNotFound.
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
@@ -40,7 +41,8 @@ namespace Breakout {
                 string[] FileLines = System.IO.File.ReadAllLines(filename);
             foreach (string line in FileLines){  
                 switch (line){
-                    case "Map:": case "Map/": case "Meta:": case "Meta/": case "Legend:": case "Legend/":
+                    case "Map:": case "Map/": case "Meta:": 
+                    case "Meta/": case "Legend:": case "Legend/":
                         a = false;
                         b++;
                         break;
@@ -91,11 +93,13 @@ namespace Breakout {
                                 if (charElm == strElm[0]){
                                     pngStr = strElm.Remove(0, 3);
                                     var newBlock = new Block(
-                                        new DynamicShape(new Vec2F(0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
+                                        new DynamicShape(new Vec2F(
+                                            0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
                                         new Vec2F(1.0f/12, (1.0f/12)/3f)),
                                         new Image(@"Assets/Images/" + pngStr));
                                     Blocks.AddEntity(newBlock);
-                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, 
+                                    newBlock);
                                 }
                             }
                         }
