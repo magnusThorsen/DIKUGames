@@ -75,18 +75,13 @@ public class TestPlayer{
     }
 
     [Test]
-    public void TestBorderStutter() {
-
-    }
-
-    [Test]
     public void TestShapeRectangular() {
         Assert.IsTrue(shape.Extent.X != shape.Extent.Y);
     }
 
     [Test]
     public void TestPlayerEntity() {
-        Assert.IsTrue(typeof(Player).IsAssignableFrom(typeof(Entity)) == true);
+        Assert.IsTrue(entity.GetType().IsInstanceOfType(player) == true);
     }
 
 
