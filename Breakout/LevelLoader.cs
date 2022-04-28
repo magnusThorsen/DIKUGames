@@ -141,7 +141,10 @@ namespace Breakout {
             return Blocks;
         } 
 
-
+        /// <summary>
+        /// May only be used to test AsciiReader
+        /// </summary>
+        /// <param name="filename">The file to test AsciiReaderWith</param>
         public void OnlyUsedForTestingPrivateReadAscii(string filename){
             ReadAscii(filename);
         }
