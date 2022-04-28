@@ -13,11 +13,11 @@ namespace Breakout {
 
     public class LevelLoader {
 
-        List<char> map;
-        List<string> meta;
-        List<string> legend;
-        int x;
-        int y;
+        public List<char> map {get; private set;}
+        public List<string> meta {get; private set;}
+        public List<string> legend {get; private set;}
+        private int x;
+        private int y;
         private EntityContainer<Block> Blocks {get;}
 
         public LevelLoader(){
@@ -140,5 +140,12 @@ namespace Breakout {
             AddBlocks();
             return Blocks;
         } 
+
+
+        public void OnlyUsedForTestingPrivateReadAscii(string filename){
+            ReadAscii(filename);
+        }
+
+
     }
 }
