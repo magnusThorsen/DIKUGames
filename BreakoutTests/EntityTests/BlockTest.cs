@@ -21,6 +21,7 @@ namespace BreakoutTests {
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
             block = new Block(shape, image);
+            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
 
         [SetUp]
@@ -29,20 +30,23 @@ namespace BreakoutTests {
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
             block = new Block(shape, image);
+            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
 
         }
 
         //Testing if a block´s health decreases as it should.
         [Test]
         public void TestDecHealth() {
-            block.BlockHit();
+            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, Message = "Hit"};
+            block.ProcessEvent(gameEvent);
             Assert.AreEqual(block.GetHealth(), 0);
         }
 
         //Testing if a block is being destroyed (deleted) after having 0 or under in health.
         [Test]
         public void TestDeleteBlock() {
-            block.BlockHit();
+            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, Message = "Hit"};
+            block.ProcessEvent(gameEvent);
             Assert.IsTrue(block.IsDeleted() == true);
         }
     }
