@@ -6,34 +6,32 @@ using DIKUArcade.Input;
 
 namespace Breakout {
 
-    public class Player : IGameEventProcessor {
-
-        private Entity entity;
-        private DynamicShape shape;
+    public class Player : Entity, IGameEventProcessor {
+        private Shape shape;
         private float moveLeft; 
         private float moveRight;
         private const float MOVEMENT_SPEED = 0.02f;
 
-        public Player(DynamicShape shape, IBaseImage image) {
-            entity = new Entity(shape, image);
+        public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
             moveLeft = 0.0f;
             moveRight = 0.0f; 
+            Shape = shape;
         }
 
         /// <summary>
         /// renders the player
         /// </summary>
         public void Render() {
-            entity.RenderEntity();
+            this.RenderEntity();
         }
         
         /// <summary>
         /// checks if the player can move.
         /// </summary>
         public void Move() {
-            if (shape.Position.X + shape.Direction.X > 0.0f && shape.Position.X + 
-            shape.Direction.X < 0.84499f) {
+            if (shape.Position.X + shape.AsDynamicShape().Direction.X > 0.0f && shape.Position.X + 
+            shape.AsDynamicShape().Direction.X < 0.845f) {
                 shape.Move();
             } 
         }
@@ -73,7 +71,7 @@ namespace Breakout {
         /// updates the direction of the player
         /// </summary>
         private void UpdateDirection() {
-            shape.Direction.X = moveRight + moveLeft;
+            shape.AsDynamicShape().Direction.X = moveRight + moveLeft;
         }
 
         /// <summary>
