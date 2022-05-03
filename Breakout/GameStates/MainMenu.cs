@@ -3,6 +3,8 @@ using DIKUArcade.State;
 using DIKUArcade.Input;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
+using DIKUArcade.Entities;
+using System.IO;
 
 namespace Breakout.BreakoutStates {
 
@@ -13,6 +15,9 @@ namespace Breakout.BreakoutStates {
         private Text NewGameText;
         private Text QuitText;
         private string SelectedButton;
+        private Entity BackgroundImage;
+        private StationaryShape shape;
+        private IBaseImage image;
         
         public static MainMenu GetInstance() {
             if (MainMenu.instance == null) {
@@ -32,6 +37,9 @@ namespace Breakout.BreakoutStates {
             QuitText.SetColor(new Vec3I(255, 0, 0));
             menuButtons = new Text[] {NewGameText, QuitText};
             SelectedButton = "New Game";
+            shape = new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
+            image = new Image(Path.Combine("Assets", "Images", "shipit_titlescreen.png"));
+            BackgroundImage = new Entity(shape, image);
         }
 
         /// <summary>
@@ -50,6 +58,7 @@ namespace Breakout.BreakoutStates {
         /// Renders the state
         /// </summary>
         public void RenderState() {
+            BackgroundImage.RenderEntity();
             foreach (Text text in menuButtons) {
                 text.RenderText();
             }
