@@ -45,7 +45,7 @@ namespace BreakoutTests {
         //Testing if a block is being destroyed (deleted) after having 0 or under in health.
         [Test]
         public void TestDeleteBlock() {
-            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, Message = "Hit"};
+            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 1};
             block.ProcessEvent(gameEvent);
             Assert.IsTrue(block.IsDeleted() == true);
         }

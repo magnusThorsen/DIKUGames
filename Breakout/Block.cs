@@ -43,14 +43,8 @@ namespace Breakout {
         }
 
         public void ProcessEvent(GameEvent gameEvent){
-            if (gameEvent.EventType == GameEventType.InputEvent) { //Checks if it a InputEvent
-                switch (gameEvent.Message) { //switches on message, only does something with 
-                                             //KeyPress and KeyRelease
-                    case "Hit":
+            if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                         DecHealth();
-                        break;
-                    default: break;
-                }
             } 
         }
 
