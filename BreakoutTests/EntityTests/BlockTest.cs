@@ -37,7 +37,7 @@ namespace BreakoutTests {
         //Testing if a block´s health decreases as it should.
         [Test]
         public void TestDecHealth() {
-            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, Message = "Hit"};
+            var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 1};
             block.ProcessEvent(gameEvent);
             Assert.AreEqual(block.GetHealth(), 0);
         }
