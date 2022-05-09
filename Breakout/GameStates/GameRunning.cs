@@ -142,7 +142,6 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         private void NewLevel(){
             if (blocks.CountEntities() <= 0) {
-                System.Console.WriteLine("countenteties <= 0");
                 blocks = levelLoader.LoadLevel("level1.txt");
             }
         }

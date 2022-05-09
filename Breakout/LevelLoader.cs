@@ -83,10 +83,7 @@ namespace Breakout {
         /// Adds blocks to the EntityContainer blocks, and handles meta data accordingly.
         /// </summary>
         private void AddBlocks(){
-            int i = 0;
             foreach (char charElm in map){
-                i++;
-                System.Console.WriteLine(i);
                 foreach (var elm in legendDic){
                     if (charElm == elm.Key){
                         var newBlock = new Block(
@@ -159,7 +156,6 @@ namespace Breakout {
 
 
         private void FillMetaDic(){
-            System.Console.WriteLine("FillMeta");
             foreach (string elm in meta){
                 int IndexOfSplit = elm.IndexOf(":");
                 string key = elm.Substring(0, IndexOfSplit);
@@ -175,7 +171,6 @@ namespace Breakout {
 
 
         private void FillLegendDic(){
-            System.Console.WriteLine("FillLeg");
             foreach (string elm in legend){
                 char key = elm[0];
                 string val = elm.Substring(3, elm.Length-3);
