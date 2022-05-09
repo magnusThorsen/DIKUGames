@@ -43,8 +43,13 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
-            try{
-                string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
+            /*try{
+            }
+            catch (FileNotFoundException ex){
+                System.Console.WriteLine("In ReadAscii:" + ex);
+            }*/
+
+            string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
                 
                 //Adding Map section to map
                 int StartMapIndex = Array.IndexOf(FileLines, "Map:")+1;
@@ -70,12 +75,8 @@ namespace Breakout {
                 for (int Enumerator = StartLegendIndex; Enumerator <= EndLegendIndex; Enumerator++){
                         legend.Add(FileLines[Enumerator]);
                 }
-                
-                
-            }
-            catch (FileNotFoundException ex){
-                System.Console.WriteLine("In ReadAscii:" + ex);
-            }
+
+
         }
 
                             
@@ -137,12 +138,8 @@ namespace Breakout {
         /// <returns></returns>
         public EntityContainer<Block> LoadLevel(string filename){
             
-            //clear everything
-            map.Clear();
-            meta.Clear();
-            legend.Clear();
-            metaDic.Clear();
-            legendDic.Clear();
+            //clear the levelloader
+            Reset();
 
             //Read the ascii into lists, fill the dictionaries and add the blocks
             ReadAscii(filename);
@@ -180,6 +177,17 @@ namespace Breakout {
                 catch{
                     Console.WriteLine("Duplicate key in legend");}
             }
+        }
+
+
+        private void Reset(){
+            map.Clear();
+            meta.Clear();
+            legend.Clear();
+            metaDic.Clear();
+            legendDic.Clear();
+            x = 0;
+            y = 0;
         }
 
 

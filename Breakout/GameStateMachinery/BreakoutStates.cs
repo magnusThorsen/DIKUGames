@@ -27,7 +27,6 @@ namespace Breakout.BreakoutStates {
                     ActiveState = GameRunning.GetInstance();
                     break;
                 case GameStateType.GamePaused: 
-                    ActiveState.ResetState();
                     ActiveState = GamePaused.GetInstance();
                     break;
                 case GameStateType.MainMenu:

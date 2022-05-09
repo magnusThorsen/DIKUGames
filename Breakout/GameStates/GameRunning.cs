@@ -15,6 +15,7 @@ namespace Breakout.BreakoutStates {
         private LevelLoader levelLoader;
         private EntityContainer<Block> blocks {get; set;}
         private bool gameOver;
+        private int level;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -36,18 +37,20 @@ namespace Breakout.BreakoutStates {
                 new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
                 new Image(Path.Combine("Assets", "Images", "player.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
-            BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, player);
 
             blocks = new EntityContainer<Block>(288);
             levelLoader = new LevelLoader();
             gameOver = false;
+            level = 0;
         }
 
         /// <summary>
         /// Når spillet er slut og der skal startes et nyt så resetter den det hele(fra main menu)
         /// </summary>
         public void ResetState() {
-            
+            blocks.ClearContainer();
+            this.level = 0;
+            gameOver = false;
         }
 
         /// <summary>
@@ -111,6 +114,12 @@ namespace Breakout.BreakoutStates {
                         IntArg1 = (int) key
                     });
                     break; 
+
+                case KeyboardKey.G: 
+                    blocks.ClearContainer();
+                    NewLevel();
+                    break;
+
                 default:
                     break;
             }
@@ -142,7 +151,22 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         private void NewLevel(){
             if (blocks.CountEntities() <= 0) {
-                blocks = levelLoader.LoadLevel("level1.txt");
+                try{
+                    this.level++;
+                    string levelstring = "level" + this.level + ".txt";
+                    blocks = levelLoader.LoadLevel(levelstring);
+                }
+                catch{
+                    ResetState();
+                    BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.GameStateEvent, 
+                            Message = "CHANGE_STATE",
+                            StringArg1 = "MAIN_MENU"
+                        }
+                    );
+                }
+            
             }
         }
 
