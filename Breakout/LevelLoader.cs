@@ -1,6 +1,6 @@
 using DIKUArcade;
 using DIKUArcade.GUI;
-using DIKUArcade.Input;
+using System;
 using DIKUArcade.Events;
 using DIKUArcade.Math;
 using DIKUArcade.Entities;
@@ -20,6 +20,12 @@ namespace Breakout {
         private int y;
         private EntityContainer<Block> Blocks {get;}
 
+        IDictionary<string, string> metaDic;
+        IDictionary<char, DIKUArcade.Graphics.Image> legendDic;
+   
+
+
+
         public LevelLoader(){
             x = 0;
             y = 0;
@@ -27,86 +33,78 @@ namespace Breakout {
             map = new List<char>{};
             meta = new List<string>{};
             legend = new List<string>{};
+            metaDic = new Dictionary<string,string>();
+            legendDic = new Dictionary<char, DIKUArcade.Graphics.Image>();
         }
 
         /// <summary>
-        /// Takes an ascii file and inserts it into three strings, map, meta and legends. 
+        /// Takes an ascii file and inserts it into three lists, map, meta and legends. 
         /// Only Takes Working Ascii Files, but handles FileNotFound.
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
-            bool a = true;
-            int b = 0;
             try{
-                string[] FileLines = System.IO.File.ReadAllLines(filename);
-            foreach (string line in FileLines){  
-                switch (line){
-                    case "Map:": case "Map/": case "Meta:": 
-                    case "Meta/": case "Legend:": case "Legend/":
-                        a = false;
-                        b++;
-                        break;
-                    default: 
-                        a = true;
-                        break;
-                }
-                if (a){
-                    switch (b){
-                        case 1:
-                            foreach (char c in line){
-                                map.Add(c); 
-                            }
-                            break;
-                        case 3:
-                            meta.Add(line);
-                            break;
-                        case 5:
-                            legend.Add(line);
-                            break;
-
-                        default: break;
+                string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
+                
+                //Adding Map section to map
+                int StartMapIndex = Array.IndexOf(FileLines, "Map:")+1;
+                int EndMapIndex = Array.IndexOf(FileLines, "Map/")-1;
+                for (int Enumerator = StartMapIndex; Enumerator <= EndMapIndex; Enumerator++){
+                    foreach(char elm  in FileLines[Enumerator]){
+                        if (elm != '/'){
+                            map.Add(elm);
+                        }
                     }
                 }
 
+                //Adding Meta section to Meta
+                int StartMetaIndex = Array.IndexOf(FileLines, "Meta:")+1;
+                int EndMetaIndex = Array.IndexOf(FileLines, "Meta/")-1;
+                for (int Enumerator = StartMetaIndex; Enumerator <= EndMetaIndex; Enumerator++){
+                        meta.Add(FileLines[Enumerator]);
+                }
+
+                //Adding Legend section to legend
+                int StartLegendIndex = Array.IndexOf(FileLines, "Legend:")+1;
+                int EndLegendIndex = Array.IndexOf(FileLines, "Legend/")-1;
+                for (int Enumerator = StartLegendIndex; Enumerator <= EndLegendIndex; Enumerator++){
+                        legend.Add(FileLines[Enumerator]);
+                }
+                
                 
             }
-            }
             catch (FileNotFoundException ex){
-                System.Console.WriteLine(ex);
+                System.Console.WriteLine("In ReadAscii:" + ex);
             }
         }
+
                             
         /// <summary>
         /// Adds blocks to the EntityContainer blocks, and handles meta data accordingly.
         /// </summary>
         private void AddBlocks(){
-            string pngStr = new string("");
+            int i = 0;
             foreach (char charElm in map){
-                switch(charElm){
-                    case '/': case 'n': break;
-                    case '-': 
-                        IncXnY();
-                        break;
-                    default:
-                        if (MetaHandler(charElm)){   
-                            foreach(string strElm in legend){
-                                if (charElm == strElm[0]){
-                                    pngStr = strElm.Remove(0, 3);
-                                    var newBlock = new Block(
+                i++;
+                System.Console.WriteLine(i);
+                foreach (var elm in legendDic){
+                    if (charElm == elm.Key){
+                        var newBlock = new Block(
                                         new DynamicShape(new Vec2F(
                                             0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
                                         new Vec2F(1.0f/12, (1.0f/12)/3f)),
-                                        new Image(@"Assets/Images/" + pngStr));
-                                    Blocks.AddEntity(newBlock);
-                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, 
-                                    newBlock);
-                                }
-                            }
-                        }
-                        IncXnY();
-                    break;
-                } 
+                                        elm.Value);
+                        Blocks.AddEntity(newBlock);
+                        BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                    }
+                }
+                IncXnY();
             }
+
+
+
+
+
         }
 
         /// <summary>
@@ -141,10 +139,56 @@ namespace Breakout {
         /// <param name="filename">A string with the name of an Ascii file</param>
         /// <returns></returns>
         public EntityContainer<Block> LoadLevel(string filename){
+            
+            //clear everything
+            map.Clear();
+            meta.Clear();
+            legend.Clear();
+            metaDic.Clear();
+            legendDic.Clear();
+
+            //Read the ascii into lists, fill the dictionaries and add the blocks
             ReadAscii(filename);
+            FillMetaDic();
+            FillLegendDic();
             AddBlocks();
             return Blocks;
         } 
+
+
+
+
+        private void FillMetaDic(){
+            System.Console.WriteLine("FillMeta");
+            foreach (string elm in meta){
+                int IndexOfSplit = elm.IndexOf(":");
+                string key = elm.Substring(0, IndexOfSplit);
+                string val = elm.Substring(IndexOfSplit+2, elm.Length-IndexOfSplit-2);
+                try{
+                    metaDic.Add(key, val);
+                }
+                catch{
+                    Console.WriteLine("Duplicate key in meta");}
+            }
+        }
+
+
+
+        private void FillLegendDic(){
+            System.Console.WriteLine("FillLeg");
+            foreach (string elm in legend){
+                char key = elm[0];
+                string val = elm.Substring(3, elm.Length-3);
+                try{
+                    legendDic.Add(key, new Image(Path.Combine("Assets", "Images", val)));
+                }
+                catch{
+                    Console.WriteLine("Duplicate key in legend");}
+            }
+        }
+
+
+
 
         /// <summary>
         /// May only be used to test AsciiReader. 
