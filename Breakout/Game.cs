@@ -7,33 +7,25 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using System.IO;
 using System.Collections.Generic;
+using Breakout.BreakoutStates;
 
 
 namespace Breakout { 
 
 
     public class Game : DIKUGame, IGameEventProcessor {
-        
-        private Player player; 
-        private LevelLoader levelLoader;
-        private EntityContainer<Block> blocks {get; set;}
+
+        private StateMachine state;
 
         public Game(WindowArgs windowArgs) : base(windowArgs) {
             BreakoutBus.GetBus().InitializeEventBus(new List<GameEventType> {
                  GameEventType.InputEvent, 
-            GameEventType.PlayerEvent, GameEventType.GameStateEvent});
-            player = new Player( // player is instantiated with positions and image
-                new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
-                new Image(Path.Combine("Assets", "Images", "player.png")));
-            BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
+            GameEventType.PlayerEvent, GameEventType.GameStateEvent, GameEventType.GraphicsEvent, GameEventType.StatusEvent});
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
             window.SetKeyEventHandler(KeyHandler);
-
-            blocks = new EntityContainer<Block>(288);
-            levelLoader = new LevelLoader();
-
-
+            state = new StateMachine();
         }
+
         /// <summary>
         /// Handles KeyboardActions and KeyboardKeys
         /// </summary>
@@ -55,16 +47,14 @@ namespace Breakout {
         /// Renders everything
         /// </summary>
         public override void Render() {
-            player.Render();
-            blocks.RenderEntities();
+            state.ActiveState.RenderState();
         }
 
         /// <summary>
         /// Updates everything
         /// </summary>
         public override void Update() {
-            player.Move();
-            NewLevel();
+            state.ActiveState.UpdateState();
             BreakoutBus.GetBus().ProcessEventsSequentially(); 
         }
 
@@ -73,52 +63,19 @@ namespace Breakout {
         /// Sends out the appropriate EventType for the KeyBoardKey pressed.
         /// </summary>
         /// <param name="key">The pressed key</param>
-        public void KeyPress(KeyboardKey key) { // Initiating keypresses on given keys with switch
-            switch (key) {
-                case KeyboardKey.Escape:
-                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.InputEvent, Message = "escape", 
-                        IntArg1 = (int) key
-                    });
-                    break;
-                case KeyboardKey.Right:
-                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.PlayerEvent, Message = "KeyPress", 
-                        IntArg1 = (int) key
-                    });
-                    break;
-                case KeyboardKey.Left: 
-                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.PlayerEvent, Message = "KeyPress", 
-                        IntArg1 = (int) key
-                    });
-                    break; 
-                default: break;
-            }
+        private void KeyPress(KeyboardKey key) { // Initiating keypresses on given keys with switch
+            state.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, key);
         }
+
 
         /// <summary>
         /// Sends out the appropriate EventType for the KeyBoardKey released.
         /// </summary>
         /// <param name="key">The released key</param>
-        public void KeyRelease(KeyboardKey key) {
-            switch (key) {
-                case KeyboardKey.Right:
-                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.PlayerEvent, Message = "KeyRelease", 
-                        IntArg1 = (int) key
-                    });
-                    break;
-                case KeyboardKey.Left: 
-                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.PlayerEvent, Message = "KeyRelease", 
-                        IntArg1 = (int) key
-                    });
-                    break;     
-                default: 
-                    break;
-            } 
+        private void KeyRelease(KeyboardKey key) {
+            state.ActiveState.HandleKeyEvent(KeyboardAction.KeyRelease, key);
         }
+
 
         /// <summary>
         /// Processes all events in the bus and responds accordingly.
@@ -134,16 +91,6 @@ namespace Breakout {
                     default:
                         break;
                 }
-            }
-        }
-
-
-        /// <summary>
-        /// Creates a batch of blocks if the entitylist blocks is empty.
-        /// </summary>
-        public void NewLevel(){
-            if (blocks.CountEntities() <= 0) {
-                blocks = levelLoader.LoadLevel(@"Assets/Levels/level1.txt");
             }
         }
     }

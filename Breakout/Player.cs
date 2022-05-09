@@ -40,7 +40,7 @@ namespace Breakout {
         /// sets the left movement bool
         /// </summary>
         /// <param name="val">if the move right field should change or not</param>
-        public void SetMoveLeft(bool val) {
+        private void SetMoveLeft(bool val) {
             if (val == true) {
                 moveLeft -= MOVEMENT_SPEED;  
                 UpdateDirection(); 
@@ -56,7 +56,7 @@ namespace Breakout {
         /// Sets the right movement bool
         /// </summary>
         /// <param name="val">if the move right field should change or not</param>
-        public void SetMoveRight(bool val) {
+        private void SetMoveRight(bool val) {
             if (val == true) {
                 moveRight += MOVEMENT_SPEED;  
                 UpdateDirection();
@@ -87,9 +87,8 @@ namespace Breakout {
         /// </summary>
         /// <param name="gameEvent">the gamevent to process.</param>
         public void ProcessEvent(GameEvent gameEvent) {
-            if (gameEvent.EventType == GameEventType.PlayerEvent) { //Checks if it a PlayerEvent
-                switch (gameEvent.Message) { //switches on message, only does something with 
-                                             //KeyPress and KeyRelease
+            if (gameEvent.EventType == GameEventType.PlayerEvent) { 
+                switch (gameEvent.Message) {  
                     case "KeyPress":
                         KeyPress((KeyboardKey)gameEvent.IntArg1);
                         break;

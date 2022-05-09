@@ -70,14 +70,8 @@ namespace Breakout.BreakoutStates {
         /// <param name="action">the actio nto handle</param>
         /// <param name="key">the key pressed or released</param>
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-            switch (action, key) {
-                case (KeyboardAction.KeyPress, KeyboardKey.Up):
-                    KeyPress(key);
-                    break;
-                case (KeyboardAction.KeyPress, KeyboardKey.Down):
-                    KeyPress(key);
-                    break;
-                case (KeyboardAction.KeyPress, KeyboardKey.Enter):
+            switch (action) {
+                case (KeyboardAction.KeyPress):
                     KeyPress(key);
                     break;
                 default:
