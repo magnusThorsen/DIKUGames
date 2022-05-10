@@ -84,7 +84,9 @@ namespace Breakout {
         private void AddBlocks(){
             foreach (char charElm in map){
                 foreach (var elm in legendDic){
-                    if (charElm == elm.Key){
+                    if(MetaHandler(charElm)){
+                        AddMetaElements();
+                    } else (charElm == elm.Key){
                         var newBlock = new Block(
                                         new DynamicShape(new Vec2F(
                                             0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
@@ -96,11 +98,6 @@ namespace Breakout {
                 }
                 IncXnY();
             }
-
-
-
-
-
         }
 
         /// <summary>
@@ -116,6 +113,12 @@ namespace Breakout {
             }
             return false;
         }
+
+
+        private void AddMetaElements(){
+            
+        }
+
 
         /// <summary>
         /// increments x and if x is bigger than 12 it resets x to 0 and increments y.
