@@ -40,22 +40,6 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         /// <param name="stateType">the state to switch to</param>
         public void SwitchState(GameStateType stateType) {
-        /*    switch (stateType) {
-                case GameStateType.GameRunning: 
-                    ActiveState.ResetState();
-                    ActiveState = GameRunning.GetInstance();
-                    break;
-                case GameStateType.GamePaused: 
-                    ActiveState = GamePaused.GetInstance();
-                    break;
-                case GameStateType.MainMenu:
-                    ActiveState = MainMenu.GetInstance();
-                    ActiveState.ResetState();
-                    break;
-                default: break;
-              }
-            */
-
             foreach(var elm in stateDic){
                 if (elm.Key == stateType){
                     if (elm.Key != GameStateType.GamePaused){ActiveState.ResetState();}
