@@ -1,6 +1,7 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Events;
+using DIKUArcade.Math;
 
 namespace Breakout {
 
@@ -44,6 +45,10 @@ namespace Breakout {
 
         public void SetValue(int amount) {
             value = amount;
+        }
+
+        public Vec2F GetPosition() {
+            return shape.Position;
         }
 
 

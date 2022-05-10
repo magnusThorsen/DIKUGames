@@ -1,4 +1,5 @@
 using DIKUArcade.Entities;
+using DIKUArcade.Math;
 
 namespace Breakout {
     
@@ -7,6 +8,7 @@ namespace Breakout {
         int GetHealth();
         void DecHealth ();
         int GetValue();
+        Vec2F GetPosition();
         void SetValue(int amount);
     }
 }

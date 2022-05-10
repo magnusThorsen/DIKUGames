@@ -2,6 +2,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Events;
 using System.IO;
+using DIKUArcade.Math;
 
 namespace Breakout {
     
@@ -38,6 +39,10 @@ namespace Breakout {
 
         public void SetValue(int amount) {
             value = amount;
+        }
+
+        public Vec2F GetPosition() {
+            return shape.Position;
         }
 
         public void ChangeImage() {
