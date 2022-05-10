@@ -26,7 +26,7 @@ namespace Breakout {
             this.RenderEntity();
         }
 
-        public void Move(Player p, EntityContainer<Block> b) {
+        public void Move(Player p, EntityContainer<Entity> b) {
             if (shape.Position.X > 1.0f || shape.Position.X < 0.0f) {
                 Xvelocity = -Xvelocity;
             }
@@ -40,13 +40,13 @@ namespace Breakout {
 
         }
 
-        private void Bounce(Player p, EntityContainer<Block> b){
+        private void Bounce(Player p, EntityContainer<Entity> b){
             BounceBlock(b);
             BouncePlayer(p);
         }
 
 
-        public void BounceBlock(EntityContainer<Block> b) {          
+        public void BounceBlock(EntityContainer<Entity> b) {          
             foreach(Block block in b){
                 if (DIKUArcade.Physics.CollisionDetection.Aabb(
                 this.shape.AsDynamicShape(), block.shape).Collision) {

@@ -17,6 +17,7 @@ namespace Breakout.BreakoutStates {
         private EntityContainer<Entity> blocks {get; set;}
         private bool gameOver;
         private int level;
+        private Ball ball;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -43,6 +44,9 @@ namespace Breakout.BreakoutStates {
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;
+            ball = new Ball(
+                new DynamicShape(new Vec2F(0.48f, 0.05f), new Vec2F(0.05f, 0.05f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
         }
 
         /// <summary>
@@ -59,6 +63,7 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void UpdateState() {
             player.Move();
+            ball.Move(player, blocks);
             NewLevel();
             if(gameOver){
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
@@ -74,6 +79,7 @@ namespace Breakout.BreakoutStates {
         public void RenderState() {
             player.Render();
             blocks.RenderEntities();
+            ball.Render();
         }
 
 
