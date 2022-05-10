@@ -75,8 +75,6 @@ namespace Breakout {
                 for (int Enumerator = StartLegendIndex; Enumerator <= EndLegendIndex; Enumerator++){
                         legend.Add(FileLines[Enumerator]);
                 }
-
-
         }
 
                             
