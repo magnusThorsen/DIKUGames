@@ -93,7 +93,6 @@ namespace Breakout.BreakoutStates {
         private void KeyPress(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Escape: 
-                    ResetState();
                     BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
