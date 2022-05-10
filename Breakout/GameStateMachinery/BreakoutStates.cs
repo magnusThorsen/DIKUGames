@@ -42,7 +42,6 @@ namespace Breakout.BreakoutStates {
         public void SwitchState(GameStateType stateType) {
             foreach(var elm in stateDic){
                 if (elm.Key == stateType){
-                    if (elm.Key != GameStateType.GamePaused){ActiveState.ResetState();}
                     ActiveState = elm.Value;
                 }
             }
