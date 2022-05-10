@@ -18,23 +18,26 @@ namespace Breakout {
         public List<string> legend {get; private set;}
         private int x;
         private int y;
-        private EntityContainer<Block> Blocks {get;}
+        private EntityContainer<Entity> Blocks {get;}
+        private int currBlockValue;
 
         IDictionary<string, string> metaDic;
-        IDictionary<char, DIKUArcade.Graphics.Image> legendDic;
-   
+        IDictionary<char, DIKUArcade.Graphics.Image> legendImageDic;
+        IDictionary<char, string> legendStringDic;
 
 
 
         public LevelLoader(){
             x = 0;
             y = 0;
-            Blocks = new EntityContainer<Block>(288);
+            Blocks = new EntityContainer<Entity>(288);
             map = new List<char>{};
             meta = new List<string>{};
             legend = new List<string>{};
             metaDic = new Dictionary<string,string>();
-            legendDic = new Dictionary<char, DIKUArcade.Graphics.Image>();
+            legendImageDic = new Dictionary<char, DIKUArcade.Graphics.Image>();
+            legendStringDic = new Dictionary<char, string>();
+            currBlockValue = 0;
         }
 
         /// <summary>
@@ -85,24 +88,54 @@ namespace Breakout {
         /// </summary>
         private void AddBlocks(){
             foreach (char charElm in map){
-                foreach (var elm in legendDic){
-                    if (charElm == elm.Key){
-                        var newBlock = new Block(
-                                        new DynamicShape(new Vec2F(
-                                            0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
-                                        new Vec2F(1.0f/12, (1.0f/12)/3f)),
-                                        elm.Value);
-                        Blocks.AddEntity(newBlock);
-                        BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                if (MetaHandler(charElm)) {
+                    AddMetaElement(charElm);
+                } else {
+                    foreach (var elm in legendImageDic){
+                        if (charElm == elm.Key) {
+                            var newBlock = new Block(
+                                            new DynamicShape(new Vec2F(
+                                                0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
+                                            new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                            elm.Value);
+                            newBlock.SetValue(currBlockValue);
+                            Blocks.AddEntity(newBlock);
+                            currBlockValue++;
+                            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                        }   
                     }
                 }
                 IncXnY();
             }
+        }
 
-
-
-
-
+        private void AddMetaElement(char c) {
+            foreach(var metaElm in metaDic){
+                if(Char.ToString(c) == metaElm.Value){
+                    switch (metaElm.Key) {
+                        case "Hardened": 
+                            
+                            foreach (var legendElm in legendStringDic){
+                                if (c == legendElm.Key) {
+                                    
+                                    string textPart = legendElm.Value.Substring(11, legendElm.Value.Length-5);
+                                    var newBlock = new HardenedBlock(
+                                                    new DynamicShape(new Vec2F(
+                                                        0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
+                                                    new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                                    new Image(Path.Combine("Assets", "Images", legendElm.Value)),
+                                                    textPart);
+                                    newBlock.SetValue(currBlockValue);
+                                    Blocks.AddEntity(newBlock);
+                                    currBlockValue++;
+                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                                }
+                            }
+                            break;
+                        default:break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -113,8 +146,8 @@ namespace Breakout {
         private bool MetaHandler(char c){
             foreach(string strElm in meta){
                 if (c == strElm[strElm.Length-1]){
-                    return false;
-                } else {return true;}
+                    return true;
+                } else {return false;}
             }
             return false;
         }
@@ -136,7 +169,7 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string with the name of an Ascii file</param>
         /// <returns></returns>
-        public EntityContainer<Block> LoadLevel(string filename){
+        public EntityContainer<Entity> LoadLevel(string filename){
             
             //clear the levelloader
             Reset();
@@ -144,7 +177,7 @@ namespace Breakout {
             //Read the ascii into lists, fill the dictionaries and add the blocks
             ReadAscii(filename);
             FillMetaDic();
-            FillLegendDic();
+            FillLegendDics();
             AddBlocks();
             return Blocks;
         } 
@@ -167,12 +200,13 @@ namespace Breakout {
 
 
 
-        private void FillLegendDic(){
+        private void FillLegendDics(){
             foreach (string elm in legend){
                 char key = elm[0];
                 string val = elm.Substring(3, elm.Length-3);
                 try{
-                    legendDic.Add(key, new Image(Path.Combine("Assets", "Images", val)));
+                    legendImageDic.Add(key, new Image(Path.Combine("Assets", "Images", val)));
+                    legendStringDic.Add(key, val);
                 }
                 catch{
                     Console.WriteLine("Duplicate key in legend");}
@@ -185,9 +219,11 @@ namespace Breakout {
             meta.Clear();
             legend.Clear();
             metaDic.Clear();
-            legendDic.Clear();
+            legendImageDic.Clear();
+            legendStringDic.Clear();
             x = 0;
             y = 0;
+            currBlockValue = 0;
         }
 
 

@@ -4,7 +4,7 @@ using DIKUArcade.Events;
 
 namespace Breakout {
 
-    public class Block : Entity, IGameEventProcessor {
+    public class Block : Entity, IBlock, IGameEventProcessor {
         public Shape shape {get;}
         private int health; 
         private int value;
@@ -27,7 +27,7 @@ namespace Breakout {
         /// <summary>
         /// Decreases the health field.
         /// </summary>
-        private void DecHealth(){
+        public void DecHealth(){
             health--;
             if (health == 0){
                 DeleteEntity();
@@ -38,19 +38,19 @@ namespace Breakout {
         /// Returns the value field. Only there not to get warning for now.
         /// </summary>
         /// <returns></returns>
-        private int GetValue(){
+        public int GetValue(){
             return value;
         }
+
+        public void SetValue(int amount) {
+            value = amount;
+        }
+
 
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                         DecHealth();
             } 
         }
-
-
-
-
-
     }
 }

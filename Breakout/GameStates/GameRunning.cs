@@ -6,6 +6,7 @@ using System.IO;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using System.Collections.Generic;
+using System;
 
 namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState{
@@ -13,7 +14,7 @@ namespace Breakout.BreakoutStates {
         private static GameRunning instance = null;
         private Player player; 
         private LevelLoader levelLoader;
-        private EntityContainer<Block> blocks {get; set;}
+        private EntityContainer<Entity> blocks {get; set;}
         private bool gameOver;
         private int level;
 
@@ -38,7 +39,7 @@ namespace Breakout.BreakoutStates {
                 new Image(Path.Combine("Assets", "Images", "player.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
 
-            blocks = new EntityContainer<Block>(288);
+            blocks = new EntityContainer<Entity>(288);
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;
