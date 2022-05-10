@@ -12,7 +12,7 @@ namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState{
 
         private static GameRunning instance = null;
-        private Player player; 
+        private Player player{get;set;} 
         private LevelLoader levelLoader;
         private EntityContainer<Entity> blocks {get; set;}
         private bool gameOver;

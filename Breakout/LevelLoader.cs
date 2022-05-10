@@ -78,8 +78,6 @@ namespace Breakout {
                 for (int Enumerator = StartLegendIndex; Enumerator <= EndLegendIndex; Enumerator++){
                         legend.Add(FileLines[Enumerator]);
                 }
-
-
         }
 
                             
@@ -151,6 +149,12 @@ namespace Breakout {
             }
             return false;
         }
+
+
+        private void AddMetaElements(){
+
+        }
+
 
         /// <summary>
         /// increments x and if x is bigger than 12 it resets x to 0 and increments y.
