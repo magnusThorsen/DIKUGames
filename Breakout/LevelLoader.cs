@@ -86,7 +86,7 @@ namespace Breakout {
                 foreach (var elm in legendDic){
                     if(MetaHandler(charElm)){
                         AddMetaElements();
-                    } else (charElm == elm.Key){
+                    } else if (charElm == elm.Key){
                         var newBlock = new Block(
                                         new DynamicShape(new Vec2F(
                                             0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
@@ -116,7 +116,7 @@ namespace Breakout {
 
 
         private void AddMetaElements(){
-            
+
         }
 
 
