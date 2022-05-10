@@ -7,7 +7,7 @@ using DIKUArcade.Input;
 namespace Breakout {
 
     public class Player : Entity, IGameEventProcessor {
-        private Shape shape;
+        public Shape shape { get;}
         private float moveLeft; 
         private float moveRight;
         private const float MOVEMENT_SPEED = 0.02f;
