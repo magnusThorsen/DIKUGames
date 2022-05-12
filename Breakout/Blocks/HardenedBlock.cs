@@ -7,8 +7,6 @@ using DIKUArcade.Math;
 namespace Breakout {
     
     public class HardenedBlock : Block {
-
-        private int startHealth;
         private int health; 
         private int value;
         private string Color;
@@ -17,7 +15,6 @@ namespace Breakout {
             Color = color;
             this.shape = shape;
             health = 2;
-            startHealth = 2;
             value = 1;
         }
 
@@ -27,7 +24,7 @@ namespace Breakout {
 
         public override void DecHealth () {
             health--;
-            if (health < startHealth/2) {
+            if (health == 1) {
                 ChangeImage();
             }
             if (health == 0){
