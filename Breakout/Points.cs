@@ -18,8 +18,8 @@ public class Points : IGameEventProcessor {
         /// <summary>
         /// increments the point field.
         /// </summary>
-        public void AddPoints(string s) {
-            points++;
+        public void AddPoints(int s) {
+            points = points + s;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ public class Points : IGameEventProcessor {
         public void ProcessEvent(GameEvent gameEvent){
             System.Console.WriteLine("get");
             if (gameEvent.EventType == GameEventType.GraphicsEvent) { 
-                AddPoints(gameEvent.Message);
+                AddPoints(gameEvent.IntArg1);
             } 
         }
 

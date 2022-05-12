@@ -32,12 +32,8 @@ namespace Breakout {
             if (health <= 0){
                 DeleteEntity();
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.GraphicsEvent, Message = "NORMAL", 
+                        EventType = GameEventType.GraphicsEvent, IntArg1 = 5, 
                     });
-
-
-
-
             }
         }
 
