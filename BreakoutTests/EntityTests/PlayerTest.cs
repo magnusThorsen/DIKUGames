@@ -55,7 +55,9 @@ public class TestPlayer{
     public void TestRightBorder() {
         Assert.IsTrue(player.GetPosition().X < 1.0f);
         for (int i = 0; i < 100 ; i++) {
-            player.SetMoveRight(true);
+            var gameEvent = new GameEvent{EventType = GameEventType.PlayerEvent, Message = "KeyPress", 
+            IntArg1 = (int) KeyboardKey.Right};
+            player.ProcessEvent(gameEvent);
         }
         Assert.IsTrue(player.GetPosition().X < 1.0f);
     }
@@ -64,7 +66,9 @@ public class TestPlayer{
     public void TestLeftBorder() {
         Assert.IsTrue(player.GetPosition().X > 0.0f);
         for (int i = 0; i < 100 ; i++) {
-            player.SetMoveLeft(true);
+            var gameEvent = new GameEvent{EventType = GameEventType.PlayerEvent, Message = "KeyPress", 
+            IntArg1 = (int) KeyboardKey.Left};
+            player.ProcessEvent(gameEvent);
         }
         Assert.IsTrue(player.GetPosition().X > 0.0f);
     }
