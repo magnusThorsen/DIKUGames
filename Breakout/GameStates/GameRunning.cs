@@ -185,6 +185,8 @@ namespace Breakout.BreakoutStates {
                 }
                 catch{
                     ResetState();
+                    ball.Reset();
+                    player.Reset();
                     BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
@@ -209,6 +211,7 @@ namespace Breakout.BreakoutStates {
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
                         case "BallUnderPlayer":
+                            ResetState();
                             BreakoutBus.GetBus().RegisterEvent(
                                 new GameEvent{
                                     EventType = GameEventType.GameStateEvent, 

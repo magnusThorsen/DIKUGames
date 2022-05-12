@@ -136,7 +136,7 @@ namespace Breakout {
         }
 
         public void Reset(){
-            
+            shape.Position = new Vec2F(0.425f, 0.03f);
         }
 
     }
