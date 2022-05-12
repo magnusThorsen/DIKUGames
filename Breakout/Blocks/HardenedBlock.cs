@@ -29,7 +29,11 @@ namespace Breakout {
             }
             if (health == 0){
                 DeleteEntity();
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.GraphicsEvent, Message = "HARD", 
+                    });
             }
+            
         }
 
         public override int GetValue() {
