@@ -17,6 +17,7 @@ namespace Breakout {
             moveLeft = 0.0f;
             moveRight = 0.0f; 
             Shape = shape;
+            shape.Position = new Vec2F(0.425f, 0.03f);
         }
 
         /// <summary>
@@ -133,5 +134,10 @@ namespace Breakout {
                     break;
             } 
         }
+
+        public void Reset(){
+            
+        }
+
     }
 }

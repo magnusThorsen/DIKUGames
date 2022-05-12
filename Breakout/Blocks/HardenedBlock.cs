@@ -30,6 +30,9 @@ namespace Breakout {
             if (health < startHealth/2) {
                 ChangeImage();
             }
+            if (health == 0){
+                DeleteEntity();
+            }
         }
 
         public override int GetValue() {

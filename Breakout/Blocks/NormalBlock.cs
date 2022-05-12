@@ -53,7 +53,7 @@ namespace Breakout {
 
         public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
-                        DecHealth();
+                DecHealth();
             } 
         }
     }

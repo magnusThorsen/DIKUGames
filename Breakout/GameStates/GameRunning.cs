@@ -58,6 +58,8 @@ namespace Breakout.BreakoutStates {
             blocks.ClearContainer();
             this.level = 0;
             gameOver = false;
+            player.Reset();
+            ball.Reset();
         }
 
         /// <summary>
@@ -67,6 +69,7 @@ namespace Breakout.BreakoutStates {
             player.Move();
             ball.Move(player, blocks);
             NewLevel();
+            RemoveDeletedBlocks();
             if(gameOver){
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.StatusEvent, Message = "GameOver", 
@@ -213,7 +216,15 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        private void RemoveDeletedBlocks(){
+            blocks.Iterate(block => {
+                if (block.IsDeleted()){
+                    block.DeleteEntity();
+                }
+            });
+        }
 
+        
     }
 
 }
