@@ -18,6 +18,8 @@ namespace Breakout.BreakoutStates {
         public bool gameOver{get;set;}
         private int level;
         private Ball ball;
+        
+        private Points points;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -49,6 +51,8 @@ namespace Breakout.BreakoutStates {
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
+            points = new Points(new Vec2F(0.9f,0.5f), new Vec2F(0.5f,0.5f));
+            BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
         }
 
         /// <summary>
