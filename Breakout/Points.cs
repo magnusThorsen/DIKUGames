@@ -46,7 +46,6 @@ public class Points : IGameEventProcessor {
         }
 
         public void ProcessEvent(GameEvent gameEvent){
-            System.Console.WriteLine("get");
             if (gameEvent.EventType == GameEventType.GraphicsEvent) { 
                 AddPoints(gameEvent.IntArg1);
             } 
