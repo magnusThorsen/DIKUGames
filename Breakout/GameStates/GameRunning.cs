@@ -89,6 +89,7 @@ namespace Breakout.BreakoutStates {
             player.Render();
             blocks.RenderEntities();
             ball.Render();
+            points.RenderPoints();
         }
 
 
