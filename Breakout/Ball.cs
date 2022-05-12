@@ -55,7 +55,6 @@ namespace Breakout {
         public void BounceBlock(EntityContainer<Block> b) {      
             foreach(Block block in b){
                 if (CollisionDetection.Aabb(shape, block.Shape).Collision) {
-                    System.Console.WriteLine("Send");
                         BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{
                                 EventType = GameEventType.InputEvent, 

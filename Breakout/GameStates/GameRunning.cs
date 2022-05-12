@@ -64,6 +64,7 @@ namespace Breakout.BreakoutStates {
             gameOver = false;
             player.Reset();
             ball.Reset();
+            points.ResetPoints();
         }
 
         /// <summary>

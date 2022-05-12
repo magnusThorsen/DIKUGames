@@ -31,7 +31,7 @@ namespace Breakout {
             health--;
             if (health <= 0){
                 DeleteEntity();
-
+            
 
 
 
