@@ -5,7 +5,7 @@ using DIKUArcade.Math;
 
 namespace Breakout {
 
-    public class NormalBlock : Block, IGameEventProcessor {
+    public class NormalBlock : Block {
         private int health; 
         private int value;
 
@@ -51,7 +51,7 @@ namespace Breakout {
         }
 
 
-        public void ProcessEvent(GameEvent gameEvent){
+        public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                         DecHealth();
             } 

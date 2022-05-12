@@ -1,10 +1,11 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using DIKUArcade.Graphics;
+using DIKUArcade.Events;
 
 namespace Breakout {
     
-    public abstract class Block : Entity {
+    public abstract class Block : Entity, IGameEventProcessor {
 
         public Shape shape;
         private int health; 
@@ -19,5 +20,7 @@ namespace Breakout {
         public abstract int GetValue();
         public abstract Vec2F GetPosition();
         public abstract void SetValue(int amount);
+
+        public abstract void ProcessEvent(GameEvent gameEvent);
     }
 }

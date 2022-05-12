@@ -7,7 +7,7 @@ using DIKUArcade.Physics;
 
 namespace Breakout {
 
-    public class Ball : Entity {
+    public class Ball : Entity, IGameEventProcessor {
         private Shape shape;
         private float Xvelocity;
         private float Yvelocity;
@@ -95,6 +95,9 @@ namespace Breakout {
             }
         }
 
+        public void ProcessEvent(I){
+
+        }
 
 
         
