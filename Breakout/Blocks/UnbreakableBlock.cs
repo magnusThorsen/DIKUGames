@@ -22,8 +22,6 @@ namespace Breakout {
         }
 
         public override void DecHealth () {
-            health--;
-            health++;
         }
 
         public override int GetValue() {

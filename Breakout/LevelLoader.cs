@@ -103,12 +103,7 @@ namespace Breakout {
                 foreach(var metaElm in metaDic){
                     if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "Hardened") {
 
-                        System.Console.WriteLine("length-5: " + legendElm.Value[legendElm.Value.Length-5]);
-                        System.Console.WriteLine("legendElm.Value.Length-10: " + legendElm.Value[legendElm.Value.Length-10]);
-                        System.Console.WriteLine("value: " + legendElm.Value);
-
                         string textPart = legendElm.Value.Substring(0, legendElm.Value.Length-10);
-                        System.Console.WriteLine("after textpart:" + textPart);
                         var newBlock = new HardenedBlock(
                             new DynamicShape(new Vec2F(
                                 0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
@@ -116,15 +111,25 @@ namespace Breakout {
                             new Image(Path.Combine("Assets", "Images", legendElm.Value)),
                             textPart);
 
-
                         newBlock.SetValue(currBlockValue);
                         Blocks.AddEntity(newBlock);
                         currBlockValue++;
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
 
-
-
+                    if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "Unbreakable") {
+                        var newBlock = new UnbreakableBlock(
+                            new DynamicShape(new Vec2F(
+                                0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
+                            new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", legendElm.Value))
+                            );
+                    
+                        newBlock.SetValue(currBlockValue);
+                        Blocks.AddEntity(newBlock);
+                        currBlockValue++;
+                        BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                    }
                 }
             }
         }
