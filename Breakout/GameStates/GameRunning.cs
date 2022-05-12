@@ -14,7 +14,7 @@ namespace Breakout.BreakoutStates {
         private static GameRunning instance = null;
         private Player player{get;set;} 
         private LevelLoader levelLoader;
-        private EntityContainer<Entity> blocks {get; set;}
+        private EntityContainer<Block> blocks {get; set;}
         private bool gameOver;
         private int level;
         private Ball ball;
@@ -40,7 +40,7 @@ namespace Breakout.BreakoutStates {
                 new Image(Path.Combine("Assets", "Images", "player.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
 
-            blocks = new EntityContainer<Entity>(288);
+            blocks = new EntityContainer<Block>(288);
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;

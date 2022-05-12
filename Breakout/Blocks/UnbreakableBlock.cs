@@ -6,9 +6,8 @@ using DIKUArcade.Math;
 
 namespace Breakout {
     
-    public class UnbreakableBlock : Entity, IBlock, IGameEventProcessor {
+    public class UnbreakableBlock : Block, IGameEventProcessor {
 
-        private Shape shape {get;}
         private int health; 
         private int value;
 
@@ -18,24 +17,24 @@ namespace Breakout {
             value = 1;
         }
 
-        public int GetHealth() {
+        public override int GetHealth() {
             return health;
         }
 
-        public void DecHealth () {
+        public override void DecHealth () {
             health--;
             health++;
         }
 
-        public int GetValue() {
+        public override int GetValue() {
             return value;
         }
 
-        public void SetValue(int amount) {
+        public override void SetValue(int amount) {
             value = amount;
         }
 
-        public Vec2F GetPosition() {
+        public override Vec2F GetPosition() {
             return shape.Position;
         }
 

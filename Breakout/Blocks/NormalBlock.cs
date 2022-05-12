@@ -1,38 +1,44 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Events;
-using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
-    
-    public class HardenedBlock : Block, IGameEventProcessor {
 
-        private int startHealth;
+    public class NormalBlock : Block, IGameEventProcessor {
         private int health; 
         private int value;
-        private string Color;
 
-        public HardenedBlock(Shape shape, IBaseImage image, string color) : base(shape, image) {
-            Color = color;
+        public NormalBlock(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
-            health = 2;
-            startHealth = 2;
+            health = 1;
             value = 1;
         }
 
+
+        /// <summary>
+        /// Returs the health of the Block.
+        /// </summary>
+        /// <returns>the health of the block in int</returns>
         public override int GetHealth() {
             return health;
         }
 
-        public override void DecHealth () {
+        /// <summary>
+        /// Decreases the health field.
+        /// </summary>
+        public override void DecHealth(){
             health--;
-            if (health < startHealth/2) {
-                ChangeImage();
+            if (health == 0){
+                DeleteEntity();
             }
         }
 
-        public override int GetValue() {
+        /// <summary>
+        /// Returns the value field. Only there not to get warning for now.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetValue(){
             return value;
         }
 
@@ -44,14 +50,10 @@ namespace Breakout {
             return shape.Position;
         }
 
-        public void ChangeImage() {
-            Color = Color + "-damaged.png";
-            Image = new Image(Path.Combine("Assets","Images", Color));
-        }
 
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
-                DecHealth();
+                        DecHealth();
             } 
         }
     }

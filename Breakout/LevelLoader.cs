@@ -18,7 +18,7 @@ namespace Breakout {
         public List<string> legend {get; private set;}
         private int x;
         private int y;
-        private EntityContainer<Entity> Blocks {get;}
+        private EntityContainer<Block> Blocks {get;}
         private int currBlockValue;
 
         IDictionary<string, string> metaDic;
@@ -30,7 +30,7 @@ namespace Breakout {
         public LevelLoader(){
             x = 0;
             y = 0;
-            Blocks = new EntityContainer<Entity>(288);
+            Blocks = new EntityContainer<Block>(288);
             map = new List<char>{};
             meta = new List<string>{};
             legend = new List<string>{};
@@ -86,12 +86,54 @@ namespace Breakout {
         /// </summary>
         private void AddBlocks(){
             foreach (char charElm in map){
-                if (MetaHandler(charElm)) {
+                if (IsMeta(charElm)) {
                     AddMetaElement(charElm);
                 } else {
-                    foreach (var elm in legendImageDic){
+                    AddNormalBlock(charElm);
+                }
+                IncXnY();
+            }
+        }
+
+
+
+
+        private void AddMetaElement(char c) {
+            foreach (var legendElm in legendStringDic){
+                foreach(var metaElm in metaDic){
+                    if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "Hardened") {
+
+                        System.Console.WriteLine("length-5: " + legendElm.Value[legendElm.Value.Length-5]);
+                        System.Console.WriteLine("legendElm.Value.Length-10: " + legendElm.Value[legendElm.Value.Length-10]);
+                        System.Console.WriteLine("value: " + legendElm.Value);
+
+                        string textPart = legendElm.Value.Substring(0, legendElm.Value.Length-10);
+                        System.Console.WriteLine("after textpart:" + textPart);
+                        var newBlock = new HardenedBlock(
+                            new DynamicShape(new Vec2F(
+                                0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
+                            new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", legendElm.Value)),
+                            textPart);
+
+
+                        newBlock.SetValue(currBlockValue);
+                        Blocks.AddEntity(newBlock);
+                        currBlockValue++;
+                        BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
+                    }
+
+
+
+                }
+            }
+        }
+
+
+        private void AddNormalBlock(char charElm){
+            foreach (var elm in legendImageDic){
                         if (charElm == elm.Key) {
-                            var newBlock = new Block(
+                            var newBlock = new NormalBlock(
                                             new DynamicShape(new Vec2F(
                                                 0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
                                             new Vec2F(1.0f/12, (1.0f/12)/3f)),
@@ -102,58 +144,25 @@ namespace Breakout {
                             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                         }   
                     }
-                }
-                IncXnY();
-            }
         }
 
-        private void AddMetaElement(char c) {
-            foreach(var metaElm in metaDic){
-                if(Char.ToString(c) == metaElm.Value){
-                    switch (metaElm.Key) {
-                        case "Hardened": 
-                            
-                            foreach (var legendElm in legendStringDic){
-                                if (c == legendElm.Key) {
-                                    
-                                    string textPart = legendElm.Value.Substring(11, legendElm.Value.Length-5);
-                                    var newBlock = new HardenedBlock(
-                                                    new DynamicShape(new Vec2F(
-                                                        0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
-                                                    new Vec2F(1.0f/12, (1.0f/12)/3f)),
-                                                    new Image(Path.Combine("Assets", "Images", legendElm.Value)),
-                                                    textPart);
-                                    newBlock.SetValue(currBlockValue);
-                                    Blocks.AddEntity(newBlock);
-                                    currBlockValue++;
-                                    BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
-                                }
-                            }
-                            break;
-                        default:break;
-                    }
-                }
-            }
-        }
+
+
 
         /// <summary>
         /// Handles meta chars. Checks if a char is in the meta sections og the Ascii file.
         /// </summary>
         /// <param name="c">A char</param>
         /// <returns></returns>
-        private bool MetaHandler(char c){
-            foreach(string strElm in meta){
-                if (c == strElm[strElm.Length-1]){
+        private bool IsMeta(char c){
+            foreach(var metaDicElm in metaDic){
+                if (c.ToString() == metaDicElm.Value){
                     return true;
-                } else {return false;}
+                }
             }
             return false;
         }
 
-
-        private void AddMetaElements(){
-
-        }
 
 
         /// <summary>
@@ -173,7 +182,7 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string with the name of an Ascii file</param>
         /// <returns></returns>
-        public EntityContainer<Entity> LoadLevel(string filename){
+        public EntityContainer<Block> LoadLevel(string filename){
             
             //clear the levelloader
             Reset();
