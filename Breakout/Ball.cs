@@ -12,11 +12,14 @@ namespace Breakout {
         private float Xvelocity;
         private float Yvelocity;
 
+        private bool moving;
+
         public Ball(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
             Shape = shape;
             Xvelocity = 0.05f;
             Yvelocity = 0.05f;
+            moving = false;
         }
 
         /// <summary>
@@ -32,6 +35,12 @@ namespace Breakout {
             }
             if (shape.Position.Y > 1.0f) {
                 Yvelocity = -Yvelocity;
+            }
+            
+            if (moving){
+                this.shape.Position.X = this.shape.Position.X + Xvelocity;
+                this.shape.Position.Y = this.shape.Position.X + Yvelocity;
+                this.shape.Position += new Vec2F(Xvelocity, Yvelocity);
             }
 
             Bounce(p, b);
@@ -95,8 +104,17 @@ namespace Breakout {
             }
         }
 
-        public void ProcessEvent(I){
-
+        public void ProcessEvent(GameEvent gameEvent){
+            System.Console.WriteLine("recieve");
+            if (gameEvent.EventType == GameEventType.InputEvent) { 
+                switch (gameEvent.Message) {  
+                    case "LAUNCH_BALL":
+                        moving = true;
+                        break;
+                    default:
+                        break;
+                }
+            } 
         }
 
 

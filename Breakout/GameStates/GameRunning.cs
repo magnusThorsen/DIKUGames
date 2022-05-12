@@ -47,6 +47,7 @@ namespace Breakout.BreakoutStates {
             ball = new Ball(
                 new DynamicShape(new Vec2F(0.48f, 0.05f), new Vec2F(0.05f, 0.05f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Breakout.BreakoutStates {
                         EventType = GameEventType.PlayerEvent, Message = "KeyPress", 
                         IntArg1 = (int) key
                     });
-                    
+
                     break;
                 case KeyboardKey.Left: 
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
@@ -128,6 +129,7 @@ namespace Breakout.BreakoutStates {
                     break;
 
                 case KeyboardKey.Space:
+                    System.Console.WriteLine("send");
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.InputEvent, 
                         Message = "LAUNCH_BALL"
