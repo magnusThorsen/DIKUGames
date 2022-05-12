@@ -49,6 +49,7 @@ namespace Breakout {
 
         public void ChangeImage() {
             Color = Color + "-block-damaged.png";
+            System.Console.WriteLine(Color);
             Image = new Image(Path.Combine("Assets","Images", Color));
         }
 
