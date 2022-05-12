@@ -30,13 +30,14 @@ Meta:
 Name: LEVEL 4
 Time: 180
 PowerUp: i
-Hardened: #
+Hardened: h
+Unbreakable: #
 Meta/
 
 Legend:
-h) green-block.png
 i) teal-block.png
 j) blue-block.png
 k) brown-block.png
 #) darkgreen-block.png
+h) grey-block.png
 Legend/

@@ -6,7 +6,7 @@ using DIKUArcade.Math;
 
 namespace Breakout {
     
-    public class UnbreakableBlock : Block, IGameEventProcessor {
+    public class UnbreakableBlock : Block {
 
         private int health; 
         private int value;
@@ -22,8 +22,6 @@ namespace Breakout {
         }
 
         public override void DecHealth () {
-            health--;
-            health++;
         }
 
         public override int GetValue() {
@@ -38,7 +36,7 @@ namespace Breakout {
             return shape.Position;
         }
 
-        public void ProcessEvent(GameEvent gameEvent){
+        public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();
             } 

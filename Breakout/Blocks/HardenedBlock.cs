@@ -6,7 +6,7 @@ using DIKUArcade.Math;
 
 namespace Breakout {
     
-    public class HardenedBlock : Block, IGameEventProcessor {
+    public class HardenedBlock : Block {
 
         private int startHealth;
         private int health; 
@@ -30,6 +30,9 @@ namespace Breakout {
             if (health < startHealth/2) {
                 ChangeImage();
             }
+            if (health == 0){
+                DeleteEntity();
+            }
         }
 
         public override int GetValue() {
@@ -49,7 +52,7 @@ namespace Breakout {
             Image = new Image(Path.Combine("Assets","Images", Color));
         }
 
-        public void ProcessEvent(GameEvent gameEvent){
+        public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();
             } 
