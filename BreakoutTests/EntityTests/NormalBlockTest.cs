@@ -11,25 +11,25 @@ using DIKUArcade;
 namespace BreakoutTests {
 
     [TestFixture]
-    public class BlockTest {
-        private Block block;
+    public class NormalBlockTest {
+        private NormalBlock block;
         private Shape shape;
         private Image image;
 
-        public BlockTest() {
+        public NormalBlockTest() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
-            block = new Block(shape, image);
+            block = new NormalBlock(shape, image);
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
 
         [SetUp]
-        public void InitiateBlock() {
+        public void InitiateNormalBlock() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
-            block = new Block(shape, image);
+            block = new NormalBlock(shape, image);
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
 
         }
@@ -49,5 +49,19 @@ namespace BreakoutTests {
             block.ProcessEvent(gameEvent);
             Assert.IsTrue(block.IsDeleted() == true);
         }
+
+        public void TestGetValue() {
+            Assert.IsTrue(block.GetValue() == 1);
+        }
+
+        public void TestSetValue() {
+            block.SetValue(4); 
+            Assert.IsTrue(block.GetValue() == 4);
+        }
+
+        public void TestGetPosition() {
+            Assert.IsTrue(block.GetPosition() == new Vec2F(0.5f, 0.5f));
+        }
+
     }
 }

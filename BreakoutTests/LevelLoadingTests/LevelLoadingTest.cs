@@ -37,10 +37,10 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestCorrectPosition(){
-        blocks = levelLoader.LoadLevel("../../../../Breakout/Assets/Levels/level1.txt");
+        blocks = levelLoader.LoadLevel("../../../../../../Breakout/Assets/Levels/level1.txt");
         var c = new Vec2F(0.5f,0.5f);
         var b = 1;
-        var a = new Block(new DynamicShape(new Vec2F(0.5f, 0.5f), 
+        var a = new NormalBlock(new DynamicShape(new Vec2F(0.5f, 0.5f), 
                                         new Vec2F(1.0f/12, (1.0f/12)/3f)),
                                         new Image(@"Assets/Images/blue-block.png"));;
         foreach(Block elm in blocks){
@@ -73,7 +73,7 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestMapFirstElm(){
-        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../Breakout/Assets/Levels/level1.txt");
+        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../../../Breakout/Assets/Levels/level1.txt");
         var b = 1;
         var a = ' ';
         foreach(char elm in levelLoader.map){
@@ -87,7 +87,7 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestMetaFirstElm(){
-        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../Breakout/Assets/Levels/level1.txt");
+        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../../../Breakout/Assets/Levels/level1.txt");
         var b = 1;
         var a = "";
         foreach(string elm in levelLoader.meta){
@@ -101,7 +101,7 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestLegendFirstElm(){
-        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../Breakout/Assets/Levels/level1.txt");
+        levelLoader.OnlyUsedForTestingPrivateReadAscii("../../../../../../Breakout/Assets/Levels/level1.txt");
         var b = 1;
         var a = "";
         foreach(string elm in levelLoader.legend){
