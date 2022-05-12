@@ -224,7 +224,7 @@ namespace Breakout.BreakoutStates {
             });
         }
 
-        
+
     }
 
 }

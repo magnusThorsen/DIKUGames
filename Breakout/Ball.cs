@@ -3,7 +3,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Physics;
-using System;
 
 namespace Breakout {
 
@@ -95,14 +94,12 @@ namespace Breakout {
                 this.shape, p.shape).Collision) {
 
                 if (shape.Position.X > p.GetPosition().X + (0.1)) {
-                    double newAngle = 2.617993878;
-                    shape.Direction.X = shape.Direction.X * (float)(Math.Cos(newAngle)) - shape.Direction.Y * (float)(Math.Sin(newAngle));
-                    shape.Direction.Y = shape.Direction.X * (float)(Math.Sin(newAngle)) + shape.Direction.Y * (float)(Math.Cos(newAngle));
+                    shape.Direction.X = 0.01f;
+                    shape.Direction.Y = 0.01f;
                 }
                 else if (shape.Position.X < p.GetPosition().X - (0.002)) {
-                    double newAngle = -2.617993878;
-                    shape.Direction.X = shape.Direction.X * (float)(Math.Cos(newAngle)) - shape.Direction.Y * (float)(Math.Sin(newAngle));
-                    shape.Direction.Y = shape.Direction.X * (float)(Math.Sin(newAngle)) + shape.Direction.Y * (float)(Math.Cos(newAngle));
+                    shape.Direction.X = -0.01f;
+                    shape.Direction.Y = 0.01f;
 
                 }
                 else {
