@@ -29,8 +29,12 @@ namespace Breakout {
         /// </summary>
         public override void DecHealth(){
             health--;
-            if (health == 0){
+            if (health <= 0){
                 DeleteEntity();
+
+
+
+
             }
         }
 

@@ -36,7 +36,7 @@ namespace Breakout {
                 shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(Xvelocity, Yvelocity);
             }
             if (!moving){
-                shape.Position = new Vec2F(p.shape.Position.X, p.shape.Position.Y+0.01f);
+                shape.Position = new Vec2F(p.shape.Position.X+0.055f, p.shape.Position.Y+0.01f);
             }
 
             Bounce(p, b);
