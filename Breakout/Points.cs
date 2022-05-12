@@ -1,7 +1,10 @@
-using DIKUArcade.Math;
+using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Events;
+using System.IO;
+using DIKUArcade.Math;
 
-public class Points {
+public class Points : IGameEventProcessor {
 
     private int points;
     private Text display;
@@ -15,7 +18,7 @@ public class Points {
         /// <summary>
         /// increments the point field.
         /// </summary>
-        public void AddPoints () {
+        public void AddPoints(string s) {
             points++;
         }
 
@@ -40,6 +43,12 @@ public class Points {
         /// <returns>the score field</returns>
         public int GetPoints() {
             return points;
+        }
+
+        public void ProcessEvent(GameEvent gameEvent){
+            if (gameEvent.EventType == GameEventType.GraphicsEvent) { 
+                AddPoints(gameEvent.Message);
+            } 
         }
 
 }
