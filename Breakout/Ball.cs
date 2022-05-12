@@ -66,19 +66,15 @@ namespace Breakout {
                             block.Shape).CollisionDir)) {
                         case CollisionDirection.CollisionDirUp:
                             shape.Direction.Y = -shape.Direction.Y;
-                            //Add random
                             break;
                         case CollisionDirection.CollisionDirDown:
                             shape.Direction.Y = -shape.Direction.Y;
-                            //Add random
                             break;
                         case CollisionDirection.CollisionDirLeft:
                             shape.Direction.X = -shape.Direction.X;
-                            //Add random
                             break;
                         case CollisionDirection.CollisionDirRight:
                             shape.Direction.X = -shape.Direction.X;
-                            //Add random
                             break;
                         case CollisionDirection.CollisionDirUnchecked:
                             break;
