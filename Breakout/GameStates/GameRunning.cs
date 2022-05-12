@@ -171,6 +171,8 @@ namespace Breakout.BreakoutStates {
         private void NewLevel(){
             if (blocks.CountEntities() <= 0) {
                 try{
+                    ball.Reset();
+                    player.Reset();
                     this.level++;
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
