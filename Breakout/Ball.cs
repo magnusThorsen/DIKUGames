@@ -17,9 +17,10 @@ namespace Breakout {
         public Ball(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
             Shape = shape;
-            Xvelocity = 0.05f;
-            Yvelocity = 0.05f;
+            Xvelocity = 0.0f;
+            Yvelocity = 0.005f;
             moving = false;
+
         }
 
         /// <summary>
@@ -30,17 +31,30 @@ namespace Breakout {
         }
 
         public void Move(Player p, EntityContainer<Block> b) {
-            if (shape.Position.X > 1.0f || shape.Position.X < 0.0f) {
+
+            if (shape.Position.Y < -0.05f){
+                BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.StatusEvent, 
+                            Message = "BallUnderPlayer",
+                        }
+                    );
+            }
+
+
+            if (shape.Position.X > 0.95f || shape.Position.X < 0.0f) {
                 Xvelocity = -Xvelocity;
             }
-            if (shape.Position.Y > 1.0f) {
+            if (shape.Position.Y > 0.95f) {
                 Yvelocity = -Yvelocity;
             }
+
             
             if (moving){
-                this.shape.Position.X = this.shape.Position.X + Xvelocity;
-                this.shape.Position.Y = this.shape.Position.X + Yvelocity;
-                this.shape.Position += new Vec2F(Xvelocity, Yvelocity);
+                shape.Position += new Vec2F(Xvelocity, Yvelocity);
+            }
+            if (!moving){
+                shape.Position = new Vec2F(p.shape.Position.X+0.06f, p.shape.Position.Y+0.02f);
             }
 
             Bounce(p, b);
@@ -65,31 +79,33 @@ namespace Breakout {
                             IntArg1 = block.GetValue()
                         }
                     );
-                }    
-
-                switch ((DIKUArcade.Physics.CollisionDetection.Aabb(
-                this.shape.AsDynamicShape(), block.Shape).CollisionDir)) {
-                    case CollisionDirection.CollisionDirUp:
-                        Yvelocity = -Yvelocity;
-                        break;
-                    case CollisionDirection.CollisionDirDown:
-                        Yvelocity = -Yvelocity;
-                        break;
-                    case CollisionDirection.CollisionDirLeft:
-                        Xvelocity = -Xvelocity;
-                        break;
-                    case CollisionDirection.CollisionDirRight:
-                        Xvelocity = -Xvelocity;
-                        break;
-                    case CollisionDirection.CollisionDirUnchecked:
-                        break;
+                  
+                 
+                    switch ((DIKUArcade.Physics.CollisionDetection.Aabb(
+                            this.shape.AsDynamicShape(), block.Shape).CollisionDir)) {
+                        case CollisionDirection.CollisionDirUp:
+                            Yvelocity = -Yvelocity;
+                            break;
+                        case CollisionDirection.CollisionDirDown:
+                            Yvelocity = -Yvelocity;
+                            break;
+                        case CollisionDirection.CollisionDirLeft:
+                            Xvelocity = -Xvelocity;
+                            break;
+                        case CollisionDirection.CollisionDirRight:
+                            Xvelocity = -Xvelocity;
+                            break;
+                        case CollisionDirection.CollisionDirUnchecked:
+                            break;
+                    }
                 }
             }
         }
 
+
         public void BouncePlayer(Player p) {          
             if (DIKUArcade.Physics.CollisionDetection.Aabb(
-            this.shape.AsDynamicShape(), p.shape).Collision) {
+                this.shape.AsDynamicShape(), p.shape).Collision) {
                 if (shape.Position == p.GetPosition()) {
                     Yvelocity = -Yvelocity;
                 }
@@ -105,7 +121,6 @@ namespace Breakout {
         }
 
         public void ProcessEvent(GameEvent gameEvent){
-            System.Console.WriteLine("recieve");
             if (gameEvent.EventType == GameEventType.InputEvent) { 
                 switch (gameEvent.Message) {  
                     case "LAUNCH_BALL":

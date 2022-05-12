@@ -9,13 +9,13 @@ using System.Collections.Generic;
 using System;
 
 namespace Breakout.BreakoutStates {
-    public class GameRunning : IGameState{
+    public class GameRunning : IGameState, IGameEventProcessor{
 
         private static GameRunning instance = null;
         private Player player{get;set;} 
         private LevelLoader levelLoader;
         private EntityContainer<Block> blocks {get; set;}
-        private bool gameOver;
+        public bool gameOver{get;set;}
         private int level;
         private Ball ball;
 
@@ -35,6 +35,7 @@ namespace Breakout.BreakoutStates {
         /// !!Games constructor, lav player osv.
         /// </summary>
         public void InitializeGameState() {
+            BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
             player = new Player( // player is instantiated with positions and image
                 new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
                 new Image(Path.Combine("Assets", "Images", "player.png")));
@@ -45,7 +46,7 @@ namespace Breakout.BreakoutStates {
             gameOver = false;
             level = 0;
             ball = new Ball(
-                new DynamicShape(new Vec2F(0.48f, 0.05f), new Vec2F(0.05f, 0.05f)),
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
         }
@@ -129,7 +130,6 @@ namespace Breakout.BreakoutStates {
                     break;
 
                 case KeyboardKey.Space:
-                    System.Console.WriteLine("send");
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.InputEvent, 
                         Message = "LAUNCH_BALL"
@@ -189,9 +189,30 @@ namespace Breakout.BreakoutStates {
         /// <summary>
         /// checks if the game is over. 
         /// </summary>
-        private void CheckGameOver() {
-            gameOver = false;
+        private bool CheckGameOver() {
+            return gameOver;
         }
+
+
+        public void ProcessEvent(GameEvent gameEvent){
+            if (gameEvent.EventType == GameEventType.StatusEvent) { 
+                    switch (gameEvent.Message) {  
+                        case "BallUnderPlayer":
+                            BreakoutBus.GetBus().RegisterEvent(
+                                new GameEvent{
+                                    EventType = GameEventType.GameStateEvent, 
+                                    Message = "CHANGE_STATE",
+                                    StringArg1 = "MAIN_MENU"
+                                }
+                            );
+                            break;
+                        default:
+                            break;
+                    }
+                }
+        }
+
+
 
     }
 
