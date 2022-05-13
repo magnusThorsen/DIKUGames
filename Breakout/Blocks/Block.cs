@@ -8,8 +8,8 @@ namespace Breakout {
     public abstract class Block : Entity, IGameEventProcessor {
 
         public Shape shape;
-        private int health; 
-        private int value;
+        //private int health; 
+        //private int value;
 
         public Block(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;

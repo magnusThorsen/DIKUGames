@@ -175,7 +175,7 @@ namespace Breakout.BreakoutStates {
         /// Creates a batch of blocks if the entitylist blocks is empty.
         /// </summary>
         private void NewLevel(){
-            if (blocks.CountEntities() <= 0) {
+            if (blocks.CountEntities() <= 0 || OnlyUnbreakBlocks()) {
                 try{
                     ball.Reset();
                     player.Reset();
@@ -233,6 +233,19 @@ namespace Breakout.BreakoutStates {
                     block.DeleteEntity();
                 }
             });
+        }
+
+
+        private bool OnlyUnbreakBlocks(){
+            bool onlyUnbreakBlocks = true;
+            foreach(Block block in blocks) {
+                if (block is not UnbreakableBlock){
+                    onlyUnbreakBlocks = false;
+                }
+            }
+            return onlyUnbreakBlocks;
+
+
         }
 
 

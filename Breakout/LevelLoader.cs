@@ -46,12 +46,6 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
-            /*try{
-            }
-            catch (FileNotFoundException ex){
-                System.Console.WriteLine("In ReadAscii:" + ex);
-            }*/
-
             string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
                 
                 //Adding Map section to map
@@ -94,8 +88,6 @@ namespace Breakout {
                 IncXnY();
             }
         }
-
-
 
 
         private void AddMetaElement(char c) {
