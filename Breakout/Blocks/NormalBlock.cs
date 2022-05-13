@@ -62,9 +62,9 @@ namespace Breakout {
         }
 
         /// <summary>
-        /// processes all GameEvents in the bus.
+        /// processes a gameEvent
         /// </summary>
-        /// <param name="gameEvent"></param>
+        /// <param name="gameEvent">the gameEvent to process</param>
         public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();

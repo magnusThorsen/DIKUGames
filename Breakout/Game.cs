@@ -80,7 +80,7 @@ namespace Breakout {
         /// <summary>
         /// Processes all events in the bus and responds accordingly.
         /// </summary>
-        /// <param name="gameEvent"></param>
+        /// <param name="gameEvent">the gamEvent to process</param>
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.EventType == GameEventType.InputEvent) { //Checks if it a InputEvent
                 switch (gameEvent.Message) { //switches on message, only does something with 
