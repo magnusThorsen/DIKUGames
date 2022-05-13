@@ -14,11 +14,11 @@ namespace BreakoutTests {
     [TestFixture]
     public class TestGamePaused {
         private StateMachine stateMachine;
-        private MainMenu mainMenu;
+        private GamePaused gamePaused;
         public TestGamePaused() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             stateMachine = new StateMachine();
-            GamePaused = new GamePaused();
+            gamePaused = new GamePaused();
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
     }
