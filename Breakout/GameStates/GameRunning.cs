@@ -6,7 +6,7 @@ using System.IO;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using System.Collections.Generic;
-using System;
+using Breakout;
 
 namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState, IGameEventProcessor{
