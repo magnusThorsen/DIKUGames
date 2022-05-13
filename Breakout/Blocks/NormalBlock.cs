@@ -45,15 +45,26 @@ namespace Breakout {
             return value;
         }
 
+        /// <summary>
+        /// Sets the vakue to amount.
+        /// </summary>
+        /// <param name="amount">what to set value to</param>
         public override void SetValue(int amount) {
             value = amount;
         }
 
+        /// <summary>
+        /// Returns the position of the shape of the block.
+        /// </summary>
+        /// <returns></returns>
         public override Vec2F GetPosition() {
             return shape.Position;
         }
 
-
+        /// <summary>
+        /// processes all GameEvents in the bus.
+        /// </summary>
+        /// <param name="gameEvent"></param>
         public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();

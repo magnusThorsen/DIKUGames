@@ -45,6 +45,10 @@ public class Points : IGameEventProcessor {
             return points;
         }
 
+        /// <summary>
+        /// Processes all Event sin the gameeventbus
+        /// </summary>
+        /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.GraphicsEvent) { 
                 AddPoints(gameEvent.IntArg1);

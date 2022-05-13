@@ -72,7 +72,9 @@ namespace Breakout.BreakoutStates {
             }
         }
 
-
+        /// <summary>
+        /// Fils the dictionary
+        /// </summary>
         private void FillStateTypeToBreakoutStatesDic(){
             int i = 0;
             foreach (IGameState state in gameStates){

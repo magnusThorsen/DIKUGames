@@ -5,7 +5,6 @@ using DIKUArcade.Input;
 using System.IO;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
-using System.Collections.Generic;
 using Breakout;
 
 namespace Breakout.BreakoutStates {
@@ -94,7 +93,11 @@ namespace Breakout.BreakoutStates {
         }
 
 
-
+        /// <summary>
+        /// Delegates the KeyEvents to the PressKey() or ReleaseKey()
+        /// </summary>
+        /// <param name="action"> the action performed </param>
+        /// <param name="key">the key pressed</param>
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             switch (action) {
                 case KeyboardAction.KeyPress:
@@ -107,7 +110,10 @@ namespace Breakout.BreakoutStates {
             }  
         }
         
-
+        /// <summary>
+        /// Creates the relevant GameEvents.
+        /// </summary>
+        /// <param name="key">the key switch with</param>
         private void KeyPress(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Escape: 
@@ -150,7 +156,10 @@ namespace Breakout.BreakoutStates {
             }
         }  
 
-
+        /// <summary>
+        /// Creates the relevant GameEvents.
+        /// </summary>
+        /// <param name="key">the key released</param>
         private void KeyRelease(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Right:
@@ -207,6 +216,10 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        /// <summary>
+        /// Processes all events in the EventBus, but only matches on relevant.
+        /// </summary>
+        /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
@@ -227,6 +240,9 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        /// <summary>
+        /// removes all deleted Blocks in block.
+        /// </summary>
         private void RemoveDeletedBlocks(){
             blocks.Iterate(block => {
                 if (block.IsDeleted()){
@@ -235,7 +251,10 @@ namespace Breakout.BreakoutStates {
             });
         }
 
-
+        /// <summary>
+        /// Checks if there are onl unbreakable blocks in blocks
+        /// </summary>
+        /// <returns></returns>
         private bool OnlyUnbreakBlocks(){
             bool onlyUnbreakBlocks = true;
             foreach(Block block in blocks) {

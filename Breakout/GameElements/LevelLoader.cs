@@ -90,7 +90,10 @@ namespace Breakout {
             }
         }
 
-
+        /// <summary>
+        /// Adds a metaelent
+        /// </summary>
+        /// <param name="c">the char to decide what legend.key to use</param>
         private void AddMetaElement(char c) {
             foreach (var legendElm in legendStringDic){
                 foreach(var metaElm in metaDic){
@@ -124,7 +127,10 @@ namespace Breakout {
             }
         }
 
-
+        /// <summary>
+        /// Adds the normal blocks
+        /// </summary>
+        /// <param name="charElm">the char to chek with the LegegendImageDic elm.Key with.</param>
         private void AddNormalBlock(char charElm){
             foreach (var elm in legendImageDic){
                         if (charElm == elm.Key) {
@@ -190,8 +196,9 @@ namespace Breakout {
         } 
 
 
-
-
+        /// <summary>
+        /// Fills the metaDic
+        /// </summary>
         private void FillMetaDic(){
             foreach (string elm in meta){
                 int IndexOfSplit = elm.IndexOf(":");
@@ -206,7 +213,9 @@ namespace Breakout {
         }
 
 
-
+        /// <summary>
+        /// Fills the legend dics
+        /// </summary>
         private void FillLegendDics(){
             foreach (string elm in legend){
                 char key = elm[0];
@@ -221,6 +230,9 @@ namespace Breakout {
         }
 
 
+        /// <summary>
+        /// Resets the LevelLoader
+        /// </summary>
         private void Reset(){
             map.Clear();
             meta.Clear();

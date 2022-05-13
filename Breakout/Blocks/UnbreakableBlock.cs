@@ -17,25 +17,48 @@ namespace Breakout {
             value = 1;
         }
 
+        /// <summary>
+        /// Returns the health of the block.
+        /// </summary>
+        /// <returns> int health field</returns>
         public override int GetHealth() {
             return health;
         }
 
+        /// <summary>
+        /// Does nothing, because unbreakable blocks cannot loose health.
+        /// </summary>
         public override void DecHealth () {
         }
 
+        /// <summary>
+        /// Returns the value field.
+        /// </summary>
+        /// <returns></returns>
         public override int GetValue() {
             return value;
         }
 
+        /// <summary>
+        /// sets the value field to amount.
+        /// </summary>
+        /// <param name="amount">what to set value field to</param>
         public override void SetValue(int amount) {
             value = amount;
         }
 
+        /// <summary>
+        /// gets the position of the shape of the Block
+        /// </summary>
+        /// <returns></returns>
         public override Vec2F GetPosition() {
             return shape.Position;
         }
 
+        /// <summary>
+        /// Processes all GameEvents in the bus.
+        /// </summary>
+        /// <param name="gameEvent"></param>
         public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();
