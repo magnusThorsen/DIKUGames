@@ -73,8 +73,8 @@ namespace Breakout.BreakoutStates {
         public void UpdateState() {
             player.Move();
             ball.Move(player, blocks);
-            NewLevel();
             RemoveDeletedBlocks();
+            NewLevel();
             if(gameOver){
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.StatusEvent, Message = "GameOver", 
