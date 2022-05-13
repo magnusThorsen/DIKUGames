@@ -80,6 +80,7 @@ namespace Breakout {
         /// </summary>
         private void AddBlocks(){
             foreach (char charElm in map){
+                currBlockValue++;
                 if (IsMeta(charElm)) {
                     AddMetaElement(charElm);
                 } else {
@@ -102,10 +103,8 @@ namespace Breakout {
                             new Vec2F(1.0f/12, (1.0f/12)/3f)),
                             new Image(Path.Combine("Assets", "Images", legendElm.Value)),
                             textPart);
-
                         newBlock.SetValue(currBlockValue);
                         Blocks.AddEntity(newBlock);
-                        currBlockValue++;
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
 
@@ -119,7 +118,6 @@ namespace Breakout {
                     
                         newBlock.SetValue(currBlockValue);
                         Blocks.AddEntity(newBlock);
-                        currBlockValue++;
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
                 }
@@ -137,7 +135,6 @@ namespace Breakout {
                                             elm.Value);
                             newBlock.SetValue(currBlockValue);
                             Blocks.AddEntity(newBlock);
-                            currBlockValue++;
                             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                         }   
                     }
@@ -233,7 +230,7 @@ namespace Breakout {
             legendStringDic.Clear();
             x = 0;
             y = 0;
-            currBlockValue = 0;
+            //currBlockValue = 0;
         }
 
 

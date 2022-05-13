@@ -176,7 +176,7 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         private void NewLevel(){
             if (blocks.CountEntities() <= 0 || OnlyUnbreakBlocks()) {
-                try{
+                try{                    
                     ball.Reset();
                     player.Reset();
                     this.level++;
