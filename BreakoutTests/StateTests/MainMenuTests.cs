@@ -36,13 +36,5 @@ namespace BreakoutTests {
             stateMachine.SwitchState(GameStateType.MainMenu);
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
         }
-
-        [Test]
-        public void TestHandleKeyEvent() {
-            stateMachine.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
-            BreakoutBus.GetBus().ProcessEventsSequentially(); 
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
-        }
-
     }
 }
