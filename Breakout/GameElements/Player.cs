@@ -11,6 +11,7 @@ namespace Breakout {
         private float moveLeft; 
         private float moveRight;
         private const float MOVEMENT_SPEED = 0.02f;
+        private int life;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -18,6 +19,7 @@ namespace Breakout {
             moveRight = 0.0f; 
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
+            life = 3;
         }
 
         /// <summary>
@@ -96,6 +98,9 @@ namespace Breakout {
                     case "KeyRelease":
                         KeyRelease((KeyboardKey)gameEvent.IntArg1);
                         break;
+                    case "BallOutOfBounds":
+
+                        break;
                     default:
                         break;
                 }
@@ -141,6 +146,18 @@ namespace Breakout {
         public void Reset(){
             shape.Position = new Vec2F(0.425f, 0.03f);
         }
+
+
+        public void DecLife(){
+            life--;
+        }
+
+        public void IncLife(){
+            life++;
+        }
+
+
+
 
     }
 }

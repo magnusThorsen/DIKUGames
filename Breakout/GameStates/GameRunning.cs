@@ -19,6 +19,8 @@ namespace Breakout.BreakoutStates {
         private Ball ball;
         
         private Points points;
+        private EntityContainer<Ball> balls;
+        private int maxBalls;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -52,6 +54,9 @@ namespace Breakout.BreakoutStates {
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
             points = new Points(new Vec2F(0.8f,0.5f), new Vec2F(0.5f,0.5f));
             BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
+            maxBalls = 10;
+            balls = new EntityContainer<Ball>(maxBalls);
+            balls.AddEntity(ball);
         }
 
         /// <summary>
@@ -72,13 +77,9 @@ namespace Breakout.BreakoutStates {
         public void UpdateState() {
             player.Move();
             ball.Move(player, blocks);
-            RemoveDeletedBlocks();
+            RemoveDeletedEntities();
             NewLevel();
-            if(gameOver){
-                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.StatusEvent, Message = "GameOver", 
-                    });
-            }
+            CheckGameOver();
         }
 
 
@@ -150,7 +151,6 @@ namespace Breakout.BreakoutStates {
                         Message = "LAUNCH_BALL"
                     });
                     break;
-
                 default:
                     break;
             }
@@ -192,7 +192,7 @@ namespace Breakout.BreakoutStates {
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
                 }
-                catch{
+                catch{ //catches no more levels, and as such ends the game, This is where winning screen should be.
                     ResetState();
                     ball.Reset();
                     player.Reset();
@@ -211,8 +211,12 @@ namespace Breakout.BreakoutStates {
         /// <summary>
         /// checks if the game is over. 
         /// </summary>
-        private bool CheckGameOver() {
-            return gameOver;
+        private void CheckGameOver() {
+            if(gameOver){
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "GameOver", 
+                    });
+            }
         }
 
 
@@ -221,9 +225,10 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
+            /*
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
-                        case "BallUnderPlayer":
+                        case "BallOutOfBounds":
                             ResetState();
                             BreakoutBus.GetBus().RegisterEvent(
                                 new GameEvent{
@@ -237,19 +242,32 @@ namespace Breakout.BreakoutStates {
                             break;
                     }
                 }
+                */
         }
 
 
         /// <summary>
         /// removes all deleted Blocks in block.
         /// </summary>
-        private void RemoveDeletedBlocks(){
+        private void RemoveDeletedEntities(){
+            //deletes all blocks that are deleted
             blocks.Iterate(block => {
                 if (block.IsDeleted()){
                     block.DeleteEntity();
                 }
             });
+            //deletes all balls that are deleted
+            balls.Iterate(ball => {
+                if (ball.IsDeleted()){
+                    ball.DeleteEntity();
+                }
+            });
+            //checks if no more balls = GameOver
+            if (balls.CountEntities() <= 0) {
+                gameOver = true;
+            }
         }
+
 
         /// <summary>
         /// Checks if there are onl unbreakable blocks in blocks
@@ -263,10 +281,18 @@ namespace Breakout.BreakoutStates {
                 }
             }
             return onlyUnbreakBlocks;
-
-
         }
 
+
+
+        private void Createball(){
+            ball = new Ball(
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
+
+            
+        }
 
     }
 

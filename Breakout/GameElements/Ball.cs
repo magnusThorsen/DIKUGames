@@ -128,12 +128,6 @@ namespace Breakout {
             if (shape.Position.Y < -0.05f){
                 DeleteEntity();
                 moving = false;
-                BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
-                            EventType = GameEventType.StatusEvent, 
-                            Message = "BallUnderPlayer",
-                        }
-                    );
             }
             if (shape.Position.X > 0.95f || shape.Position.X < 0.0f) {
                 shape.Direction.X = -shape.Direction.X;
@@ -145,9 +139,9 @@ namespace Breakout {
 
 
         /// <summary>
-        /// Processes all the events in the Bus.
+        /// processes a gameEvent
         /// </summary>
-        /// <param name="gameEvent"></param>
+        /// <param name="gameEvent">the gameEvent to process</param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent) { 
                 switch (gameEvent.Message) {  
