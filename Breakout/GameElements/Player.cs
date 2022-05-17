@@ -160,11 +160,11 @@ namespace Breakout {
         }
 
         public void IncWidth() {
-
+            this.shape.ScaleX(2.0f);
         }
 
         public void DecWidth() {
-            
+            this.shape.ScaleX(0.5f);
         }
     }
 }
