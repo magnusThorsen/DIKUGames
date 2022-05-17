@@ -19,7 +19,7 @@ namespace Breakout {
             moveRight = 0.0f; 
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
-            life = 3;
+            life = 1;
         }
 
         /// <summary>
@@ -102,6 +102,7 @@ namespace Breakout {
                         IncLife();
                         break;
                     case "DecLife":
+                        System.Console.WriteLine("player dec life");
                         DecLife();
                         break;
                     default:
@@ -153,6 +154,15 @@ namespace Breakout {
 
         public void DecLife(){
             life--;
+            if (life <= 0){
+                BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.StatusEvent, 
+                            Message = "PlayerDead"
+                        }
+                    );              
+            }
+
         }
 
         public void IncLife(){

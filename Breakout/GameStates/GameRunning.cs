@@ -8,7 +8,7 @@ using DIKUArcade.Events;
 using Breakout;
 
 namespace Breakout.BreakoutStates {
-    public class GameRunning : IGameState {
+    public class GameRunning : IGameState, IGameEventProcessor {
 
         private static GameRunning instance = null;
         private Player player{get;set;} 
@@ -38,7 +38,7 @@ namespace Breakout.BreakoutStates {
         /// !!Games constructor, lav player osv.
         /// </summary>
         public void InitializeGameState() {
-            //BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
+            BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
             player = new Player( // player is instantiated with positions and image
                 new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
                 new Image(Path.Combine("Assets", "Images", "player.png")));
@@ -200,13 +200,7 @@ namespace Breakout.BreakoutStates {
                     ResetState();
                     ResetBalls();
                     player.Reset();
-                    BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
-                            EventType = GameEventType.GameStateEvent, 
-                            Message = "CHANGE_STATE",
-                            StringArg1 = "MAIN_MENU"
-                        }
-                    );
+                    GameLost();
                 }
             
             }
@@ -217,18 +211,13 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         private void CheckGameOver() {
             if (balls.CountEntities() <= 0) {
-                gameOver = true;
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.PlayerEvent, Message = "DecLife"
+                    });
             }
-
             if(gameOver){
                 ResetState();
-                BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
-                            EventType = GameEventType.GameStateEvent, 
-                            Message = "CHANGE_STATE",
-                            StringArg1 = "MAIN_MENU"
-                        }
-                    );
+                GameLost();
             }
         }
 
@@ -238,24 +227,16 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
-            /*
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
-                        case "BallOutOfBounds":
+                        case "PlayerDead":
                             ResetState();
-                            BreakoutBus.GetBus().RegisterEvent(
-                                new GameEvent{
-                                    EventType = GameEventType.GameStateEvent, 
-                                    Message = "CHANGE_STATE",
-                                    StringArg1 = "MAIN_MENU"
-                                }
-                            );
+                            GameLost();
                             break;
                         default:
                             break;
                     }
                 }
-                */
         }
 
 
@@ -275,7 +256,6 @@ namespace Breakout.BreakoutStates {
                     ball.DeleteEntity();
                 }
             });
-            //checks if no more balls = GameOver
         }
 
 
@@ -316,6 +296,15 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        private void GameLost(){
+            BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.GameStateEvent, 
+                            Message = "CHANGE_STATE",
+                            StringArg1 = "MAIN_MENU"
+                        }
+            );
+        }
 
     }
 
