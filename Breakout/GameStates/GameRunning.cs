@@ -122,13 +122,7 @@ namespace Breakout.BreakoutStates {
         private void KeyPress(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Escape: 
-                    BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
-                            EventType = GameEventType.GameStateEvent, 
-                            Message = "CHANGE_STATE",
-                            StringArg1 = "GAME_PAUSED"
-                        }
-                    );
+                    GamePaused();
                     break;
                 case KeyboardKey.Right:
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
@@ -200,7 +194,7 @@ namespace Breakout.BreakoutStates {
                     ResetState();
                     ResetBalls();
                     player.Reset();
-                    GameLost();
+                    GameWon();
                 }
             
             }
@@ -216,7 +210,6 @@ namespace Breakout.BreakoutStates {
                     });
             }
             if(gameOver){
-                ResetState();
                 GameLost();
             }
         }
@@ -230,7 +223,6 @@ namespace Breakout.BreakoutStates {
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
                         case "PlayerDead":
-                            ResetState();
                             GameLost();
                             break;
                         default:
@@ -297,6 +289,7 @@ namespace Breakout.BreakoutStates {
 
 
         private void GameLost(){
+            ResetState();
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
@@ -305,6 +298,29 @@ namespace Breakout.BreakoutStates {
                         }
             );
         }
+
+
+        private void GameWon(){
+            ResetState();
+            BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.GameStateEvent, 
+                            Message = "CHANGE_STATE",
+                            StringArg1 = "MAIN_MENU"
+                        }
+            );
+        }
+
+        private void GamePaused(){
+            BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.GameStateEvent, 
+                            Message = "CHANGE_STATE",
+                            StringArg1 = "GAME_PAUSED"
+                        }
+            );
+        }
+
 
     }
 
