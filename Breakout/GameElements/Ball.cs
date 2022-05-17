@@ -126,6 +126,12 @@ namespace Breakout {
         /// </summary>
         private void BounceWall(){
             if (shape.Position.Y < -0.05f){
+                BreakoutBus.GetBus().RegisterEvent(
+                            new GameEvent{
+                                EventType = GameEventType.InputEvent, 
+                                Message = "DecLife"
+                            }
+                );
                 DeleteEntity();
                 moving = false;
             }

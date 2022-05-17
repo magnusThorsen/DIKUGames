@@ -8,7 +8,7 @@ using DIKUArcade.Events;
 using Breakout;
 
 namespace Breakout.BreakoutStates {
-    public class GameRunning : IGameState, IGameEventProcessor{
+    public class GameRunning : IGameState {
 
         private static GameRunning instance = null;
         private Player player{get;set;} 
@@ -16,7 +16,7 @@ namespace Breakout.BreakoutStates {
         private EntityContainer<Block> blocks {get; set;}
         public bool gameOver{get;set;}
         private int level;
-        private Ball ball;
+        //private Ball ball;
         
         private Points points;
         private EntityContainer<Ball> balls;
@@ -38,7 +38,7 @@ namespace Breakout.BreakoutStates {
         /// !!Games constructor, lav player osv.
         /// </summary>
         public void InitializeGameState() {
-            BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
+            //BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
             player = new Player( // player is instantiated with positions and image
                 new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
                 new Image(Path.Combine("Assets", "Images", "player.png")));
@@ -48,15 +48,17 @@ namespace Breakout.BreakoutStates {
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;
-            ball = new Ball(
-                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
-                new Image(Path.Combine("Assets", "Images", "ball2.png")));
-            BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
             points = new Points(new Vec2F(0.8f,0.5f), new Vec2F(0.5f,0.5f));
             BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
             maxBalls = 10;
+            //ball = new Ball(
+            //    new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+            //    new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            //BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
+            maxBalls = 10;
             balls = new EntityContainer<Ball>(maxBalls);
-            balls.AddEntity(ball);
+            balls.AddEntity(CreateBall());
+            
         }
 
         /// <summary>
@@ -67,8 +69,10 @@ namespace Breakout.BreakoutStates {
             this.level = 0;
             gameOver = false;
             player.Reset();
-            ball.Reset();
+            ResetBalls();
             points.ResetPoints();
+            System.Console.WriteLine("reset");
+            balls.AddEntity(CreateBall());
         }
 
         /// <summary>
@@ -76,10 +80,10 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void UpdateState() {
             player.Move();
-            ball.Move(player, blocks);
+            MoveBalls();
             RemoveDeletedEntities();
-            NewLevel();
             CheckGameOver();
+            NewLevel();
         }
 
 
@@ -89,7 +93,7 @@ namespace Breakout.BreakoutStates {
         public void RenderState() {
             player.Render();
             blocks.RenderEntities();
-            ball.Render();
+            balls.RenderEntities();
             points.RenderPoints();
         }
 
@@ -186,7 +190,7 @@ namespace Breakout.BreakoutStates {
         private void NewLevel(){
             if (blocks.CountEntities() <= 0 || OnlyUnbreakBlocks()) {
                 try{                    
-                    ball.Reset();
+                    ResetBalls();
                     player.Reset();
                     this.level++;
                     string levelstring = "level" + this.level + ".txt";
@@ -194,7 +198,7 @@ namespace Breakout.BreakoutStates {
                 }
                 catch{ //catches no more levels, and as such ends the game, This is where winning screen should be.
                     ResetState();
-                    ball.Reset();
+                    ResetBalls();
                     player.Reset();
                     BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
@@ -212,10 +216,19 @@ namespace Breakout.BreakoutStates {
         /// checks if the game is over. 
         /// </summary>
         private void CheckGameOver() {
+            if (balls.CountEntities() <= 0) {
+                gameOver = true;
+            }
+
             if(gameOver){
-                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.StatusEvent, Message = "GameOver", 
-                    });
+                ResetState();
+                BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.GameStateEvent, 
+                            Message = "CHANGE_STATE",
+                            StringArg1 = "MAIN_MENU"
+                        }
+                    );
             }
         }
 
@@ -263,9 +276,6 @@ namespace Breakout.BreakoutStates {
                 }
             });
             //checks if no more balls = GameOver
-            if (balls.CountEntities() <= 0) {
-                gameOver = true;
-            }
         }
 
 
@@ -282,17 +292,30 @@ namespace Breakout.BreakoutStates {
             }
             return onlyUnbreakBlocks;
         }
-
-
-
-        private void Createball(){
-            ball = new Ball(
+    
+        public Ball CreateBall(){
+            Ball ball = new Ball(
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
-
-            
+            return ball;
         }
+
+
+        private void MoveBalls(){
+            foreach (Ball ball in balls){
+                ball.Move(player, blocks);
+            }
+        }
+
+        private void ResetBalls(){
+            foreach (Ball ball in balls){
+                ball.DeleteEntity();
+            }
+            balls.AddEntity(CreateBall());
+        }
+
+
 
     }
 
