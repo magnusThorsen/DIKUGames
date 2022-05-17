@@ -105,6 +105,12 @@ namespace Breakout {
                         System.Console.WriteLine("player dec life");
                         DecLife();
                         break;
+                    case "IncWidth":
+                        IncWidth();
+                        break;
+                    case "DecWidth":
+                        DecWidth();
+                        break;
                     default:
                         break;
                 }

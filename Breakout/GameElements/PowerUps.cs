@@ -20,7 +20,7 @@ namespace Breakout {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
                     EventType = GameEventType.PlayerEvent,
-                    Message = "WidePowerUp"
+                    Message = "IncWidth"
             });
         }
     }
