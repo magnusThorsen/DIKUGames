@@ -135,8 +135,11 @@ namespace Breakout {
             } 
         }
 
+        /// <summary>
+        /// Resets the player
+        /// </summary>
         public void Reset(){
-            
+            shape.Position = new Vec2F(0.425f, 0.03f);
         }
 
     }

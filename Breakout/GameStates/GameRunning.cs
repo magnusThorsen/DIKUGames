@@ -5,8 +5,7 @@ using DIKUArcade.Input;
 using System.IO;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
-using System.Collections.Generic;
-using System;
+using Breakout;
 
 namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState, IGameEventProcessor{
@@ -18,6 +17,8 @@ namespace Breakout.BreakoutStates {
         public bool gameOver{get;set;}
         private int level;
         private Ball ball;
+        
+        private Points points;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -49,6 +50,8 @@ namespace Breakout.BreakoutStates {
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
+            points = new Points(new Vec2F(0.8f,0.5f), new Vec2F(0.5f,0.5f));
+            BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
         }
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace Breakout.BreakoutStates {
             gameOver = false;
             player.Reset();
             ball.Reset();
+            points.ResetPoints();
         }
 
         /// <summary>
@@ -68,8 +72,8 @@ namespace Breakout.BreakoutStates {
         public void UpdateState() {
             player.Move();
             ball.Move(player, blocks);
-            NewLevel();
             RemoveDeletedBlocks();
+            NewLevel();
             if(gameOver){
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.StatusEvent, Message = "GameOver", 
@@ -85,10 +89,15 @@ namespace Breakout.BreakoutStates {
             player.Render();
             blocks.RenderEntities();
             ball.Render();
+            points.RenderPoints();
         }
 
 
-
+        /// <summary>
+        /// Delegates the KeyEvents to the PressKey() or ReleaseKey()
+        /// </summary>
+        /// <param name="action"> the action performed </param>
+        /// <param name="key">the key pressed</param>
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             switch (action) {
                 case KeyboardAction.KeyPress:
@@ -101,7 +110,10 @@ namespace Breakout.BreakoutStates {
             }  
         }
         
-
+        /// <summary>
+        /// Creates the relevant GameEvents.
+        /// </summary>
+        /// <param name="key">the key switch with</param>
         private void KeyPress(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Escape: 
@@ -144,7 +156,10 @@ namespace Breakout.BreakoutStates {
             }
         }  
 
-
+        /// <summary>
+        /// Creates the relevant GameEvents.
+        /// </summary>
+        /// <param name="key">the key released</param>
         private void KeyRelease(KeyboardKey key) {
             switch (key) {
                 case KeyboardKey.Right:
@@ -169,14 +184,18 @@ namespace Breakout.BreakoutStates {
         /// Creates a batch of blocks if the entitylist blocks is empty.
         /// </summary>
         private void NewLevel(){
-            if (blocks.CountEntities() <= 0) {
-                try{
+            if (blocks.CountEntities() <= 0 || OnlyUnbreakBlocks()) {
+                try{                    
+                    ball.Reset();
+                    player.Reset();
                     this.level++;
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
                 }
                 catch{
                     ResetState();
+                    ball.Reset();
+                    player.Reset();
                     BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
@@ -197,10 +216,15 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        /// <summary>
+        /// Processes all events in the EventBus, but only matches on relevant.
+        /// </summary>
+        /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
                     switch (gameEvent.Message) {  
                         case "BallUnderPlayer":
+                            ResetState();
                             BreakoutBus.GetBus().RegisterEvent(
                                 new GameEvent{
                                     EventType = GameEventType.GameStateEvent, 
@@ -216,12 +240,31 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        /// <summary>
+        /// removes all deleted Blocks in block.
+        /// </summary>
         private void RemoveDeletedBlocks(){
             blocks.Iterate(block => {
                 if (block.IsDeleted()){
                     block.DeleteEntity();
                 }
             });
+        }
+
+        /// <summary>
+        /// Checks if there are onl unbreakable blocks in blocks
+        /// </summary>
+        /// <returns></returns>
+        private bool OnlyUnbreakBlocks(){
+            bool onlyUnbreakBlocks = true;
+            foreach(Block block in blocks) {
+                if (block is not UnbreakableBlock){
+                    onlyUnbreakBlocks = false;
+                }
+            }
+            return onlyUnbreakBlocks;
+
+
         }
 
 

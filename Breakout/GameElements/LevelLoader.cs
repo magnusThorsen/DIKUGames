@@ -46,12 +46,6 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
-            /*try{
-            }
-            catch (FileNotFoundException ex){
-                System.Console.WriteLine("In ReadAscii:" + ex);
-            }*/
-
             string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
                 
                 //Adding Map section to map
@@ -86,6 +80,7 @@ namespace Breakout {
         /// </summary>
         private void AddBlocks(){
             foreach (char charElm in map){
+                currBlockValue++;
                 if (IsMeta(charElm)) {
                     AddMetaElement(charElm);
                 } else {
@@ -95,9 +90,10 @@ namespace Breakout {
             }
         }
 
-
-
-
+        /// <summary>
+        /// Adds a metaelent
+        /// </summary>
+        /// <param name="c">the char to decide what legend.key to use</param>
         private void AddMetaElement(char c) {
             foreach (var legendElm in legendStringDic){
                 foreach(var metaElm in metaDic){
@@ -110,10 +106,8 @@ namespace Breakout {
                             new Vec2F(1.0f/12, (1.0f/12)/3f)),
                             new Image(Path.Combine("Assets", "Images", legendElm.Value)),
                             textPart);
-
                         newBlock.SetValue(currBlockValue);
                         Blocks.AddEntity(newBlock);
-                        currBlockValue++;
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
 
@@ -127,14 +121,16 @@ namespace Breakout {
                     
                         newBlock.SetValue(currBlockValue);
                         Blocks.AddEntity(newBlock);
-                        currBlockValue++;
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
                 }
             }
         }
 
-
+        /// <summary>
+        /// Adds the normal blocks
+        /// </summary>
+        /// <param name="charElm">the char to chek with the LegegendImageDic elm.Key with.</param>
         private void AddNormalBlock(char charElm){
             foreach (var elm in legendImageDic){
                         if (charElm == elm.Key) {
@@ -145,7 +141,6 @@ namespace Breakout {
                                             elm.Value);
                             newBlock.SetValue(currBlockValue);
                             Blocks.AddEntity(newBlock);
-                            currBlockValue++;
                             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                         }   
                     }
@@ -201,8 +196,9 @@ namespace Breakout {
         } 
 
 
-
-
+        /// <summary>
+        /// Fills the metaDic
+        /// </summary>
         private void FillMetaDic(){
             foreach (string elm in meta){
                 int IndexOfSplit = elm.IndexOf(":");
@@ -217,7 +213,9 @@ namespace Breakout {
         }
 
 
-
+        /// <summary>
+        /// Fills the legend dics
+        /// </summary>
         private void FillLegendDics(){
             foreach (string elm in legend){
                 char key = elm[0];
@@ -232,6 +230,9 @@ namespace Breakout {
         }
 
 
+        /// <summary>
+        /// Resets the LevelLoader
+        /// </summary>
         private void Reset(){
             map.Clear();
             meta.Clear();
@@ -241,7 +242,7 @@ namespace Breakout {
             legendStringDic.Clear();
             x = 0;
             y = 0;
-            currBlockValue = 0;
+            //currBlockValue = 0;
         }
 
 

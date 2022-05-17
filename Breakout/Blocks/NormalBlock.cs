@@ -29,8 +29,11 @@ namespace Breakout {
         /// </summary>
         public override void DecHealth(){
             health--;
-            if (health == 0){
+            if (health <= 0){
                 DeleteEntity();
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.GraphicsEvent, IntArg1 = 5, 
+                    });
             }
         }
 
@@ -42,15 +45,26 @@ namespace Breakout {
             return value;
         }
 
+        /// <summary>
+        /// Sets the vakue to amount.
+        /// </summary>
+        /// <param name="amount">what to set value to</param>
         public override void SetValue(int amount) {
             value = amount;
         }
 
+        /// <summary>
+        /// Returns the position of the shape of the block.
+        /// </summary>
+        /// <returns></returns>
         public override Vec2F GetPosition() {
             return shape.Position;
         }
 
-
+        /// <summary>
+        /// processes a gameEvent
+        /// </summary>
+        /// <param name="gameEvent">the gameEvent to process</param>
         public override void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
                 DecHealth();
