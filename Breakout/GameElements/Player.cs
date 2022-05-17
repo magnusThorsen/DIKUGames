@@ -98,8 +98,11 @@ namespace Breakout {
                     case "KeyRelease":
                         KeyRelease((KeyboardKey)gameEvent.IntArg1);
                         break;
-                    case "BallOutOfBounds":
-
+                    case "IncLife":
+                        IncLife();
+                        break;
+                    case "DecLife":
+                        DecLife();
                         break;
                     default:
                         break;
@@ -156,8 +159,12 @@ namespace Breakout {
             life++;
         }
 
+        public void IncWidth() {
 
+        }
 
-
+        public void DecWidth() {
+            
+        }
     }
 }
