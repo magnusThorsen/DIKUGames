@@ -19,7 +19,7 @@ namespace Breakout {
             moveRight = 0.0f; 
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
-            life = 3;
+            life = 1;
         }
 
         /// <summary>
@@ -98,8 +98,18 @@ namespace Breakout {
                     case "KeyRelease":
                         KeyRelease((KeyboardKey)gameEvent.IntArg1);
                         break;
-                    case "BallOutOfBounds":
-
+                    case "IncLife":
+                        IncLife();
+                        break;
+                    case "DecLife":
+                        System.Console.WriteLine("player dec life");
+                        DecLife();
+                        break;
+                    case "IncWidth":
+                        IncWidth();
+                        break;
+                    case "DecWidth":
+                        DecWidth();
                         break;
                     default:
                         break;
@@ -150,14 +160,27 @@ namespace Breakout {
 
         public void DecLife(){
             life--;
+            if (life <= 0){
+                BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.StatusEvent, 
+                            Message = "PlayerDead"
+                        }
+                    );              
+            }
+
         }
 
         public void IncLife(){
             life++;
         }
 
+        public void IncWidth() {
+            this.shape.ScaleX(2.0f);
+        }
 
-
-
+        public void DecWidth() {
+            this.shape.ScaleX(0.5f);
+        }
     }
 }
