@@ -12,6 +12,7 @@ namespace Breakout {
         private float moveRight;
         private const float MOVEMENT_SPEED = 0.02f;
         private int life;
+        private Text display;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -19,7 +20,9 @@ namespace Breakout {
             moveRight = 0.0f; 
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
-            life = 1;
+            life = 3;
+            display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), new Vec2F(0.5f,0.5f));
+            display.SetColor(new Vec3I(255, 0, 0));
         }
 
         /// <summary>
@@ -27,6 +30,8 @@ namespace Breakout {
         /// </summary>
         public void Render() {
             this.RenderEntity();
+            display.SetText("HP: " + life.ToString());
+            display.RenderText();
         }
         
         /// <summary>
@@ -102,7 +107,6 @@ namespace Breakout {
                         IncLife();
                         break;
                     case "DecLife":
-                        System.Console.WriteLine("player dec life");
                         DecLife();
                         break;
                     case "IncWidth":

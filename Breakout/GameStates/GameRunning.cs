@@ -48,7 +48,7 @@ namespace Breakout.BreakoutStates {
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;
-            points = new Points(new Vec2F(0.8f,0.5f), new Vec2F(0.5f,0.5f));
+            points = new Points(new Vec2F(0.7f,0.5f), new Vec2F(0.5f,0.5f));
             BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
             maxBalls = 10;
             //ball = new Ball(
@@ -71,7 +71,6 @@ namespace Breakout.BreakoutStates {
             player.Reset();
             ResetBalls();
             points.ResetPoints();
-            System.Console.WriteLine("reset");
             balls.AddEntity(CreateBall());
         }
 
@@ -81,6 +80,7 @@ namespace Breakout.BreakoutStates {
         public void UpdateState() {
             player.Move();
             MoveBalls();
+            CheckBallsEmpty();
             RemoveDeletedEntities();
             CheckGameOver();
             NewLevel();
@@ -204,11 +204,6 @@ namespace Breakout.BreakoutStates {
         /// checks if the game is over. 
         /// </summary>
         private void CheckGameOver() {
-            if (balls.CountEntities() <= 0) {
-                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.PlayerEvent, Message = "DecLife"
-                    });
-            }
             if(gameOver){
                 GameLost();
             }
@@ -286,6 +281,18 @@ namespace Breakout.BreakoutStates {
             }
             balls.AddEntity(CreateBall());
         }
+
+
+
+        private void CheckBallsEmpty(){
+            if (balls.CountEntities() <= 0) {
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.PlayerEvent, Message = "DecLife"
+                    });
+                balls.AddEntity(CreateBall());
+            }
+        }
+
 
 
         private void GameLost(){

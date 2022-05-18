@@ -11,7 +11,7 @@ public class Points : IGameEventProcessor {
 
     public Points (Vec2F position, Vec2F extent) {
         points = 0;
-        display = new Text (points.ToString(), position, extent);
+        display = new Text ("Points: " + points.ToString(), position, extent);
         display.SetColor(new Vec3I(255, 0, 0));
     }
 
@@ -26,7 +26,7 @@ public class Points : IGameEventProcessor {
         /// renders the score on the board.
         /// </summary>
         public void RenderPoints () {
-            display.SetText(points.ToString());
+            display.SetText("Points: " + points.ToString());
             display.RenderText();
         }
         
