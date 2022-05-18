@@ -17,6 +17,12 @@ public class StateTransformer {
         else if (state == "MAIN_MENU") {
             return GameStateType.MainMenu;
         }
+        else if (state == "GAME_LOST") {
+            return GameStateType.GameLost;
+        }
+        else if (state == "GAME_WON") {
+            return GameStateType.GameWon;
+        }
         else {
             throw new ArgumentException("Invalid input");
         }

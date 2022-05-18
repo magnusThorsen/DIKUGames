@@ -26,7 +26,7 @@ namespace Breakout {
         }
 
         /// <summary>
-        /// renders the player
+        /// renders the player and points
         /// </summary>
         public void Render() {
             this.RenderEntity();
@@ -159,6 +159,7 @@ namespace Breakout {
         /// </summary>
         public void Reset(){
             shape.Position = new Vec2F(0.425f, 0.03f);
+            life = 3;
         }
 
 

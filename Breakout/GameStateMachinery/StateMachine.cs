@@ -18,6 +18,8 @@ namespace Breakout.BreakoutStates {
             ActiveState = MainMenu.GetInstance();
             GameRunning.GetInstance();
             GamePaused.GetInstance();
+            GameLost.GetInstance();
+            //GameWon.GetInstance();
 
             //Initializing the lists and Adding the states and IGameStates to lists
             gameStates = new List<IGameState>();
@@ -26,9 +28,13 @@ namespace Breakout.BreakoutStates {
             gameStates.Add(MainMenu.GetInstance());
             gameStates.Add(GameRunning.GetInstance());
             gameStates.Add(GamePaused.GetInstance());
+            gameStates.Add(GameLost.GetInstance());
+            //gameStates.Add(GameWon.GetInstance());
             stateTypes.Add(GameStateType.MainMenu);
             stateTypes.Add(GameStateType.GameRunning);
             stateTypes.Add(GameStateType.GamePaused);
+            stateTypes.Add(GameStateType.GameLost);
+            //stateTypes.Add(GameStateType.GameWon);
 
             //Initializing and Filling the dictionary
             stateDic = new Dictionary<GameStateType, IGameState>();
@@ -60,14 +66,6 @@ namespace Breakout.BreakoutStates {
                         break;
                     default:
                         break;
-                }
-            }
-            if (gameEvent.EventType == GameEventType.InputEvent) {
-                switch (gameEvent.Message) { 
-                    case "KeyPress":
-                        ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, 
-                        (KeyboardKey)gameEvent.IntArg1);
-                        break; 
                 }
             }
         }
