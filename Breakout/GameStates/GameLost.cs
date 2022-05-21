@@ -19,6 +19,7 @@ namespace Breakout.BreakoutStates {
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;
+        private int points;
         
         public static GameLost GetInstance() {
             if (GameLost.instance == null) {
