@@ -138,7 +138,6 @@ namespace Breakout.BreakoutStates {
                 switch (gameEvent.Message) { //switches on message, only does something with 
                                              //KeyPress and KeyRelease
                     case "WonLostPoints": 
-                        System.Console.WriteLine("gamewon points: " + gameEvent.IntArg1);
                         points = gameEvent.IntArg1;
                         break;
                     default:
