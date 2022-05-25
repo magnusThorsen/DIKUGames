@@ -6,11 +6,7 @@ using DIKUArcade.Math;
 
 namespace Breakout {
     public class PowerUps {
-        private Ball ball1;
-        private Ball ball2;
-        private DynamicShape shape;
-        private IBaseImage image;
-
+      
 
         public void LifePowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
@@ -28,20 +24,28 @@ namespace Breakout {
             });
         }
 
-        public void SplitPowerUp() {
-            ball1 = new Ball(shape, image);
-            ball2 = new Ball(shape, image);
-            ball1.shape.Position =  Ball.GetPosition();          
+        public void PlayerSpeedPowerUp() {
+            BreakoutBus.GetBus().RegisterEvent (
+                new GameEvent {
+                    EventType = GameEventType.PlayerEvent,
+                    Message = "IncSpeed"
+            });
+        }
+
+        public void DoubleSpeedPowerUp() {
+            BreakoutBus.GetBus().RegisterEvent (
+                new GameEvent {
+                    EventType = GameEventType.InputEvent,
+                    Message = "IncSpeed"
+            });
+        }
+
+        public void MoreTimePowerUp() {
+            BreakoutBus.GetBus().RegisterEvent (
+                new GameEvent {
+                    EventType = GameEventType.InputEvent,
+                    Message = "IncTime"
+            });
         }
     }
 }
-
-
-
-
-
-// SplitPowerUp
-
-// InfinitePowerUp
-
-// RocektPowerUp
