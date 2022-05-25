@@ -6,6 +6,10 @@ using DIKUArcade.Math;
 
 namespace Breakout {
     public class PowerUps {
+        private Ball ball1;
+        private Ball ball2;
+        private DynamicShape shape;
+        private IBaseImage image;
 
 
         public void LifePowerUp() {
@@ -23,14 +27,18 @@ namespace Breakout {
                     Message = "IncWidth"
             });
         }
+
+        public void SplitPowerUp() {
+            ball1 = new Ball(shape, image);
+            ball2 = new Ball(shape, image);
+            ball1.shape.Position =  Ball.GetPosition();          
+        }
     }
 }
 
 
 
 
-
-// WidePowerUp
 
 // SplitPowerUp
 

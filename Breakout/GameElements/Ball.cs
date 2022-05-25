@@ -171,5 +171,9 @@ namespace Breakout {
             shape.Direction.Y = 0.01f;
             shape.Position = new Vec2F(0.3f, 0.03f);
         }
+
+        public Vec2F GetPosition() {
+            return this.shape.Position;
+        }
     }
 }
