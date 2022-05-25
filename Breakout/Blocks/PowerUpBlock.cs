@@ -29,6 +29,7 @@ namespace Breakout {
         /// Does nothing, because unbreakable blocks cannot loose health.
         /// </summary>
         public override void DecHealth () {
+            health--;
         }
 
         /// <summary>
