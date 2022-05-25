@@ -72,8 +72,6 @@ namespace Breakout.BreakoutStates {
             timeText = new Text("", new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
             timeText.SetColor(new Vec3I(255,255,255));
             hasTime = false;
-            System.Console.WriteLine("in creation: "+hasTime);
-
         }
 
         /// <summary>
@@ -244,7 +242,6 @@ namespace Breakout.BreakoutStates {
                         case "Time":
                             startTime = int.Parse(gameEvent.StringArg1);
                             hasTime = true;
-                            System.Console.WriteLine("in process: "+hasTime);
                             break;
                         case "IncTime":
                             timeLeft = timeLeft+10;
