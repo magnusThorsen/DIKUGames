@@ -246,6 +246,9 @@ namespace Breakout.BreakoutStates {
                             hasTime = true;
                             System.Console.WriteLine("in process: "+hasTime);
                             break;
+                        case "IncTime":
+                            timeLeft = timeLeft+10;
+                            break;
                         default:
                             break;
                     }

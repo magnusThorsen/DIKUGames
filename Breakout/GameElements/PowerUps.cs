@@ -43,7 +43,7 @@ namespace Breakout {
         public void MoreTimePowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
-                    EventType = GameEventType.InputEvent,
+                    EventType = GameEventType.StatusEvent,
                     Message = "IncTime"
             });
         }
