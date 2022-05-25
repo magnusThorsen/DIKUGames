@@ -95,6 +95,7 @@ namespace Breakout.BreakoutStates {
             blocks.RenderEntities();
             balls.RenderEntities();
             points.RenderPoints();
+            powerDrops.RenderEntities();
         }
 
 
@@ -213,31 +214,42 @@ namespace Breakout.BreakoutStates {
         /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
-                    switch (gameEvent.Message) {  
-                        case "PlayerDead":
-                            GameLost();
-                            break;
-                        default:
-                            break;
+                switch (gameEvent.Message) {  
+                    case "PlayerDead":
+                        GameLost();
+                        break;
+                    default:
+                        break;
                     }
-                }
+            }
         }
 
 
         /// <summary>
         /// removes all deleted Blocks in block.
         /// </summary>
-        private void RemoveDeletedEntities(){
+        private void RemoveDeletedEntities() {
             //deletes all blocks that are deleted
             blocks.Iterate(block => {
-                if (block.IsDeleted()){
+                if (block.IsDeleted()) {
+                    if (block.IsPowerUp() == true) {
+                    System.Console.WriteLine(block.shape.Position);
+                    powerDrops.AddEntity(new PowerUpDrop( // powerUpDrop is instantiated with positions and image
+                        new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
+                        new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));
+                    }
                     block.DeleteEntity();
                 }
             });
             //deletes all balls that are deleted
             balls.Iterate(ball => {
-                if (ball.IsDeleted()){
+                if (ball.IsDeleted()) {
                     ball.DeleteEntity();
+                }
+            });
+            powerDrops.Iterate(drop => {
+                if (drop.IsDeleted()) {
+                    drop.DeleteEntity();
                 }
             });
         }
@@ -343,7 +355,7 @@ namespace Breakout.BreakoutStates {
         public void PowerUpIterate() {
             foreach (PowerUpDrop Drop in powerDrops) {
                 Drop.Move();
-                Drop.Consume(player);
+                Drop.Consume(player,Drop.randNumber);
             }
         }
     }

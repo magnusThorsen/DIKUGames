@@ -79,6 +79,10 @@ namespace Breakout {
             Image = new Image(Path.Combine("Assets","Images", Color));
         }
 
+        public override bool IsPowerUp() {
+            return false;
+        }
+
         /// <summary>
         /// processes a gameEvent
         /// </summary>

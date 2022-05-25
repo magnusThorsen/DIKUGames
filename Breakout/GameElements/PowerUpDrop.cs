@@ -13,7 +13,7 @@ namespace Breakout {
         private static Vec2F extend; 
         public DynamicShape shape {get;}
         private Entity entity;
-        private int randNumber;
+        public int randNumber;
         private Random rand; 
         private PowerUps pwUp;
 
@@ -21,11 +21,12 @@ namespace Breakout {
             this.shape = shape;
             entity = new Entity(shape, image);
             Yvelocity = 0.1f;
-            shape.Direction = new Vec2F(0.0f,0.01f);
-            extend = new Vec2F(0.04f, 0.04f);
+            shape.Direction = new Vec2F(0.0f,-0.01f);
+            extend = new Vec2F(0.1f, 0.1f);
             rand = new Random(); 
             randNumber = rand.Next(5);
             pwUp = new PowerUps();
+            this.PowerPicture(randNumber);
         }
 
         public void Render() {
@@ -37,35 +38,47 @@ namespace Breakout {
             shape.Move();
         }
 
-        public void RandomPower(int number) {
+        public void PowerPicture(int number) {
             switch (number) {
                 case 0: 
-                    pwUp.LifePowerUp();
                     entity.Image = new Image(Path.Combine("Assets", "Images", "LifePickUp.png"));
                     break;
                 case 1: 
-                    pwUp.DoubleSpeedPowerUp();
                     entity.Image = new Image(Path.Combine("Assets", "Images", "DoubleSpeedPowerUp.png"));
                     break;
                 case 2: 
-                    pwUp.PlayerSpeedPowerUp();
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "PlayerSpeedPowerUp.png"));
+                    entity.Image = new Image(Path.Combine("Assets", "Images", "SpeedPickUp.png"));
                     break;
                 case 3: 
-                    pwUp.MoreTimePowerUp();
                     entity.Image = new Image(Path.Combine("Assets", "Images", "hourglass.png"));
                     break;
                 case 4: 
-                    pwUp.WidePowerUp();
                     entity.Image = new Image(Path.Combine("Assets", "Images", "WidePowerUp.png"));
                     break;
                 default: break;
             }
         }
 
-        public void Consume(Player player) {
+        public void Consume(Player player, int number) {
             if (CollisionDetection.Aabb(shape, player.Shape).Collision) {
-                RandomPower(randNumber);
+                switch (number) {
+                    case 0: 
+                        pwUp.LifePowerUp();
+                        break;
+                    case 1: 
+                        pwUp.DoubleSpeedPowerUp();
+                        break;
+                    case 2: 
+                        pwUp.PlayerSpeedPowerUp();
+                        break;
+                    case 3: 
+                        pwUp.MoreTimePowerUp();
+                        break;
+                    case 4: 
+                        pwUp.WidePowerUp();
+                        break;
+                default: break;
+            }
                 this.DeleteEntity();
             }
         }

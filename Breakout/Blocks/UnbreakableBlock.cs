@@ -55,6 +55,10 @@ namespace Breakout {
             return shape.Position;
         }
 
+        public override bool IsPowerUp() {
+            return false;
+        }
+
         /// <summary>
         /// processes a gameEvent
         /// </summary>
