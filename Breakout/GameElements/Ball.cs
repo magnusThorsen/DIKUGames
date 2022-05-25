@@ -17,8 +17,8 @@ namespace Breakout {
         public Ball(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
             entity = new Entity(shape, image);
-            Xvelocity = 0.01f;
-            Yvelocity = 0.01f;
+            Xvelocity = 0.05f;
+            Yvelocity = 0.05f;
             moving = false;
             shape.Direction = new Vec2F(0.0f,0.01f);
             extend = new Vec2F(0.04f, 0.04f);

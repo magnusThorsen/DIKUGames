@@ -19,7 +19,7 @@ namespace Breakout.BreakoutStates {
             GameRunning.GetInstance();
             GamePaused.GetInstance();
             GameLost.GetInstance();
-            //GameWon.GetInstance();
+            GameWon.GetInstance();
 
             //Initializing the lists and Adding the states and IGameStates to lists
             gameStates = new List<IGameState>();
@@ -29,12 +29,12 @@ namespace Breakout.BreakoutStates {
             gameStates.Add(GameRunning.GetInstance());
             gameStates.Add(GamePaused.GetInstance());
             gameStates.Add(GameLost.GetInstance());
-            //gameStates.Add(GameWon.GetInstance());
+            gameStates.Add(GameWon.GetInstance());
             stateTypes.Add(GameStateType.MainMenu);
             stateTypes.Add(GameStateType.GameRunning);
             stateTypes.Add(GameStateType.GamePaused);
             stateTypes.Add(GameStateType.GameLost);
-            //stateTypes.Add(GameStateType.GameWon);
+            stateTypes.Add(GameStateType.GameWon);
 
             //Initializing and Filling the dictionary
             stateDic = new Dictionary<GameStateType, IGameState>();

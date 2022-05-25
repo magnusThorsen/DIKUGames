@@ -16,12 +16,15 @@ namespace Breakout {
     public class Game : DIKUGame, IGameEventProcessor {
 
         private StateMachine state;
+        private int points;
 
         public Game(WindowArgs windowArgs) : base(windowArgs) {
             BreakoutBus.GetBus().InitializeEventBus(new List<GameEventType> {
                  GameEventType.InputEvent, 
-            GameEventType.PlayerEvent, GameEventType.GameStateEvent, GameEventType.GraphicsEvent, GameEventType.StatusEvent});
+            GameEventType.PlayerEvent, GameEventType.GameStateEvent, 
+            GameEventType.GraphicsEvent, GameEventType.StatusEvent, GameEventType.ControlEvent});
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, this);
+            BreakoutBus.GetBus().Subscribe(GameEventType.ControlEvent, this);
             window.SetKeyEventHandler(KeyHandler);
             state = new StateMachine();
         }
@@ -92,6 +95,30 @@ namespace Breakout {
                         break;
                 }
             }
+
+
+            if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
+                switch (gameEvent.Message) { //switches on message, only does something with 
+                                             //KeyPress and KeyRelease
+                    case "GamePoints": 
+                        System.Console.WriteLine("game points: " + gameEvent.IntArg1);
+                        points = gameEvent.IntArg1;
+                        break;
+                    case "GetPoints":
+                        BreakoutBus.GetBus().RegisterEvent(
+                            new GameEvent{
+                                EventType = GameEventType.ControlEvent, 
+                                Message = "WonLostPoints",
+                                IntArg1 = points
+                            }
+                        );
+                    break;
+                    default:
+                        break;
+                }
+            }
+
+
         }
     }
 }

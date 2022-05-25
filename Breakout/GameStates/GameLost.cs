@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Breakout.BreakoutStates {
 
-    public class GameLost : IGameState {
+    public class GameLost : IGameState, IGameEventProcessor{
 
         private static GameLost instance = null;
         private Text[] menuButtons;
@@ -19,6 +19,8 @@ namespace Breakout.BreakoutStates {
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;
+        private int points;
+        private Text pointsText;
         
         public static GameLost GetInstance() {
             if (GameLost.instance == null) {
@@ -32,9 +34,9 @@ namespace Breakout.BreakoutStates {
         /// Initializes the gamestate
         /// </summary>
         public void InitializeGameState() {
-            lostGameText = new Text("YOU LOST LLLL", new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
-            lostGameText.SetColor(new Vec3I(0,255,0));
-            NewGameText = new Text("Main Menu", new Vec2F(0.05f, 0.05f), new Vec2F(0.5f, 0.5f));
+            lostGameText = new Text("YOU Lost", new Vec2F(0.3f, 0.25f), new Vec2F(0.5f, 0.5f));
+            lostGameText.SetColor(new Vec3I(255,255,255));
+            NewGameText = new Text("Main Menu", new Vec2F(0.05f, 0.0f), new Vec2F(0.5f, 0.5f));
             NewGameText.SetColor(new Vec3I(255,255,255));
             QuitText = new Text("Quit Game", new Vec2F(0.05f, -0.1f), new Vec2F(0.5f,  0.5f));
             QuitText.SetColor(new Vec3I(255, 0, 0));
@@ -43,18 +45,25 @@ namespace Breakout.BreakoutStates {
             shape = new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f));
             image = new Image(Path.Combine("Assets", "Images", "shipit_titlescreen.png"));
             BackgroundImage = new Entity(shape, image);
+            BreakoutBus.GetBus().Subscribe(GameEventType.ControlEvent, this);
+            pointsText = new Text("Score: " + points.ToString(), new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
+            pointsText.SetColor(new Vec3I(255,255,0));
         }
 
         /// <summary>
         /// Resets the state
         /// </summary>
         public void ResetState() {
+            points = 0;
         }
 
         /// <summary>
         /// Updates the state
         /// </summary>
         public void UpdateState() {
+            GetPoints();
+            pointsText = pointsText = new Text("Score: " + points.ToString(), new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
+            pointsText.SetColor(new Vec3I(255,255,0));
         }
 
         /// <summary>
@@ -66,6 +75,7 @@ namespace Breakout.BreakoutStates {
                 text.RenderText();
             }
             lostGameText.RenderText();
+            pointsText.RenderText();
         }
 
         /// <summary>
@@ -101,6 +111,7 @@ namespace Breakout.BreakoutStates {
                     break; 
                 case KeyboardKey.Enter: 
                     if (SelectedButton == "Main Menu") {
+                        ResetState();
                         BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{
                                 EventType = GameEventType.GameStateEvent,
@@ -121,5 +132,29 @@ namespace Breakout.BreakoutStates {
                 default: break;
             }
         }
+
+        public void ProcessEvent(GameEvent gameEvent){
+            if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
+                switch (gameEvent.Message) { //switches on message, only does something with 
+                                             //KeyPress and KeyRelease
+                    case "WonLostPoints": 
+                        points = gameEvent.IntArg1;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+        private void GetPoints(){
+            BreakoutBus.GetBus().RegisterEvent(
+                            new GameEvent{
+                                EventType = GameEventType.ControlEvent, 
+                                Message = "GetPoints",
+                            }
+                        );
+        }
+
     }
 }

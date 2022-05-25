@@ -16,8 +16,6 @@ namespace Breakout.BreakoutStates {
         private EntityContainer<Block> blocks {get; set;}
         public bool gameOver{get;set;}
         private int level;
-        //private Ball ball;
-        
         private Points points;
         private EntityContainer<Ball> balls;
         private int maxBalls;
@@ -66,7 +64,7 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void ResetState() {
             blocks.ClearContainer();
-            this.level = 0;
+            level = 0;
             gameOver = false;
             player.Reset();
             ResetBalls();
@@ -186,14 +184,11 @@ namespace Breakout.BreakoutStates {
                 try{                    
                     ResetBalls();
                     player.Reset();
-                    this.level++;
+                    level++;
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
                 }
-                catch{ //catches no more levels, and as such ends the game, This is where winning screen should be.
-                    ResetState();
-                    ResetBalls();
-                    player.Reset();
+                catch{ //catches no more levels, and as such ends the game.
                     GameWon();
                 }
             
@@ -296,6 +291,7 @@ namespace Breakout.BreakoutStates {
 
 
         private void GameLost(){
+            SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
@@ -308,12 +304,14 @@ namespace Breakout.BreakoutStates {
 
 
         private void GameWon(){
+            System.Console.WriteLine("gamerunning won points: " + points.GetPoints());
+            SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
                             Message = "CHANGE_STATE",
-                            StringArg1 = "MAIN_MENU"
+                            StringArg1 = "GAME_WON"
                         }
             );
         }
@@ -324,6 +322,18 @@ namespace Breakout.BreakoutStates {
                             EventType = GameEventType.GameStateEvent, 
                             Message = "CHANGE_STATE",
                             StringArg1 = "GAME_PAUSED"
+                        }
+            );
+        }
+
+
+        private void SendPoints(){
+            System.Console.WriteLine("gamerunning points: " + points.GetPoints());
+            BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent{
+                            EventType = GameEventType.ControlEvent, 
+                            Message = "GamePoints",
+                            IntArg1 = points.GetPoints()
                         }
             );
         }
