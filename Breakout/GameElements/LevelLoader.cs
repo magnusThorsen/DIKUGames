@@ -196,7 +196,7 @@ namespace Breakout {
         /// <param name="filename">A string with the name of an Ascii file</param>
         /// <returns></returns>
         public EntityContainer<Block> LoadLevel(string filename){
-            
+
             //clear the levelloader
             Reset();
 
@@ -205,6 +205,7 @@ namespace Breakout {
             FillMetaDic();
             FillLegendDics();
             AddBlocks();
+            AddTimer();
             return Blocks;
         } 
 
@@ -269,6 +270,20 @@ namespace Breakout {
             ReadAscii(filename);
         }
 
+
+
+        private void AddTimer(){
+            foreach(var metaElm in metaDic){
+                if (metaElm.Key == "Time"){
+                    System.Console.WriteLine(metaElm);
+                    BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = metaElm.Value
+                    });
+                }
+
+            }
+        }
 
     }
 }

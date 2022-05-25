@@ -6,6 +6,8 @@ using System.IO;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using Breakout;
+using DIKUArcade.Timers;
+using System;
 
 namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState, IGameEventProcessor {
@@ -20,6 +22,11 @@ namespace Breakout.BreakoutStates {
         private EntityContainer<Ball> balls;
         private int maxBalls;
         private EntityContainer<PowerUpDrop> powerDrops;
+        private double currentTime;
+        private Text timeText;
+        private int timeLeft;
+        public double startTime;
+        private bool hasTime;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -58,6 +65,13 @@ namespace Breakout.BreakoutStates {
             balls = new EntityContainer<Ball>(maxBalls);
             balls.AddEntity(CreateBall());
             powerDrops = new EntityContainer<PowerUpDrop>();
+
+            currentTime = 0.0;
+            startTime = 0.0;
+            timeLeft = 0;
+            timeText = new Text("", new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
+            timeText.SetColor(new Vec3I(255,255,255));
+            hasTime = false;
         }
 
         /// <summary>
@@ -71,12 +85,14 @@ namespace Breakout.BreakoutStates {
             ResetBalls();
             points.ResetPoints();
             balls.AddEntity(CreateBall());
+            hasTime = false;
         }
 
         /// <summary>
         /// Kalde alle update i game. If statementet sprøer den om spillet er slut hvis ja event til main menu
         /// </summary>
         public void UpdateState() {
+            HandleTime();
             player.Move();
             MoveBalls();
             CheckBallsEmpty();
@@ -96,6 +112,7 @@ namespace Breakout.BreakoutStates {
             balls.RenderEntities();
             points.RenderPoints();
             powerDrops.RenderEntities();
+            timeText.RenderText();
         }
 
 
@@ -184,12 +201,14 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         private void NewLevel(){
             if (blocks.CountEntities() <= 0 || OnlyUnbreakBlocks()) {
-                try{                    
+                try{                
+                    StaticTimer.RestartTimer();    
                     ResetBalls();
                     player.Reset();
                     level++;
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
+                    hasTime=false;
                 }
                 catch{ //catches no more levels, and as such ends the game.
                     GameWon();
@@ -205,6 +224,9 @@ namespace Breakout.BreakoutStates {
             if(gameOver){
                 GameLost();
             }
+            if (hasTime && timeLeft < 0){
+                GameLost();
+            }
         }
 
 
@@ -214,12 +236,19 @@ namespace Breakout.BreakoutStates {
         /// <param name="gameEvent"></param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.StatusEvent) { 
-                switch (gameEvent.Message) {  
-                    case "PlayerDead":
-                        GameLost();
-                        break;
-                    default:
-                        break;
+                    switch (gameEvent.Message) {  
+                        case "PlayerDead":
+                            GameLost();
+                            break;
+                        case "Time":
+                            startTime = int.Parse(gameEvent.StringArg1);
+                            hasTime = true;
+                            break;
+                        case "IncTime":
+                            timeLeft = timeLeft+10;
+                            break;
+                        default:
+                            break;
                     }
             }
         }
@@ -358,6 +387,25 @@ namespace Breakout.BreakoutStates {
                 Drop.Consume(player,Drop.randNumber);
             }
         }
+    
+
+    
+        public void HandleTime(){
+            if (hasTime){
+                currentTime = StaticTimer.GetElapsedSeconds();
+                timeLeft = Convert.ToInt32(startTime-currentTime);
+                timeText = new Text(timeLeft.ToString(), new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
+                timeText.SetColor(new Vec3I(255,0,0));
+            }else{
+                timeText = new Text("", new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
+                timeText.SetColor(new Vec3I(255,0,0));
+            }
+        }
+    
+
+    
+    
+    
     }
 
 }

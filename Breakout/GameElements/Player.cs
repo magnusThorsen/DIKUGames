@@ -3,6 +3,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Input;
+using DIKUArcade.Timers;
 
 namespace Breakout {
 
@@ -13,6 +14,8 @@ namespace Breakout {
         private float MOVEMENT_SPEED;
         private int life;
         private Text display;
+        private int timeSpeed;
+        private int timeWidth;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -43,6 +46,7 @@ namespace Breakout {
             shape.AsDynamicShape().Direction.X < 0.845f) {
                 shape.Move();
             } 
+            UpdatePlayerPowerups();
         }
 
         /// <summary>
@@ -189,6 +193,7 @@ namespace Breakout {
 
         public void IncWidth() {
             this.shape.ScaleX(2.0f);
+            timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
         public void DecWidth() {
@@ -197,10 +202,28 @@ namespace Breakout {
 
         public void IncSpeed() {
             MOVEMENT_SPEED*=2.0f;
+            timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
         public void DecSpeed() {
             MOVEMENT_SPEED*=0.5f;
         }
+
+
+        private void UpdatePlayerPowerups(){
+            if (timeWidth == System.Convert.ToInt32(StaticTimer.GetElapsedSeconds() + 10)){
+                DecWidth();
+            }
+            if (timeSpeed == System.Convert.ToInt32(StaticTimer.GetElapsedSeconds() + 10)){
+                DecSpeed();
+            }
+        }
+
+
+
     }
+
+
+
+
 }
