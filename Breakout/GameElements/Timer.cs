@@ -13,7 +13,7 @@ namespace Breakout {
         private int current;
 
         public void GameLevelTimer() {
-            current = StaticTimer.timer.ElapsedMilliseconds;
+            //current = StaticTimer.timer.ElapsedMilliseconds;
         }
 
         public void PowerUpTimer() {

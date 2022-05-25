@@ -19,6 +19,7 @@ namespace Breakout.BreakoutStates {
         private Points points;
         private EntityContainer<Ball> balls;
         private int maxBalls;
+        private EntityContainer<PowerUpDrop> powerDrops;
 
         /// <summary>
         /// GetInstance sets up the GameRunning
@@ -56,7 +57,7 @@ namespace Breakout.BreakoutStates {
             maxBalls = 10;
             balls = new EntityContainer<Ball>(maxBalls);
             balls.AddEntity(CreateBall());
-            
+            powerDrops = new EntityContainer<PowerUpDrop>();
         }
 
         /// <summary>
@@ -82,6 +83,7 @@ namespace Breakout.BreakoutStates {
             RemoveDeletedEntities();
             CheckGameOver();
             NewLevel();
+            PowerUpIterate();
         }
 
 
@@ -337,8 +339,13 @@ namespace Breakout.BreakoutStates {
                         }
             );
         }
-
-
+        
+        public void PowerUpIterate() {
+            foreach (PowerUpDrop Drop in powerDrops) {
+                Drop.Move();
+                Drop.Consume(player);
+            }
+        }
     }
 
 }

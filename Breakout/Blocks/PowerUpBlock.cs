@@ -10,6 +10,7 @@ namespace Breakout {
 
         private int health; 
         private int value;
+        private PowerUpDrop powerUpDrop;
 
         public PowerUpBlock(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -30,6 +31,15 @@ namespace Breakout {
         /// </summary>
         public override void DecHealth () {
             health--;
+            if (health <= 0){
+                DeleteEntity();
+                powerUpDrop = new PowerUpDrop( // powerUpDrop is instantiated with positions and image
+                    new DynamicShape(shape.Position, new Vec2F(0.02f, 0.02f)),
+                    new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+                BreakoutBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.GraphicsEvent, IntArg1 = 5, 
+                    });
+            }
         }
 
         /// <summary>
