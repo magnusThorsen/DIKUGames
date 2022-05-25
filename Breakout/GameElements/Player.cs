@@ -10,14 +10,15 @@ namespace Breakout {
         public Shape shape { get;}
         private float moveLeft; 
         private float moveRight;
-        private const float MOVEMENT_SPEED = 0.02f;
+        private float MOVEMENT_SPEED;
         private int life;
         private Text display;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
             moveLeft = 0.0f;
-            moveRight = 0.0f; 
+            moveRight = 0.0f;
+            MOVEMENT_SPEED = 0.02f;
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
             life = 3;
@@ -115,6 +116,12 @@ namespace Breakout {
                     case "DecWidth":
                         DecWidth();
                         break;
+                    case "IncSpeed":
+                        IncSpeed();
+                        break;
+                    case "DecSpeed":
+                        DecSpeed();
+                        break;
                     default:
                         break;
                 }
@@ -186,6 +193,14 @@ namespace Breakout {
 
         public void DecWidth() {
             this.shape.ScaleX(0.5f);
+        }
+
+        public void IncSpeed() {
+            MOVEMENT_SPEED*=2.0f;
+        }
+
+        public void DecSpeed() {
+            MOVEMENT_SPEED*=0.5f;
         }
     }
 }
