@@ -16,7 +16,8 @@ namespace Breakout {
         private Text display;
         private int timeSpeed;
         private int timeWidth;
-        private bool powered;
+        private bool wide;
+        private bool fast;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -121,7 +122,6 @@ namespace Breakout {
                         IncWidth();
                         break;
                     case "DecWidth":
-                        System.Console.WriteLine("DecWidth match");
                         DecWidth();
                         break;
                     case "IncSpeed":
@@ -196,7 +196,7 @@ namespace Breakout {
         }
 
         private void IncWidth() {
-            powered = true;
+            wide = true;
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
@@ -207,7 +207,7 @@ namespace Breakout {
         }
 
         private void IncSpeed() {
-            powered = true;
+            fast = true;
             MOVEMENT_SPEED*=2.0f;
             timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
@@ -218,26 +218,16 @@ namespace Breakout {
 
 
         private void UpdatePlayerPowerups(){
-            if (powered){
-                if (timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (wide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
-                    powered = false;
-                    System.Console.WriteLine("updatepowerups");
+                    wide = false;
                     DecWidth();
                 }
-                if (timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (fast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
-                    powered = false;
+                    fast = false;
                     DecSpeed();
                 }
-            }
         }
-
-
-
     }
-
-
-
-
 }
