@@ -5,6 +5,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Entities;
 using System.IO;
+using DIKUArcade.Timers;
 
 namespace Breakout.BreakoutStates {
 
@@ -102,6 +103,7 @@ namespace Breakout.BreakoutStates {
                     break; 
                 case KeyboardKey.Enter: 
                     if (SelectedButton == "Resume") {
+                        StaticTimer.ResumeTimer();
                         BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{
                                 EventType = GameEventType.GameStateEvent,
