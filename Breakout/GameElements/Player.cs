@@ -174,7 +174,7 @@ namespace Breakout {
         }
 
 
-        public void DecLife(){
+        private void DecLife(){
             life--;
             if (life <= 0){
                 BreakoutBus.GetBus().RegisterEvent(
@@ -187,25 +187,25 @@ namespace Breakout {
 
         }
 
-        public void IncLife(){
+        private void IncLife(){
             life++;
         }
 
-        public void IncWidth() {
+        private void IncWidth() {
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
-        public void DecWidth() {
+        private void DecWidth() {
             this.shape.ScaleX(0.5f);
         }
 
-        public void IncSpeed() {
+        private void IncSpeed() {
             MOVEMENT_SPEED*=2.0f;
             timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
-        public void DecSpeed() {
+        private void DecSpeed() {
             MOVEMENT_SPEED*=0.5f;
         }
 

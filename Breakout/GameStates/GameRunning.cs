@@ -54,7 +54,7 @@ namespace Breakout.BreakoutStates {
             levelLoader = new LevelLoader();
             gameOver = false;
             level = 0;
-            points = new Points(new Vec2F(0.7f,0.5f), new Vec2F(0.5f,0.5f));
+            points = new Points(new Vec2F(0.6f,0.5f), new Vec2F(0.5f,0.5f));
             BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
             maxBalls = 10;
             //ball = new Ball(
@@ -360,6 +360,7 @@ namespace Breakout.BreakoutStates {
         }
 
         private void GamePaused(){
+            StaticTimer.PauseTimer();
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.GameStateEvent, 
