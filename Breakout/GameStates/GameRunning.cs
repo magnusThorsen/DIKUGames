@@ -245,7 +245,8 @@ namespace Breakout.BreakoutStates {
                             hasTime = true;
                             break;
                         case "IncTime":
-                            timeLeft = timeLeft+10;
+                            //timeLeft = timeLeft+10;
+                            startTime = startTime+10;
                             break;
                         default:
                             break;
@@ -346,7 +347,6 @@ namespace Breakout.BreakoutStates {
 
 
         private void GameWon(){
-            System.Console.WriteLine("gamerunning won points: " + points.GetPoints());
             SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
@@ -371,7 +371,6 @@ namespace Breakout.BreakoutStates {
 
 
         private void SendPoints(){
-            System.Console.WriteLine("gamerunning points: " + points.GetPoints());
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.ControlEvent, 

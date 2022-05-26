@@ -121,6 +121,7 @@ namespace Breakout {
                         IncWidth();
                         break;
                     case "DecWidth":
+                        System.Console.WriteLine("DecWidth match");
                         DecWidth();
                         break;
                     case "IncSpeed":
@@ -201,6 +202,7 @@ namespace Breakout {
         }
 
         private void DecWidth() {
+            System.Console.WriteLine("DecWidth");
             this.shape.ScaleX(0.5f);
         }
 
@@ -220,9 +222,10 @@ namespace Breakout {
                 if (timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
                     powered = false;
+                    System.Console.WriteLine("updatepowerups");
                     DecWidth();
                 }
-                if (timeSpeed + 10 > System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
                     powered = false;
                     DecSpeed();
