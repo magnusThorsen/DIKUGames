@@ -175,6 +175,8 @@ namespace Breakout {
         public void Reset(){
             shape.Position = new Vec2F(0.425f, 0.03f);
             life = 3;
+            MOVEMENT_SPEED = 0.02f;
+            Shape = shape;
         }
 
 

@@ -86,6 +86,7 @@ namespace Breakout.BreakoutStates {
             points.ResetPoints();
             balls.AddEntity(CreateBall());
             hasTime = false;
+            
         }
 
         /// <summary>
