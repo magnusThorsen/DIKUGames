@@ -16,6 +16,7 @@ namespace Breakout {
         private Text display;
         private int timeSpeed;
         private int timeWidth;
+        private bool powered;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -27,6 +28,8 @@ namespace Breakout {
             life = 3;
             display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
+            timeSpeed=-100;
+            timeWidth=-100;
         }
 
         /// <summary>
@@ -192,30 +195,38 @@ namespace Breakout {
         }
 
         private void IncWidth() {
+            powered = true;
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
         private void DecWidth() {
+            powered = false;
             this.shape.ScaleX(0.5f);
         }
 
         private void IncSpeed() {
+            powered = true;
             MOVEMENT_SPEED*=2.0f;
             timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
         private void DecSpeed() {
+            powered = false;
             MOVEMENT_SPEED*=0.5f;
         }
 
 
         private void UpdatePlayerPowerups(){
-            if (timeWidth == System.Convert.ToInt32(StaticTimer.GetElapsedSeconds() + 10)){
-                DecWidth();
-            }
-            if (timeSpeed == System.Convert.ToInt32(StaticTimer.GetElapsedSeconds() + 10)){
-                DecSpeed();
+            if (powered){
+                if (timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                    timeWidth = -100;
+                    DecWidth();
+                }
+                if (timeSpeed + 10 > System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                    timeSpeed = -100;
+                    DecSpeed();
+                }
             }
         }
 
