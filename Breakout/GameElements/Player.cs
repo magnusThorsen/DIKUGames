@@ -16,6 +16,9 @@ namespace Breakout {
         private Text display;
         private int timeSpeed;
         private int timeWidth;
+        private float windowLimit;
+        private bool isWide;
+
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -25,6 +28,7 @@ namespace Breakout {
             Shape = shape;
             shape.Position = new Vec2F(0.425f, 0.03f);
             life = 3;
+            isWide = false;
             display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
         }
@@ -42,8 +46,10 @@ namespace Breakout {
         /// checks if the player can move.
         /// </summary>
         public void Move() {
+            if (isWide == true)
+                windowLimit = 0.645f;
             if (shape.Position.X + shape.AsDynamicShape().Direction.X > 0.0f && shape.Position.X + 
-            shape.AsDynamicShape().Direction.X < 0.845f) {
+            shape.AsDynamicShape().Direction.X < windowLimit) {
                 shape.Move();
             } 
             UpdatePlayerPowerups();
@@ -192,6 +198,7 @@ namespace Breakout {
         }
 
         private void IncWidth() {
+            isWide = true;
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
