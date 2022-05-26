@@ -262,7 +262,6 @@ namespace Breakout.BreakoutStates {
             blocks.Iterate(block => {
                 if (block.IsDeleted()) {
                     if (block.IsPowerUp() == true) {
-                    System.Console.WriteLine(block.shape.Position);
                     powerDrops.AddEntity(new PowerUpDrop( // powerUpDrop is instantiated with positions and image
                         new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
                         new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));

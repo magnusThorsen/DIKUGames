@@ -201,7 +201,6 @@ namespace Breakout {
         }
 
         private void DecWidth() {
-            powered = false;
             this.shape.ScaleX(0.5f);
         }
 
@@ -212,7 +211,6 @@ namespace Breakout {
         }
 
         private void DecSpeed() {
-            powered = false;
             MOVEMENT_SPEED*=0.5f;
         }
 
@@ -221,10 +219,12 @@ namespace Breakout {
             if (powered){
                 if (timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
+                    powered = false;
                     DecWidth();
                 }
                 if (timeSpeed + 10 > System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
+                    powered = false;
                     DecSpeed();
                 }
             }
