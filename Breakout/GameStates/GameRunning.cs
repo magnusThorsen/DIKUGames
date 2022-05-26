@@ -384,7 +384,7 @@ namespace Breakout.BreakoutStates {
         public void PowerUpIterate() {
             foreach (PowerUpDrop Drop in powerDrops) {
                 Drop.Move();
-                Drop.Consume(player,Drop.randNumber);
+                Drop.Consume(player,Drop.powerUpNumber);
             }
         }
     
