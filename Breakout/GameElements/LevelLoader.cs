@@ -275,7 +275,6 @@ namespace Breakout {
         private void AddTimer(){
             foreach(var metaElm in metaDic){
                 if (metaElm.Key == "Time"){
-                    System.Console.WriteLine(metaElm);
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.StatusEvent, Message = "Time", 
                         StringArg1 = metaElm.Value

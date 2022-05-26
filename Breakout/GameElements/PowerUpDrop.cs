@@ -13,9 +13,11 @@ namespace Breakout {
         private static Vec2F extend; 
         public DynamicShape shape {get;}
         private Entity entity;
-        public int randNumber;
+        private int randNumber;
         private Random rand; 
+        public int powerUpNumber;
         private PowerUps pwUp;
+        private bool trigger;
 
         public PowerUpDrop(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -25,9 +27,29 @@ namespace Breakout {
             extend = new Vec2F(0.1f, 0.1f);
             rand = new Random(); 
             randNumber = rand.Next(5);
+            powerUpNumber = randNumber;
             pwUp = new PowerUps();
-            this.PowerPicture(randNumber);
+            trigger = true;
+            switch (powerUpNumber) {
+                case 0: 
+                    Image = new Image(Path.Combine("Assets", "Images", "LifePickUp.png"));
+                    break;
+                case 1: 
+                    Image = new Image(Path.Combine("Assets", "Images", "DoubleSpeedPowerUp.png"));
+                    break;
+                case 2: 
+                    Image = new Image(Path.Combine("Assets", "Images", "SpeedPickUp.png"));
+                    break;
+                case 3: 
+                    Image = new Image(Path.Combine("Assets", "Images", "hourglass.png"));
+                    break;
+                case 4: 
+                    Image = new Image(Path.Combine("Assets", "Images", "WidePowerUp.png"));
+                    break;
+                default: break;
+                };
         }
+        
 
         public void Render() {
             this.RenderEntity();
@@ -36,27 +58,6 @@ namespace Breakout {
         public void Move() {
             shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(0.0f, Yvelocity);
             shape.Move();
-        }
-
-        public void PowerPicture(int number) {
-            switch (number) {
-                case 0: 
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "LifePickUp.png"));
-                    break;
-                case 1: 
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "DoubleSpeedPowerUp.png"));
-                    break;
-                case 2: 
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "SpeedPickUp.png"));
-                    break;
-                case 3: 
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "hourglass.png"));
-                    break;
-                case 4: 
-                    entity.Image = new Image(Path.Combine("Assets", "Images", "WidePowerUp.png"));
-                    break;
-                default: break;
-            }
         }
 
         public void Consume(Player player, int number) {

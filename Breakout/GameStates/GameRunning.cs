@@ -86,6 +86,7 @@ namespace Breakout.BreakoutStates {
             points.ResetPoints();
             balls.AddEntity(CreateBall());
             hasTime = false;
+            
         }
 
         /// <summary>
@@ -245,7 +246,8 @@ namespace Breakout.BreakoutStates {
                             hasTime = true;
                             break;
                         case "IncTime":
-                            timeLeft = timeLeft+10;
+                            //timeLeft = timeLeft+10;
+                            startTime = startTime+10;
                             break;
                         default:
                             break;
@@ -262,7 +264,6 @@ namespace Breakout.BreakoutStates {
             blocks.Iterate(block => {
                 if (block.IsDeleted()) {
                     if (block.IsPowerUp() == true) {
-                    System.Console.WriteLine(block.shape.Position);
                     powerDrops.AddEntity(new PowerUpDrop( // powerUpDrop is instantiated with positions and image
                         new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
                         new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));
@@ -347,7 +348,6 @@ namespace Breakout.BreakoutStates {
 
 
         private void GameWon(){
-            System.Console.WriteLine("gamerunning won points: " + points.GetPoints());
             SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
@@ -372,7 +372,6 @@ namespace Breakout.BreakoutStates {
 
 
         private void SendPoints(){
-            System.Console.WriteLine("gamerunning points: " + points.GetPoints());
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent{
                             EventType = GameEventType.ControlEvent, 
@@ -385,7 +384,7 @@ namespace Breakout.BreakoutStates {
         public void PowerUpIterate() {
             foreach (PowerUpDrop Drop in powerDrops) {
                 Drop.Move();
-                Drop.Consume(player,Drop.randNumber);
+                Drop.Consume(player,Drop.powerUpNumber);
             }
         }
     
