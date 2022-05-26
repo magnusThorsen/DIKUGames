@@ -17,8 +17,7 @@ namespace Breakout {
         private int timeSpeed;
         private int timeWidth;
         private float windowLimit;
-        private bool isWide;
-        private bool wide;
+        public bool isWide;
         private bool fast;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
@@ -50,12 +49,16 @@ namespace Breakout {
         /// </summary>
         public void Move() {
             if (isWide == true)
-                windowLimit = 0.645f;
+                windowLimit = 0.681f;
+            else
+                windowLimit = 0.845f;
             if (shape.Position.X + shape.AsDynamicShape().Direction.X > 0.0f && shape.Position.X + 
             shape.AsDynamicShape().Direction.X < windowLimit) {
                 shape.Move();
-            } 
-            UpdatePlayerPowerups();
+            }
+            else if (isWide == true && shape.Position.X + shape.AsDynamicShape().Direction.X > windowLimit){
+                shape.Position.X = 0.681f;
+            }
         }
 
         /// <summary>
@@ -204,7 +207,6 @@ namespace Breakout {
 
         private void IncWidth() {
             isWide = true;
-            wide = true;
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
@@ -226,9 +228,9 @@ namespace Breakout {
 
 
         private void UpdatePlayerPowerups(){
-                if (wide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (isWide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
-                    wide = false;
+                    isWide = false;
                     DecWidth();
                 }
                 if (fast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){

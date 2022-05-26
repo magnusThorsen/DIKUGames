@@ -13,6 +13,8 @@ namespace Breakout {
         public DynamicShape shape {get;}
         private bool moving;
         private Entity entity;
+        private float hitEdge;
+        private float startPos;
 
         public Ball(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -41,7 +43,13 @@ namespace Breakout {
                 shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(Xvelocity, Yvelocity);
             }
             if (!moving){
-                shape.Position = new Vec2F(p.shape.Position.X+0.055f, p.shape.Position.Y+0.01f);
+                if (p.isWide == true){
+                    startPos = 2.5f;
+                }
+                else {
+                    startPos = 1.0f;
+                }
+                shape.Position = new Vec2F(p.shape.Position.X+(0.055f*startPos), p.shape.Position.Y+0.01f);
             }
 
             Bounce(p, b);
@@ -104,8 +112,13 @@ namespace Breakout {
         public void BouncePlayer(Player p) {          
             if (DIKUArcade.Physics.CollisionDetection.Aabb(
                 this.shape, p.shape).Collision) {
-
-                if (shape.Position.X > p.GetPosition().X + (0.1)) {
+                if (p.isWide == true) {
+                    hitEdge = 0.2f;
+                }
+                else {
+                    hitEdge = 0.1f;
+                }
+                if (shape.Position.X > p.GetPosition().X + hitEdge) {
                     shape.Direction.X = 0.01f;
                     shape.Direction.Y = 0.01f;
                 }
