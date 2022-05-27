@@ -59,6 +59,7 @@ namespace Breakout {
             else if (isWide == true && shape.Position.X + shape.AsDynamicShape().Direction.X > windowLimit){
                 shape.Position.X = 0.681f;
             }
+            UpdatePlayerPowerups();
         }
 
         /// <summary>
@@ -127,15 +128,19 @@ namespace Breakout {
                         DecLife();
                         break;
                     case "IncWidth":
+                        System.Console.WriteLine("incwidth in switch");
                         IncWidth();
                         break;
                     case "DecWidth":
+                        System.Console.WriteLine("decwidth in switch");
                         DecWidth();
                         break;
                     case "IncSpeed":
+                        System.Console.WriteLine("incspeed in switch");
                         IncSpeed();
                         break;
                     case "DecSpeed":
+                        System.Console.WriteLine("decspeed in switch");
                         DecSpeed();
                         break;
                     default:
@@ -209,6 +214,7 @@ namespace Breakout {
             isWide = true;
             this.shape.ScaleX(2.0f);
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            System.Console.WriteLine("timewidth: " + timeWidth);
         }
 
         private void DecWidth() {
@@ -220,6 +226,7 @@ namespace Breakout {
             fast = true;
             MOVEMENT_SPEED*=2.0f;
             timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            System.Console.WriteLine("timeSpeed: " + timeSpeed);
         }
 
         private void DecSpeed() {
