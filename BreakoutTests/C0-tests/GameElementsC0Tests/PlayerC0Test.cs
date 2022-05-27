@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace BreakoutTests;
 
 [TestFixture]
-public class TestPlayer{
+public class TestPlayerC0{
 
         private Player player;
         private DynamicShape shape;
@@ -21,7 +21,7 @@ public class TestPlayer{
         private Player player2;
         private Entity entity;
 
-    public TestPlayer() {
+    public TestPlayerC0() {
         DIKUArcade.GUI.Window.CreateOpenGLContext();
         shape = new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f));
         image = new Image(Path.Combine("Assets", "Images", "player.png"));
@@ -33,8 +33,7 @@ public class TestPlayer{
     }
 
     [SetUp]
-    public void InitiatePlayer()
-    {
+    public void InitiatePlayerC0() {
         DIKUArcade.GUI.Window.CreateOpenGLContext();
         shape = new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f));
         image = new Image(Path.Combine("Assets", "Images", "player.png"));
@@ -46,9 +45,10 @@ public class TestPlayer{
     }
 
     [Test]
-    public void TestPlayerCenter()
-    {
-        Assert.IsTrue(player.GetPosition().X > 0.4f && player.GetPosition().X < 0.6);
+    public void TestPlayerCenter() {
+        player.isWide = true; 
+        player.Move();
+        Assert.IsTrue(player.C0GetWindowLimit() == 0.681f);
     }
 
     [Test]

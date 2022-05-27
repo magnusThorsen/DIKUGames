@@ -230,5 +230,9 @@ namespace Breakout {
                     MOVEMENT_SPEED = 0.02f;
                 }
         }
+
+        public float C0GetWindowLimit() {
+            return windowLimit;
+        }
     }
 }
