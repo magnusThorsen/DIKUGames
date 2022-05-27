@@ -12,11 +12,14 @@ namespace BreakoutTests {
 
     [TestFixture]
     public class PowerUpsTests {
+        private Player player;
         
         public PowerUpsTests() {
-            player = new Player();
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
             player.isWide = false;
-            plaier.isFast = false;
+            player.isFast = false;
             ball = new Ball();
             ball.isFast = false;
             GameRunning.GetInstance();
@@ -24,7 +27,9 @@ namespace BreakoutTests {
 
         [SetUp]
         public void InitializePowerUps() {
-            player = new Player();
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
             player.isWide = false;
             plaier.isFast = false;
             ball = new Ball();

@@ -26,7 +26,7 @@ namespace BreakoutTests {
         public void InitiateGamePaused() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             stateMachine = new StateMachine();
-            GamePaused = new GamePaused();
+            gamePaused = new GamePaused();
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
 
