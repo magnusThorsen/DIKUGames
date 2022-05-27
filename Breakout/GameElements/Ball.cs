@@ -3,6 +3,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
 using DIKUArcade.Physics;
+using DIKUArcade.Timers;
 
 namespace Breakout {
 
@@ -15,6 +16,8 @@ namespace Breakout {
         private Entity entity;
         private float hitEdge;
         private float startPos;
+        private bool isFast;
+        private int timeSpeed;
 
         public Ball(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -22,6 +25,7 @@ namespace Breakout {
             Xvelocity = 0.05f;
             Yvelocity = 0.05f;
             moving = false;
+            isFast = false;
             shape.Direction = new Vec2F(0.0f,0.01f);
             extend = new Vec2F(0.04f, 0.04f);
         }
@@ -168,6 +172,7 @@ namespace Breakout {
                         moving = true;
                         break;
                     case "IncSpeed":
+                        IncSpeed();
                         break;
                     default:
                         break;
@@ -192,8 +197,25 @@ namespace Breakout {
         }
 
         public void IncSpeed() {
-            Xvelocity*=2;
-            Yvelocity*=2;
+            if (isFast == false) {
+                isFast = true;
+                shape.Direction.X*=2;
+                shape.Direction.Y*=2;
+                timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            }
+        }
+
+        public void DecSpeed() {
+            shape.Direction.X*=0.5f;
+            shape.Direction.Y*=0.5f;
+        }
+
+        private void UpdatePlayerPowerups(){
+            if (isFast && timeSpeed + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                timeSpeed = -100;
+                isFast = false;
+                DecSpeed();
+            }
         }
     }
 }

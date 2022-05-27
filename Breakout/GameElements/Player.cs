@@ -18,7 +18,7 @@ namespace Breakout {
         private int timeWidth;
         private float windowLimit;
         public bool isWide;
-        private bool fast;
+        private bool isFast;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -29,6 +29,7 @@ namespace Breakout {
             shape.Position = new Vec2F(0.425f, 0.03f);
             life = 3;
             isWide = false;
+            isFast = false;
             display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
             timeSpeed=-100;
@@ -207,9 +208,11 @@ namespace Breakout {
         }
 
         private void IncWidth() {
-            isWide = true;
-            this.shape.ScaleX(2.0f);
-            timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            if (isWide == false) {
+                isWide = true;
+                this.shape.ScaleX(2.0f);
+                timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            }
         }
 
         private void DecWidth() {
@@ -218,9 +221,11 @@ namespace Breakout {
         }
 
         private void IncSpeed() {
-            fast = true;
-            MOVEMENT_SPEED*=2.0f;
-            timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            if (isFast == false) {
+                isFast = true;
+                MOVEMENT_SPEED*=2.0f;
+                timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
+            }
         }
 
         private void DecSpeed() {
@@ -234,9 +239,9 @@ namespace Breakout {
                     isWide = false;
                     DecWidth();
                 }
-                if (fast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (isFast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
-                    fast = false;
+                    isFast = false;
                     DecSpeed();
                 }
         }
