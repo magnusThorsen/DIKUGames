@@ -272,7 +272,7 @@ namespace Breakout {
 
 
         /// <summary>
-        /// Adds a timer to the level if the meta segment specifies it, by creating an event
+        /// Adds a timer to the level if the meta segment specifies it, by creating an event.
         /// </summary>
         private void AddTimer(){
             foreach(var metaElm in metaDic){

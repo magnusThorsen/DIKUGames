@@ -151,6 +151,9 @@ namespace Breakout.BreakoutStates {
         }
 
 
+        /// <summary>
+        /// creates an event that is caught by Game
+        /// </summary>
         private void GetPoints(){
             BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{

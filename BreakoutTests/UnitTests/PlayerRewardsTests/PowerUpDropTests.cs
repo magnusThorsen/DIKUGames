@@ -12,29 +12,30 @@ namespace BreakoutTests {
 
     [TestFixture]
     public class PowerUpDropTests {
+        private PowerUpDrop powerUpDrop;
+        private Player player;
         
         public PowerUpDropTests() {
-            shape = new Shape();
-            image = new Image();
-            Yvelocity = 0.1f;
-            player = new Player();
+            powerUpDrop = new PowerUpDrop( 
+                        // powerUpDrop is instantiated with positions and image
+                        new DynamicShape(new Vec2F(0.06f, 0.06f), new Vec2F(0.06f, 0.06f)),
+                        new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
         }
 
         [SetUp]
         public void InitializePowerUpDrop() {
-            shape = new Shape();
-            image = new Image();
-            Yvelocity = 0.1f;
-            player = new Player();
+            powerUpDrop = new PowerUpDrop( 
+                        // powerUpDrop is instantiated with positions and image
+                        new DynamicShape(new Vec2F(0.06f, 0.06f), new Vec2F(0.06f, 0.06f)),
+                        new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
         }
 
-        //Testing if the right picture renders with the right PowerUp after calling PowerUpDrop().
-        [Test]
-        public void TestPowerUpDrop() {
-            PowerUpDrop.randNumber = 1;
-            PowerUpDrop.PowerUpDrop(shape, image);
-            Assert.AreEqual(Image, new Image(Path.Combine("Assets", "Images", "DoubleSpeedPowerUp.png")));
-        }
 
         //Testing if a PowerUp drops vertical after calling PowerUpMove().
         [Test]

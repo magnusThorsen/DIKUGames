@@ -12,19 +12,17 @@ namespace BreakoutTests {
 
     [TestFixture]
     public class PointsTest {
-        private int points;
+        private Points points;
         private Text display;
 
         public PointsTest() {
-            points = 0;
-            display = new Text (points.ToString(), position, extent);
+            display = new Text (points.ToString(), new Vec2F(0.5f,0.5f),new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
         }
 
         [SetUp]
         public void InitiatePoints() {
-            points = 0;
-            display = new Text (points.ToString(), position, extent);
+            display = new Text (points.ToString(), new Vec2F(0.5f,0.5f), new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
 
         }

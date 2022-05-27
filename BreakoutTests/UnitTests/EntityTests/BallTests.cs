@@ -14,13 +14,25 @@ namespace BreakoutTests {
     public class BallTest {
 
         private Ball ball; 
+        private Player player;
+        private EntityContainer<Block> blocks;
+        private Block block;
 
         public BallTest() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
-            
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
+            blocks = new EntityContainer<Block>(288);
+            block = new PowerUpBlock(
+                            new DynamicShape(new Vec2F(
+                                0.5f, 0.5f), 
+                            new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", "purple-block.png"))
+                            );
         }
 
         [SetUp]
@@ -29,13 +41,28 @@ namespace BreakoutTests {
             ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            player = new Player( // player is instantiated with positions and image
+                new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(0.16f, 0.020f)),
+                new Image(Path.Combine("Assets", "Images", "player.png")));
+            blocks = new EntityContainer<Block>(288);
+            block = new PowerUpBlock(
+                            new DynamicShape(new Vec2F(
+                                0.5f, 0.5f), 
+                            new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", "purple-block.png"))
+                            );
         }
 
         [Test]
         public void TestMoveball() {
             var startPos = ball.shape.Position;
-            ball.moving = true;
-            ball.Move(p, b);
+            BreakoutBus.GetBus().RegisterEvent(
+                        new GameEvent {
+                            EventType = GameEventType.InputEvent, 
+                            Message = "LAUNCH_BALL",
+                        }
+            );
+            ball.Move(player, blocks);
             Assert.AreNotEqual(startPos, ball.shape.Position);
         }
 
@@ -43,15 +70,14 @@ namespace BreakoutTests {
         public void TestBounceBlock() {
             ball.shape.Position = new Vec2F(0.5f, 0.5f);
             ball.shape.Direction.Y = 0.01f;
-            block = new Block(new Vec2F(0.5f, 0.5f), image);
             Assert.AreEqual(ball.shape.Direction.Y, (-0.01f));            
         }
 
         [Test]
         public void TestBouncePlayer() {
-            ball.shape.Position = new Vec2F(0.1f, 0.1f);
+            ball.shape.Position = new Vec2F(0.5f, 0.5f);
             ball.shape.Direction.Y = -0.01f;
-            player = new Player(new Vec2F(0.1f, 0.1f), image);
+            ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.Y, 0.01f);    
         }
 
@@ -79,12 +105,12 @@ namespace BreakoutTests {
         [Test]
         public void TestWallBottom() {
             ball.shape.Position.Y = -0.1f;
-            Assert.True(ball.entity.IsDeleted());
+            Assert.True(ball.IsDeleted());
         }
 
         [Test]
         public void TestResetBall() {
-            ball.shape.Position = (0.7f, 0.05f);
+            ball.shape.Position = new Vec2F(0.7f, 0.05f);
             ball.Reset();
             Assert.AreEqual(ball.shape.Position, (0.3f, 0.03f));
         }

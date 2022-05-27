@@ -31,15 +31,16 @@ namespace BreakoutTests {
         }
 
         [Test]
-        public void TestSwitchState1() {
-            stateMachine.SwitchState(GameStateType.MainMenu);
+        public void TestSwitchStateFromMainMenu() {
             stateMachine.SwitchState(GameStateType.GameRunning);
+            BreakoutBus.GetBus().ProcessEventsSequentially();
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
         }
 
         [Test]
-        public void TestSwitchState2() {
-            var gameRunning = gameRunning.CheckGameOver=true;
+        public void TestSwitchStateToMainMenu() {
+            stateMachine.SwitchState(GameStateType.GameRunning);
+            stateMachine.SwitchState(GameStateType.MainMenu);
             BreakoutBus.GetBus().ProcessEventsSequentially(); 
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
         }
