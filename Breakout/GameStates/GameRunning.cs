@@ -86,7 +86,6 @@ namespace Breakout.BreakoutStates {
             points.ResetPoints();
             balls.AddEntity(CreateBall());
             hasTime = false;
-            
         }
 
         /// <summary>
@@ -315,9 +314,9 @@ namespace Breakout.BreakoutStates {
         }
 
         private void ResetBalls(){
-            foreach (Ball ball in balls){
-                ball.DeleteEntity();
-            }
+            balls.Iterate(ball => {
+                    ball.DeleteEntity();
+            });
             balls.AddEntity(CreateBall());
         }
 
