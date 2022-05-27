@@ -247,7 +247,6 @@ namespace Breakout.BreakoutStates {
                             hasTime = true;
                             break;
                         case "IncTime":
-                            //timeLeft = timeLeft+10;
                             startTime = startTime+10;
                             break;
                         default:
