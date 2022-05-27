@@ -56,11 +56,6 @@ namespace Breakout.BreakoutStates {
             points = new Points(new Vec2F(0.6f,0.5f), new Vec2F(0.5f,0.5f));
             BreakoutBus.GetBus().Subscribe(GameEventType.GraphicsEvent, points);
             maxBalls = 10;
-            //ball = new Ball(
-            //    new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
-            //    new Image(Path.Combine("Assets", "Images", "ball2.png")));
-            //BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
-            maxBalls = 10;
             balls = new EntityContainer<Ball>(maxBalls);
             balls.AddEntity(CreateBall());
             powerDrops = new EntityContainer<PowerUpDrop>();
