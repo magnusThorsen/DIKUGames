@@ -33,6 +33,7 @@ namespace Breakout {
             display.SetColor(new Vec3I(255, 0, 0));
             timeSpeed=-100;
             timeWidth=-100;
+            fast = false;
         }
 
         /// <summary>
@@ -130,14 +131,8 @@ namespace Breakout {
                     case "IncWidth":
                         IncWidth();
                         break;
-                    case "DecWidth":
-                        DecWidth();
-                        break;
                     case "IncSpeed":
                         IncSpeed();
-                        break;
-                    case "DecSpeed":
-                        DecSpeed();
                         break;
                     default:
                         break;
@@ -186,6 +181,8 @@ namespace Breakout {
             life = 3;
             MOVEMENT_SPEED = 0.02f;
             Shape = shape;
+            fast = false;
+            shape.Extent = new Vec2F(0.16f, 0.020f);
         }
 
 
@@ -199,7 +196,6 @@ namespace Breakout {
                         }
                     );              
             }
-
         }
 
         private void IncLife(){
@@ -212,32 +208,22 @@ namespace Breakout {
             timeWidth = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
-        private void DecWidth() {
-            System.Console.WriteLine("DecWidth");
-            this.shape.ScaleX(0.5f);
-        }
-
         private void IncSpeed() {
             fast = true;
             MOVEMENT_SPEED*=2.0f;
             timeSpeed = System.Convert.ToInt32(StaticTimer.GetElapsedSeconds());
         }
 
-        private void DecSpeed() {
-            MOVEMENT_SPEED*=0.5f;
-        }
-
-
         private void UpdatePlayerPowerups(){
                 if (isWide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
                     isWide = false;
-                    DecWidth();
+                    shape.Extent = new Vec2F(0.16f, 0.020f);
                 }
                 if (fast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
                     fast = false;
-                    DecSpeed();
+                    MOVEMENT_SPEED = 0.02f;
                 }
         }
     }

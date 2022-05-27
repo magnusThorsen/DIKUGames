@@ -79,6 +79,7 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void ResetState() {
             blocks.ClearContainer();
+            powerDrops.ClearContainer();
             level = 0;
             gameOver = false;
             player.Reset();
@@ -209,6 +210,7 @@ namespace Breakout.BreakoutStates {
                     string levelstring = "level" + this.level + ".txt";
                     blocks = levelLoader.LoadLevel(levelstring);
                     hasTime=false;
+                    powerDrops.ClearContainer();
                 }
                 catch{ //catches no more levels, and as such ends the game.
                     GameWon();
@@ -332,7 +334,6 @@ namespace Breakout.BreakoutStates {
         }
 
 
-
         private void GameLost(){
             SendPoints();
             ResetState();
@@ -357,6 +358,7 @@ namespace Breakout.BreakoutStates {
                         }
             );
         }
+
 
         private void GamePaused(){
             StaticTimer.PauseTimer();
@@ -386,8 +388,7 @@ namespace Breakout.BreakoutStates {
                 Drop.Consume(player,Drop.powerUpNumber);
             }
         }
-    
-
+        
     
         public void HandleTime(){
             if (hasTime){
@@ -400,11 +401,5 @@ namespace Breakout.BreakoutStates {
                 timeText.SetColor(new Vec3I(255,0,0));
             }
         }
-    
-
-    
-    
-    
     }
-
 }

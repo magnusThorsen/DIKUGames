@@ -17,7 +17,6 @@ namespace Breakout {
         private Random rand; 
         public int powerUpNumber;
         private PowerUps pwUp;
-        private bool trigger;
 
         public PowerUpDrop(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -29,7 +28,6 @@ namespace Breakout {
             randNumber = rand.Next(5);
             powerUpNumber = randNumber;
             pwUp = new PowerUps();
-            trigger = true;
             switch (powerUpNumber) {
                 case 0: 
                     Image = new Image(Path.Combine("Assets", "Images", "LifePickUp.png"));
