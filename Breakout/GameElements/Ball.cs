@@ -44,7 +44,8 @@ namespace Breakout {
         /// <param name="b">a Entitycontainer<Block> to check for</param>
         public void Move(Player p, EntityContainer<Block> b) {
             if (moving){
-                shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(Xvelocity, Yvelocity);
+                shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * 
+                new Vec2F(Xvelocity, Yvelocity);
             }
             if (!moving){
                 if (p.isWide == true){
@@ -53,12 +54,15 @@ namespace Breakout {
                 else {
                     startPos = 1.0f;
                 }
-                shape.Position = new Vec2F(p.shape.Position.X+(0.055f*startPos), p.shape.Position.Y+0.01f);
+                shape.Position = new Vec2F(p.shape.Position.X+(0.055f*startPos), 
+                p.shape.Position.Y+0.01f);
             }
 
             Bounce(p, b);
 
             shape.Move();
+
+            UpdateBallPowerups();
 
         }
 
@@ -192,10 +196,18 @@ namespace Breakout {
             shape.Position = new Vec2F(0.3f, 0.03f);
         }
 
+        /// <summary>
+        /// Returns the position of the ball
+        /// </summary>
+        /// <returns>The position as a Vec2F</returns>
         public Vec2F GetPosition() {
             return this.shape.Position;
         }
 
+
+        /// <summary>
+        /// Doubles the speed if it has not already been doubles, and saves the time it was doubled
+        /// </summary>
         public void IncSpeed() {
             if (isFast == false) {
                 isFast = true;
@@ -205,13 +217,21 @@ namespace Breakout {
             }
         }
 
+        /// <summary>
+        /// decreases the speed by half
+        /// </summary>
         public void DecSpeed() {
             shape.Direction.X*=0.5f;
             shape.Direction.Y*=0.5f;
         }
 
-        private void UpdatePlayerPowerups(){
-            if (isFast && timeSpeed + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+        /// <summary>
+        /// Checks if the ball is fast and if the appropriate time has passed 
+        /// and if so resets the poweruptimer and fields and decreases the speed
+        /// </summary>
+        private void UpdateBallPowerups(){
+            if (isFast && timeSpeed + 10  < System.Convert.ToInt32(
+                StaticTimer.GetElapsedSeconds())){
                 timeSpeed = -100;
                 isFast = false;
                 DecSpeed();

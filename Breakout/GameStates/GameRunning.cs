@@ -41,7 +41,6 @@ namespace Breakout.BreakoutStates {
 
         /// <summary>
         /// Initializes all fields, and what else is needed for the methods
-        /// !!Games constructor, lav player osv.
         /// </summary>
         public void InitializeGameState() {
             BreakoutBus.GetBus().Subscribe(GameEventType.StatusEvent, this);
@@ -75,7 +74,7 @@ namespace Breakout.BreakoutStates {
         }
 
         /// <summary>
-        /// Når spillet er slut og der skal startes et nyt så resetter den det hele(fra main menu)
+        /// Resets the game. Used when game is over, or new level loads
         /// </summary>
         public void ResetState() {
             blocks.ClearContainer();
@@ -90,7 +89,7 @@ namespace Breakout.BreakoutStates {
         }
 
         /// <summary>
-        /// Kalde alle update i game. If statementet sprøer den om spillet er slut hvis ja event til main menu
+        /// Updates all game functionality
         /// </summary>
         public void UpdateState() {
             HandleTime();
@@ -105,7 +104,7 @@ namespace Breakout.BreakoutStates {
 
 
         /// <summary>
-        /// Samme som game
+        /// Renders all in game
         /// </summary>
         public void RenderState() {
             player.Render();
@@ -157,12 +156,12 @@ namespace Breakout.BreakoutStates {
                     });
                     break; 
 
-                case KeyboardKey.G: 
+                case KeyboardKey.G: // To skip a level 
                     blocks.ClearContainer();
                     NewLevel();
                     break;
 
-                case KeyboardKey.Space:
+                case KeyboardKey.Space: // Launch ball
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.InputEvent, 
                         Message = "LAUNCH_BALL"
@@ -179,13 +178,13 @@ namespace Breakout.BreakoutStates {
         /// <param name="key">the key released</param>
         private void KeyRelease(KeyboardKey key) {
             switch (key) {
-                case KeyboardKey.Right:
+                case KeyboardKey.Right: // Move player right
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.PlayerEvent, Message = "KeyRelease", 
                         IntArg1 = (int) key
                     });
                     break;
-                case KeyboardKey.Left: 
+                case KeyboardKey.Left: // Move player left 
                     BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.PlayerEvent, Message = "KeyRelease", 
                         IntArg1 = (int) key
@@ -246,8 +245,7 @@ namespace Breakout.BreakoutStates {
                             startTime = int.Parse(gameEvent.StringArg1);
                             hasTime = true;
                             break;
-                        case "IncTime":
-                            //timeLeft = timeLeft+10;
+                        case "IncTime": 
                             startTime = startTime+10;
                             break;
                         default:
@@ -258,26 +256,28 @@ namespace Breakout.BreakoutStates {
 
 
         /// <summary>
-        /// removes all deleted entities.
+        /// Removes all deleted entities.
         /// </summary>
         private void RemoveDeletedEntities() {
             //deletes all blocks that are deleted
             blocks.Iterate(block => {
-                if (block.IsDeleted()) {
-                    if (block.IsPowerUp() == true) {
-                    powerDrops.AddEntity(new PowerUpDrop( // powerUpDrop is instantiated with positions and image
+                if (block.IsDeleted()) { 
+                    if (block.IsPowerUp() == true) { // Checks if block is a PowerUpBlock
+                    powerDrops.AddEntity(new PowerUpDrop( 
+                        // powerUpDrop is instantiated with positions and image
                         new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
                         new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));
                     }
                     block.DeleteEntity();
                 }
             });
-            //deletes all balls that are deleted
+            // Deletes all balls that are deleted
             balls.Iterate(ball => {
                 if (ball.IsDeleted()) {
                     ball.DeleteEntity();
                 }
             });
+            // Deletes all drops that are deleted 
             powerDrops.Iterate(drop => {
                 if (drop.IsDeleted()) {
                     drop.DeleteEntity();
@@ -287,44 +287,55 @@ namespace Breakout.BreakoutStates {
 
 
         /// <summary>
-        /// Checks if there are onl unbreakable blocks in blocks
+        /// Checks if there are only unbreakable blocks in level
         /// </summary>
         /// <returns></returns>
-        private bool OnlyUnbreakBlocks(){
+        private bool OnlyUnbreakBlocks() {
             bool onlyUnbreakBlocks = true;
-            foreach(Block block in blocks) {
-                if (block is not UnbreakableBlock){
+            foreach(Block block in blocks) { 
+                if (block is not UnbreakableBlock) {
                     onlyUnbreakBlocks = false;
                 }
             }
-            return onlyUnbreakBlocks;
+            return onlyUnbreakBlocks; 
         }
-    
-        public Ball CreateBall(){
-            Ball ball = new Ball(
+
+        /// <summary>
+        /// Creates a ball 
+        /// </summary>
+        /// <returns> Returns a ball </returns>
+        public Ball CreateBall() {
+            Ball ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, ball);
             return ball;
         }
 
-
-        private void MoveBalls(){
-            foreach (Ball ball in balls){
+        /// <summary>
+        /// Moves all balls in the game
+        /// </summary>
+        private void MoveBalls() {
+            foreach (Ball ball in balls) { 
                 ball.Move(player, blocks);
             }
         }
 
-        private void ResetBalls(){
+        /// <summary>
+        /// Deletes all balls and creates a new
+        /// </summary>
+        private void ResetBalls() {
             balls.Iterate(ball => {
-                    ball.DeleteEntity();
+                    ball.DeleteEntity(); 
             });
             balls.AddEntity(CreateBall());
         }
 
-
-
-        private void CheckBallsEmpty(){
+        /// <summary>
+        /// Checks if there af no more balls in game and decreases life of player. 
+        /// Creates new ball
+        /// </summary>
+        private void CheckBallsEmpty() {
             if (balls.CountEntities() <= 0) {
                 BreakoutBus.GetBus().RegisterEvent (new GameEvent {
                         EventType = GameEventType.PlayerEvent, Message = "DecLife"
@@ -333,12 +344,14 @@ namespace Breakout.BreakoutStates {
             }
         }
 
-
-        private void GameLost(){
+        /// <summary>
+        /// Game over and lost. Sends points for use in lose screen. State is changed
+        /// </summary>
+        private void GameLost() {
             SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
+                        new GameEvent {
                             EventType = GameEventType.GameStateEvent, 
                             Message = "CHANGE_STATE",
                             StringArg1 = "GAME_LOST"
@@ -347,11 +360,14 @@ namespace Breakout.BreakoutStates {
         }
 
 
-        private void GameWon(){
+        /// <summary>
+        /// Game over and won. Sends points for use in win screen. State is changed
+        /// </summary>
+        private void GameWon() {
             SendPoints();
             ResetState();
             BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
+                        new GameEvent {
                             EventType = GameEventType.GameStateEvent, 
                             Message = "CHANGE_STATE",
                             StringArg1 = "GAME_WON"
@@ -360,10 +376,13 @@ namespace Breakout.BreakoutStates {
         }
 
 
-        private void GamePaused(){
+        /// <summary>
+        /// Game pauses. Changes state to pause screen. Pauses timer. 
+        /// </summary>
+        private void GamePaused() {
             StaticTimer.PauseTimer();
             BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
+                        new GameEvent {
                             EventType = GameEventType.GameStateEvent, 
                             Message = "CHANGE_STATE",
                             StringArg1 = "GAME_PAUSED"
@@ -372,9 +391,12 @@ namespace Breakout.BreakoutStates {
         }
 
 
-        private void SendPoints(){
+        /// <summary>
+        /// Sends points to game over screens
+        /// </summary>
+        private void SendPoints() {
             BreakoutBus.GetBus().RegisterEvent(
-                        new GameEvent{
+                        new GameEvent {
                             EventType = GameEventType.ControlEvent, 
                             Message = "GamePoints",
                             IntArg1 = points.GetPoints()
@@ -382,21 +404,28 @@ namespace Breakout.BreakoutStates {
             );
         }
         
+
+        /// <summary>
+        /// Moves all powerups and lets player catch them
+        /// </summary>
         public void PowerUpIterate() {
             foreach (PowerUpDrop Drop in powerDrops) {
                 Drop.Move();
                 Drop.Consume(player,Drop.powerUpNumber);
             }
         }
-        
-    
-        public void HandleTime(){
-            if (hasTime){
+
+
+        /// <summary>
+        /// Creates time in game 
+        /// </summary>
+        public void HandleTime() {
+            if (hasTime) {
                 currentTime = StaticTimer.GetElapsedSeconds();
                 timeLeft = Convert.ToInt32(startTime-currentTime);
                 timeText = new Text(timeLeft.ToString(), new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
                 timeText.SetColor(new Vec3I(255,0,0));
-            }else{
+            } else {
                 timeText = new Text("", new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
                 timeText.SetColor(new Vec3I(255,0,0));
             }

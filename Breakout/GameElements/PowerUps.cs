@@ -8,6 +8,9 @@ namespace Breakout {
     public class PowerUps {
       
 
+        /// <summary>
+        /// Creates an event that is caught by player to increase life
+        /// </summary>
         public void LifePowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
@@ -16,6 +19,9 @@ namespace Breakout {
             });
         }
 
+        /// <summary>
+        /// Creates an event that is caught by player to increase width
+        /// </summary>
         public void WidePowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
@@ -24,6 +30,9 @@ namespace Breakout {
             });
         }
 
+        /// <summary>
+        /// Creates an event that is caught by player to increase speed
+        /// </summary>
         public void PlayerSpeedPowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
@@ -32,6 +41,9 @@ namespace Breakout {
             });
         }
 
+        /// <summary>
+        /// Creates an event that is caught by ball to increase speed
+        /// </summary>
         public void DoubleSpeedPowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
@@ -40,6 +52,9 @@ namespace Breakout {
             });
         }
 
+        /// <summary>
+        /// Creates an event that is caught by gamerunning to increase time by 10
+        /// </summary>
         public void MoreTimePowerUp() {
             BreakoutBus.GetBus().RegisterEvent (
                 new GameEvent {
