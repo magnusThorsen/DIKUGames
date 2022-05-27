@@ -101,7 +101,6 @@ namespace Breakout {
                 switch (gameEvent.Message) { //switches on message, only does something with 
                                              //KeyPress and KeyRelease
                     case "GamePoints": 
-                        System.Console.WriteLine("game points: " + gameEvent.IntArg1);
                         points = gameEvent.IntArg1;
                         break;
                     case "GetPoints":
