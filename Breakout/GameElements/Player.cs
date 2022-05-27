@@ -186,6 +186,10 @@ namespace Breakout {
         }
 
 
+        /// <summary>
+        /// Decreases the life field of player, and if life is under or equal to zero
+        /// sends out an event that when caught by gamerunning will end the game.
+        /// </summary>
         private void DecLife(){
             life--;
             if (life <= 0){
@@ -198,10 +202,16 @@ namespace Breakout {
             }
         }
 
+        /// <summary>
+        /// Increases the life field by one
+        /// </summary>
         private void IncLife(){
             life++;
         }
 
+        /// <summary>
+        /// doubles the exstent of player if it has not already been, and saves the time it is done.
+        /// </summary>
         private void IncWidth() {
             if (isWide == false) {
                 isWide = true;
@@ -210,6 +220,9 @@ namespace Breakout {
             }
         }
 
+        /// <summary>
+        /// If the player is not already fast its speed is doubled by two and the time is saved.
+        /// </summary>
         private void IncSpeed() {
             if (isFast == false) {
                 isFast = true;
@@ -218,6 +231,10 @@ namespace Breakout {
             }
         }
 
+        /// <summary>
+        /// Updates the player powerups by cheching if an powerup is active and if the appropriate
+        /// tie has passed to end the poweeup.
+        /// </summary>
         private void UpdatePlayerPowerups(){
                 if (isWide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
