@@ -96,7 +96,6 @@ namespace Breakout {
                 }
             }
 
-
             if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
                 switch (gameEvent.Message) { //switches on message, only does something with 
                                              //KeyPress and KeyRelease

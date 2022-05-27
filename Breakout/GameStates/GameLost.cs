@@ -133,6 +133,10 @@ namespace Breakout.BreakoutStates {
             }
         }
 
+        /// <summary>
+        /// Processes the gameEvent
+        /// </summary>
+        /// <param name="gameEvent">the event to process</param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
                 switch (gameEvent.Message) { //switches on message, only does something with 

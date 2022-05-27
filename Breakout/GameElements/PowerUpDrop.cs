@@ -49,15 +49,28 @@ namespace Breakout {
         }
         
 
+        /// <summary>
+        /// renders the powerupdrop.
+        /// </summary>
         public void Render() {
             this.RenderEntity();
         }
 
+        /// <summary>
+        /// Moces the powerupdrop down.
+        /// </summary>
         public void Move() {
             shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(0.0f, Yvelocity);
             shape.Move();
         }
 
+
+        /// <summary>
+        /// If there is collision bewteen player and the powerupdrop the appropriate powerup is
+        /// activated by calling Powerups functions that in turn creates an event.
+        /// </summary>
+        /// <param name="player">The player to check collision with</param>
+        /// <param name="number">the number of the powerup, deciding what the powerup is</param>
         public void Consume(Player player, int number) {
             if (CollisionDetection.Aabb(shape, player.Shape).Collision) {
                 switch (number) {
