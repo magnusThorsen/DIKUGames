@@ -133,6 +133,10 @@ namespace Breakout.BreakoutStates {
             }
         }
 
+        /// <summary>
+        /// Processes a single event
+        /// </summary>
+        /// <param name="gameEvent">the event to process</param>
         public void ProcessEvent(GameEvent gameEvent){
             if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
                 switch (gameEvent.Message) { //switches on message, only does something with 
@@ -146,7 +150,9 @@ namespace Breakout.BreakoutStates {
             }
         }
 
-
+        /// <summary>
+        /// Creates an event that is caught in Game
+        /// </summary>
         private void GetPoints(){
             BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{
