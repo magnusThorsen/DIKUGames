@@ -256,7 +256,7 @@ namespace Breakout.BreakoutStates {
 
 
         /// <summary>
-        /// removes all deleted Blocks in block.
+        /// removes all deleted entities.
         /// </summary>
         private void RemoveDeletedEntities() {
             //deletes all blocks that are deleted
