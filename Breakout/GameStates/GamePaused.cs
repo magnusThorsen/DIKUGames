@@ -15,7 +15,7 @@ namespace Breakout.BreakoutStates {
         private Text[] pauseButtons;
         private Text ResumeText;
         private Text QuitText;
-        private string SelectedButton;
+        public string SelectedButton;
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;

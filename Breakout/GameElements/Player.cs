@@ -12,7 +12,7 @@ namespace Breakout {
         private float moveLeft; 
         private float moveRight;
         private float MOVEMENT_SPEED;
-        private int life;
+        public int life;
         private Text display;
         private int timeSpeed;
         private int timeWidth;

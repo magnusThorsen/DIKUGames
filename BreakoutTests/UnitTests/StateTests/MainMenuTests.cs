@@ -30,11 +30,17 @@ namespace BreakoutTests {
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
 
-        [Test]
-        public void TestSwitchState() {
-            stateMachine.SwitchState(GameStateType.GameRunning);
-            stateMachine.SwitchState(GameStateType.MainMenu);
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
+         [Test]
+        public void TestGetInstance() {
+            Assert.That(MainMenu.GetInstance(), Is.InstanceOf<MainMenu>());
         }
+
+        [Test]
+            public void TestHandleKeyEvent() {
+                stateMachine.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
+                BreakoutBus.GetBus().ProcessEventsSequentially(); 
+                Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
+            }
+
     }
 }

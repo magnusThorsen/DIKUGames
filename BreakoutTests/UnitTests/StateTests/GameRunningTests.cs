@@ -19,6 +19,7 @@ namespace BreakoutTests {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             stateMachine = new StateMachine();
             gameRunning = new GameRunning();
+            GameRunning.GetInstance();
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
 
@@ -27,26 +28,19 @@ namespace BreakoutTests {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             stateMachine = new StateMachine();
             gameRunning = new GameRunning();
+            GameRunning.GetInstance();
             BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
 
         [Test]
-        public void TestSwitchStateFromMainMenu() {
-            stateMachine.SwitchState(GameStateType.GameRunning);
-            BreakoutBus.GetBus().ProcessEventsSequentially();
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
+        public void TestGetInstance() {
+            Assert.That(GameRunning.GetInstance(), Is.InstanceOf<GameRunning>());
         }
 
-        [Test]
-        public void TestSwitchStateToMainMenu() {
-            stateMachine.SwitchState(GameStateType.GameRunning);
-            stateMachine.SwitchState(GameStateType.MainMenu);
-            BreakoutBus.GetBus().ProcessEventsSequentially(); 
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
-        }
 
         [Test]
             public void TestHandleKeyEvent() {
+                stateMachine.SwitchState(GameStateType.GameRunning);
                 stateMachine.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Escape);
                 BreakoutBus.GetBus().ProcessEventsSequentially(); 
                 Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());

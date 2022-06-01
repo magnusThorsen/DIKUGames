@@ -36,5 +36,16 @@ namespace BreakoutTests {
             stateMachine.SwitchState(GameStateType.GameRunning);
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
         }
+
+        [Test]
+        public void TestOneActiveState() {
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameWon>());
+            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameLost>());
+        }
+
+
     }
 }

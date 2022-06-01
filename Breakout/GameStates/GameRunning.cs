@@ -425,5 +425,14 @@ namespace Breakout.BreakoutStates {
                 timeText.SetColor(new Vec3I(255,0,0));
             }
         }
+
+
+        /// <summary>
+        /// Returns player for testing
+        /// </summary>
+        /// <returns> Returns a player </returns>
+        public Player GetPlayer() {
+            return player;
+        }
     }
 }

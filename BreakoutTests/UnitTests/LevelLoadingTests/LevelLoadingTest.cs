@@ -31,7 +31,7 @@ public class LevelLoadingTest{
 
     [Test]
     public void TestFileNotFound(){
-        Assert.AreEqual(blocks, levelLoader.LoadLevel("FileNot Found.txt"));
+        Assert.Throws<DirectoryNotFoundException>(() => levelLoader.LoadLevel("FileNot Found.txt"));
     }
 
 

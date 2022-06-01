@@ -68,8 +68,9 @@ namespace BreakoutTests {
 
         [Test]
         public void TestBounceBlock() {
-            ball.shape.Position = new Vec2F(0.5f, 0.5f);
             ball.shape.Direction.Y = 0.01f;
+            ball.shape.Position = new Vec2F(0.5f, 0.46f);
+            block.shape.Position = new Vec2F(0.5f, 0.5f);
             Assert.AreEqual(ball.shape.Direction.Y, (-0.01f));            
         }
 
@@ -98,21 +99,21 @@ namespace BreakoutTests {
         [Test]
         public void TestBounceWallTop() {
             var startDirection = ball.shape.Direction.Y;
-            ball.shape.Position.Y = 1.0f;
+            ball.shape.Position.Y = (1.0f-ball.shape.Extent.Y);
             Assert.AreEqual(startDirection, (-ball.shape.Direction.Y));
         }
 
         [Test]
-        public void TestWallBottom() {
-            ball.shape.Position.Y = -0.1f;
-            Assert.True(ball.IsDeleted());
+        public void TestBounceWallBottom() {
+            ball.shape.Position.Y = 0.0f;
+            Assert.IsTrue(block.IsDeleted() == true);
         }
 
         [Test]
         public void TestResetBall() {
             ball.shape.Position = new Vec2F(0.7f, 0.05f);
             ball.Reset();
-            Assert.AreEqual(ball.shape.Position, (0.3f, 0.03f));
+            Assert.AreEqual(ball.shape.Position, new Vec2F(0.3f, 0.03f));
         }
     }
 }

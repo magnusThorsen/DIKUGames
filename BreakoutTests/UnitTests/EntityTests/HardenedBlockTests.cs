@@ -19,7 +19,7 @@ namespace BreakoutTests {
         public HardenedBlockTest() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
-            image = new Image(@"../Breakout/Assets/Images/blue-block.png");
+            image = new Image(Path.Combine("Assets", "Images", "darkgreen-block-damaged.png"));
             block = new HardenedBlock(shape, image, "darkgreen-block.png");
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
@@ -28,8 +28,8 @@ namespace BreakoutTests {
         public void InitiateNormalBlock() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
-            image = new Image(@"../Breakout/Assets/Images/blue-block.png");
-            block = new HardenedBlock(shape, image, "darkgreen-block.png");
+            image = new Image(Path.Combine("Assets", "Images", "darkgreen-block-damaged.png"));
+            block = new HardenedBlock(shape, image, "darkgreen");
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
 
         }

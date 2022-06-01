@@ -12,40 +12,43 @@ namespace BreakoutTests {
 
     [TestFixture]
     public class PointsTest {
-        private Points points;
+        private Points point;
         private Text display;
 
         public PointsTest() {
-            display = new Text (points.ToString(), new Vec2F(0.5f,0.5f),new Vec2F(0.5f,0.5f));
+            DIKUArcade.GUI.Window.CreateOpenGLContext();
+            point = new Points(new Vec2F(0.6f,0.5f), new Vec2F(0.5f,0.5f));
+            display = new Text (point.ToString(), new Vec2F(0.5f,0.5f),new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
         }
 
         [SetUp]
         public void InitiatePoints() {
-            display = new Text (points.ToString(), new Vec2F(0.5f,0.5f), new Vec2F(0.5f,0.5f));
+            DIKUArcade.GUI.Window.CreateOpenGLContext();
+            point = new Points(new Vec2F(0.6f,0.5f), new Vec2F(0.5f,0.5f));
+            display = new Text (point.ToString(), new Vec2F(0.5f,0.5f), new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
-
         }
 
         //Testing if points can be added as it should.
         [Test]
         public void TestAddPoints() {
-            points.AddPoints(5);
-            Assert.AreEqual(points, 5);
+            point.AddPoints(5);
+            Assert.AreEqual(point.GetPoints(), 5);
         }
 
         //Testing if points can be resetted to 0 as it should.
         [Test]
         public void TestResetPoints() {
-            points.AddPoints(5);
-            points.ResetPoints();
-            Assert.AreEqual(points, 0);
+            point.AddPoints(5);
+            point.ResetPoints();
+            Assert.AreEqual(point.GetPoints(), 0);
         }
 
         //Testing if the amount points can be returned as it should.
         public void TestGetPoints() {
-            points.AddPoints(5);
-            Assert.AreEqual(points.GetPoints(), 5);
+            point.AddPoints(5);
+            Assert.AreEqual(point.GetPoints(), 5);
         }
     }
 }
