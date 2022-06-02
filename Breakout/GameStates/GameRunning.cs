@@ -13,18 +13,18 @@ namespace Breakout.BreakoutStates {
     public class GameRunning : IGameState, IGameEventProcessor {
 
         private static GameRunning instance = null;
-        private Player player{get;set;} 
+        private Player player{get; set;} 
         private LevelLoader levelLoader;
-        private EntityContainer<Block> blocks {get; set;}
+        public EntityContainer<Block> blocks {get; private set;}
         public bool gameOver{get;set;}
         private int level;
         private Points points;
-        private EntityContainer<Ball> balls;
-        private int maxBalls;
+        public EntityContainer<Ball> balls{get;private set;}
+        public int maxBalls;
         private EntityContainer<PowerUpDrop> powerDrops;
         private double currentTime;
         private Text timeText;
-        private int timeLeft;
+        public int timeLeft;
         public double startTime;
         private bool hasTime;
 
@@ -216,7 +216,7 @@ namespace Breakout.BreakoutStates {
         /// <summary>
         /// checks if the game is over. 
         /// </summary>
-        private void CheckGameOver() {
+        public void CheckGameOver() {
             if(gameOver){
                 GameLost();
             }
@@ -433,6 +433,22 @@ namespace Breakout.BreakoutStates {
         /// <returns> Returns a player </returns>
         public Player GetPlayer() {
             return player;
+        }
+
+        /// <summary>
+        /// Returns LevelLoader for testing
+        /// </summary>
+        /// <returns> Returns a player </returns>
+        public LevelLoader GetLevelLoader() {
+            return levelLoader;
+        }
+
+        /// <summary>
+        /// Returns points for testing
+        /// </summary>
+        /// <returns> Returns a player </returns>
+        public Points GetPointsField() {
+            return points;
         }
     }
 }

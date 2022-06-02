@@ -12,29 +12,29 @@ using DIKUArcade.Input;
 namespace BreakoutTests {
 
     [TestFixture]
-    public class TestGamePaused {
-        private GamePaused gamePaused;
-        public TestGamePaused() {
+    public class TestGameLost {
+        private GameLost gameLost;
+        public TestGameLost() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            gamePaused = new GamePaused();
+            gameLost = new GameLost();
         }
 
         [SetUp]
-        public void InitiateGamePaused() {
+        public void InitiateGameLost() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            gamePaused = new GamePaused();
+            gameLost = new GameLost();
         }
         
         [Test]
         public void TestGetInstance() {
-            Assert.That(GamePaused.GetInstance(), Is.InstanceOf<GamePaused>());
+            Assert.That(GameLost.GetInstance(), Is.InstanceOf<GameLost>());
         }
 
 
         [Test]
         public void TestHandleKeyEvent() {
-            gamePaused.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
-            Assert.True(gamePaused.SelectedButton == "Resume");
+            gameLost.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
+            Assert.True(gameLost.SelectedButton == "Main Menu");
         }
     }
 }

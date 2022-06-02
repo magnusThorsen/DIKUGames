@@ -12,24 +12,28 @@ using DIKUArcade.Input;
 namespace BreakoutTests {
     [TestFixture]
     public class TestGameRunning {
-        private StateMachine stateMachine;
         private GameRunning gameRunning;
+        private EntityContainer<Block>testBlocks;
+        private EntityContainer<Ball>testBalls;
+        private KeyboardAction keyPress;
+        private KeyboardKey key;
+
 
         public TestGameRunning() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            stateMachine = new StateMachine();
             gameRunning = new GameRunning();
             GameRunning.GetInstance();
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
+            testBlocks = new EntityContainer<Block>(288);
+            testBalls = new EntityContainer<Ball>(gameRunning.maxBalls);
         }
 
         [SetUp]
         public void InitiateGameRunning() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            stateMachine = new StateMachine();
             gameRunning = new GameRunning();
             GameRunning.GetInstance();
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
+            testBlocks = new EntityContainer<Block>(288);
+            testBalls = new EntityContainer<Ball>(gameRunning.maxBalls);
         }
 
         [Test]
@@ -37,13 +41,43 @@ namespace BreakoutTests {
             Assert.That(GameRunning.GetInstance(), Is.InstanceOf<GameRunning>());
         }
 
+        [Test]
+        public void TestClassesInGameRunning() {
+            Assert.True(gameRunning.GetPlayer() != null);
+            Assert.True(gameRunning.GetLevelLoader != null);
+            Assert.True(gameRunning.GetPointsField() != null);
+        }
 
         [Test]
-            public void TestHandleKeyEvent() {
-                stateMachine.SwitchState(GameStateType.GameRunning);
-                stateMachine.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Escape);
-                BreakoutBus.GetBus().ProcessEventsSequentially(); 
-                Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());
-            }
+        public void TestNewLevel() {
+            testBlocks = gameRunning.blocks;
+            testBalls = gameRunning.balls;
+            keyPress = KeyboardAction.KeyPress;
+            key = KeyboardKey.G;
+            gameRunning.HandleKeyEvent(keyPress, key);
+            key = KeyboardKey.Space;
+            gameRunning.HandleKeyEvent(keyPress, key);
+            Assert.True(gameRunning.blocks != testBlocks);
+            Assert.True(gameRunning.balls != testBalls);
+        }
+
+        [Test]
+        public void TestGameOver() {
+            gameRunning.gameOver = true;
+            gameRunning.CheckGameOver();
+            testBlocks = gameRunning.blocks;
+            Assert.True(testBlocks.CountEntities() == 0);
+        }
+
+        [Test]
+        public void TestTimerDone() {
+            gameRunning.timeLeft = 0; 
+            gameRunning.CheckGameOver();
+            Assert.True(testBlocks.CountEntities() == 0);
+        }
+
+
+
+
     }
 }

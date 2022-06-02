@@ -15,7 +15,7 @@ namespace Breakout.BreakoutStates {
         private Text NewGameText;
         private Text QuitText;
         private Text wonGameText;
-        private string SelectedButton;
+        public string SelectedButton{get;private set;}
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;
