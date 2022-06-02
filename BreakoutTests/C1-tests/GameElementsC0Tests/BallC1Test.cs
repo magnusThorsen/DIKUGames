@@ -189,11 +189,8 @@ namespace BreakoutTests {
         }
 
         [Test]
-        public void ProcessEventTest1() {
-            BreakoutBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.InputEvent, 
-                        Message = "LAUNCH_BALL"
-                    });
+        public void ProcessEventTest2() {
+        
 
 
 
