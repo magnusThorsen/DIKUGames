@@ -15,7 +15,7 @@ namespace Breakout {
         private bool moving;
         private Entity entity;
         private float hitEdge;
-        private float startPos;
+        public float startPos{get;private set;}
         private bool isFast;
         private int timeSpeed;
 
@@ -229,7 +229,7 @@ namespace Breakout {
         /// Checks if the ball is fast and if the appropriate time has passed 
         /// and if so resets the poweruptimer and fields and decreases the speed
         /// </summary>
-        private void UpdateBallPowerups(){
+        public void UpdateBallPowerups(){
             if (isFast && timeSpeed + 10  < System.Convert.ToInt32(
                 StaticTimer.GetElapsedSeconds())){
                 timeSpeed = -100;

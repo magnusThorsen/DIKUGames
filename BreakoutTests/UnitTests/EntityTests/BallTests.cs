@@ -86,6 +86,7 @@ namespace BreakoutTests {
         public void TestBounceWallLeft() {
             var startDirection = ball.shape.Direction.X;
             ball.shape.Position.X = -0.1f;
+            ball.Move(player, blocks);
             Assert.AreEqual(startDirection, (-ball.shape.Direction.X));
         }
 
@@ -93,6 +94,7 @@ namespace BreakoutTests {
         public void TestBounceWallRight() {
             var startDirection = ball.shape.Direction.X;
             ball.shape.Position.X = 1.0f;
+            ball.Move(player, blocks);
             Assert.AreEqual(startDirection, (-ball.shape.Direction.X));
         }
 
@@ -100,12 +102,15 @@ namespace BreakoutTests {
         public void TestBounceWallTop() {
             var startDirection = ball.shape.Direction.Y;
             ball.shape.Position.Y = (1.0f-ball.shape.Extent.Y);
+            ball.Move(player, blocks);
             Assert.AreEqual(startDirection, (-ball.shape.Direction.Y));
         }
 
         [Test]
         public void TestBounceWallBottom() {
-            ball.shape.Position.Y = 0.0f;
+            ball.shape.Position.Y = 0.1f;
+             ball.shape.Direction.Y = -1;
+            ball.Move(player, blocks);
             Assert.IsTrue(block.IsDeleted() == true);
         }
 
