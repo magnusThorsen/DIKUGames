@@ -12,22 +12,17 @@ using DIKUArcade.Input;
 namespace BreakoutTests {
     [TestFixture]
     public class TestMainMenu {
-        private StateMachine stateMachine;
         private MainMenu mainMenu;
         public TestMainMenu() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            stateMachine = new StateMachine();
             mainMenu = new MainMenu();
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
         
 
         [SetUp]
         public void InitiateMainMenu() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            stateMachine = new StateMachine();
             mainMenu = new MainMenu();
-            BreakoutBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         }
 
          [Test]
@@ -36,11 +31,11 @@ namespace BreakoutTests {
         }
 
         [Test]
-            public void TestHandleKeyEvent() {
-                stateMachine.ActiveState.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
-                BreakoutBus.GetBus().ProcessEventsSequentially(); 
-                Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
-            }
+        public void TestHandleKeyEvent() {
+            MainMenu.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
+            System.Console.WriteLine(mainMenu.SelectedButton);
+            Assert.True(MainMenu.GetInstance().SelectedButton == "New Game");
+        }
 
     }
 }

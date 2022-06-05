@@ -40,10 +40,11 @@ namespace BreakoutTests {
         [Test]
         public void TestOneActiveState() {
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameRunning>());
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GamePaused>());
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameWon>());
-            Assert.That(stateMachine.ActiveState, Is.InstanceOf<GameLost>());
+            Assert.True(stateMachine.ActiveState.GetType() != typeof(GameRunning));
+            Assert.True(stateMachine.ActiveState.GetType() != typeof(GamePaused));
+            Assert.True(stateMachine.ActiveState.GetType() != typeof(GameLost));
+            Assert.True(stateMachine.ActiveState.GetType() != typeof(GameWon));
+
         }
 
 

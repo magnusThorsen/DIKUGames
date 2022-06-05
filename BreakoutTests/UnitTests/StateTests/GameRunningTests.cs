@@ -14,9 +14,6 @@ namespace BreakoutTests {
     public class TestGameRunning {
         private GameRunning gameRunning;
         private EntityContainer<Block>testBlocks;
-        private EntityContainer<Ball>testBalls;
-        private KeyboardAction keyPress;
-        private KeyboardKey key;
 
 
         public TestGameRunning() {
@@ -24,7 +21,6 @@ namespace BreakoutTests {
             gameRunning = new GameRunning();
             GameRunning.GetInstance();
             testBlocks = new EntityContainer<Block>(288);
-            testBalls = new EntityContainer<Ball>(gameRunning.maxBalls);
         }
 
         [SetUp]
@@ -33,7 +29,6 @@ namespace BreakoutTests {
             gameRunning = new GameRunning();
             GameRunning.GetInstance();
             testBlocks = new EntityContainer<Block>(288);
-            testBalls = new EntityContainer<Ball>(gameRunning.maxBalls);
         }
 
         [Test]
@@ -43,36 +38,43 @@ namespace BreakoutTests {
 
         [Test]
         public void TestClassesInGameRunning() {
-            Assert.True(gameRunning.GetPlayer() != null);
-            Assert.True(gameRunning.GetLevelLoader != null);
-            Assert.True(gameRunning.GetPointsField() != null);
+            Assert.True(GameRunning.GetInstance().GetPlayer() != null);
+            Assert.True(GameRunning.GetInstance().GetLevelLoader() != null);
+            Assert.True(GameRunning.GetInstance().GetPointsField() != null);
         }
 
         [Test]
         public void TestNewLevel() {
-            testBlocks = gameRunning.blocks;
-            testBalls = gameRunning.balls;
-            keyPress = KeyboardAction.KeyPress;
-            key = KeyboardKey.G;
-            gameRunning.HandleKeyEvent(keyPress, key);
-            key = KeyboardKey.Space;
-            gameRunning.HandleKeyEvent(keyPress, key);
-            Assert.True(gameRunning.blocks != testBlocks);
-            Assert.True(gameRunning.balls != testBalls);
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+
+            GameRunning.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.G);
+            Assert.True(testBlocks.CountEntities() == 0);
         }
 
         [Test]
         public void TestGameOver() {
-            gameRunning.gameOver = true;
-            gameRunning.CheckGameOver();
-            testBlocks = gameRunning.blocks;
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().gameOver = true;
+            GameRunning.GetInstance().CheckGameOver();
             Assert.True(testBlocks.CountEntities() == 0);
         }
 
         [Test]
         public void TestTimerDone() {
-            gameRunning.timeLeft = 0; 
-            gameRunning.CheckGameOver();
+            GameRunning.GetInstance().timeLeft = 0; 
+            GameRunning.GetInstance().CheckGameOver();
             Assert.True(testBlocks.CountEntities() == 0);
         }
 

@@ -12,12 +12,12 @@ namespace Breakout {
         private float Yvelocity;
         private static Vec2F extend; 
         public DynamicShape shape {get;}
-        private bool moving;
+        public bool moving;
         private Entity entity;
         private float hitEdge;
         public float startPos{get;private set;}
-        private bool isFast;
-        private int timeSpeed;
+        public bool isFast{get;private set;}
+        public int timeSpeed;
 
         public Ball(DynamicShape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;

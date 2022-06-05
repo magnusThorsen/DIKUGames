@@ -3,12 +3,11 @@ using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade.Events;
 using DIKUArcade.Physics;
 
 namespace Breakout {
 
-    public class PowerUpDrop : Entity, IGameEventProcessor {
+    public class PowerUpDrop : Entity {
         private float Yvelocity;
         private static Vec2F extend; 
         public DynamicShape shape {get;}
@@ -57,7 +56,7 @@ namespace Breakout {
         }
 
         /// <summary>
-        /// Moces the powerupdrop down.
+        /// Moves the powerupdrop down.
         /// </summary>
         public void Move() {
             shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(0.0f, Yvelocity);
@@ -93,19 +92,6 @@ namespace Breakout {
             }
                 this.DeleteEntity();
             }
-        }
-
-        /// <summary>
-        /// processes a gameEvent
-        /// </summary>
-        /// <param name="gameEvent">the gameEvent to process</param>
-        public void ProcessEvent(GameEvent gameEvent){
-            if (gameEvent.EventType == GameEventType.InputEvent) { 
-                switch (gameEvent.Message) {  
-                    default:
-                        break;
-                }
-            } 
         }
     }
 }

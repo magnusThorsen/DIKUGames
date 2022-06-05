@@ -9,16 +9,16 @@ namespace Breakout {
 
     public class Player : Entity, IGameEventProcessor {
         public Shape shape { get;}
-        private float moveLeft; 
+        private float moveLeft;
         private float moveRight;
         private float MOVEMENT_SPEED;
         public int life;
         private Text display;
-        private int timeSpeed;
-        private int timeWidth;
+        public int timeSpeed;
+        public int timeWidth;
         private float windowLimit;
         public bool isWide;
-        private bool isFast;
+        public bool isFast;
 
         public Player(Shape shape, IBaseImage image) : base(shape, image) {
             this.shape = shape;
@@ -248,8 +248,12 @@ namespace Breakout {
                 }
         }
 
-        public float C0GetWindowLimit() {
+        public float C1GetWindowLimit() {
             return windowLimit;
+        }
+
+        public void C1UpdatePlayerPowerups(){
+            UpdatePlayerPowerups();
         }
     }
 }

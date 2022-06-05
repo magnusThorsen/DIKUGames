@@ -14,7 +14,7 @@ namespace Breakout.BreakoutStates {
         private Text[] menuButtons;
         private Text NewGameText;
         private Text QuitText;
-        private string SelectedButton;
+        public string SelectedButton{get;private set;}
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;

@@ -33,8 +33,8 @@ namespace BreakoutTests {
 
         [Test]
         public void TestHandleKeyEvent() {
-            gamePaused.HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
-            Assert.True(gamePaused.SelectedButton == "Resume");
+            GamePaused.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Up);
+            Assert.True(GamePaused.GetInstance().SelectedButton == "Resume");
         }
     }
 }
