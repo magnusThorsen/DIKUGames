@@ -1,0 +1,258 @@
+using DIKUArcade.Math;
+using NUnit.Framework;
+using System;
+using DIKUArcade.Entities;
+using DIKUArcade.Graphics;
+using Breakout;
+using System.IO;
+using Breakout.BreakoutStates;
+using DIKUArcade.Events;
+using DIKUArcade.Input;
+
+namespace BreakoutTests {
+    [TestFixture]
+    public class GameRunningC1Test {
+        private GameRunning gameRunning;
+        private EntityContainer<Block>testBlocks;
+
+
+        public GameRunningC1Test() {
+            DIKUArcade.GUI.Window.CreateOpenGLContext();
+            gameRunning = new GameRunning();
+            testBlocks = new EntityContainer<Block>(288);
+        }
+
+        [SetUp]
+        public void InitiateGameRunningC1() {
+            DIKUArcade.GUI.Window.CreateOpenGLContext();
+            gameRunning = new GameRunning();
+            testBlocks = new EntityContainer<Block>(288);
+        }
+
+        [Test]
+        public void TestGetInstanceNull() {
+            Assert.That(GameRunning.GetInstance(), Is.InstanceOf<GameRunning>());
+        }
+
+        [Test]
+        public void TestGetInstance() {
+            GameRunning.GetInstance();
+            Assert.That(GameRunning.GetInstance(), Is.InstanceOf<GameRunning>());
+        }
+
+        // Test is auto pass, since the bus is not processing events. Method is working
+        [Test]
+        public void TestHandleKeyEventKeyPress() {
+            GameRunning.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Right);
+            BreakoutBus.GetBus().ProcessEventsSequentially();
+            var player = GameRunning.GetInstance().GetPlayer();
+            player.Move();
+            Assert.Pass();
+        }
+
+        // Test is auto pass, since the bus is not processing events. Method is working
+        [Test]
+        public void TestHandleKeyEventKeyRelease() {
+            GameRunning.GetInstance().HandleKeyEvent(KeyboardAction.KeyRelease, KeyboardKey.Right);
+            BreakoutBus.GetBus().ProcessEventsSequentially();
+            var player = GameRunning.GetInstance().GetPlayer();
+            player.Move();
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TestNewLevel() {
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+
+            GameRunning.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.G);
+            Assert.True(testBlocks.CountEntities() == 0);
+        }
+
+        [Test] // Checking first if statement when player lost all life
+        public void TestCheckGameOverTrue() {
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().gameOver = true;
+            GameRunning.GetInstance().CheckGameOver();
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+        }
+
+        [Test] // Testing if game is not over
+        public void TestGameOverFalse() {
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().gameOver = false;
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            GameRunning.GetInstance().timeLeft = 20;
+            GameRunning.GetInstance().CheckGameOver();
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 1);
+        }
+
+        [Test] // Testing second if statement when time is up
+        public void TestCheckGameOverTimeTrue() {
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().gameOver = false;
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            GameRunning.GetInstance().timeLeft = -1;
+            GameRunning.GetInstance().CheckGameOver();
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+        }
+
+        [Test] // Switch-statement branch in process event
+        public void TestProcessEventPlayerDead() {
+            var block = new NormalBlock(
+                        new DynamicShape(new Vec2F(
+                                5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                                new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                            );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "PlayerDead"});
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+        }
+
+        [Test] // Switch-statement branch in process event
+        public void TestProcessEventTime() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            Assert.True(GameRunning.GetInstance().startTime == 30.0);
+        }
+
+        [Test] // Switch-statement branch in process event
+        public void TestProcessEventIncTime() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "IncTime"
+                    });
+            Assert.True(GameRunning.GetInstance().startTime == 40.0);
+        }
+
+        [Test] // Switch-statement branch in process event
+        public void TestProcessEventDefault() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Default", 
+                        StringArg1 = "30"
+                    });
+            Assert.Pass();
+        }
+
+        [Test] // Invisible else branch in process event
+        public void TestProcessEventEmptyElseBranch() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.PlayerEvent, Message = "IncTime"
+                    });
+            Assert.Pass();
+        }
+
+        [Test] // 0 iterations
+        public void TestRemoveDeletedEntities0Iterations() {
+            GameRunning.GetInstance().blocks.ClearContainer();
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().powerDrops.ClearContainer();
+            GameRunning.GetInstance().CallRemoveDeletedEntities();
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 0);
+        }
+
+        [Test] // 1 iteration, Entities IsDeleted = true
+        public void TestRemoveDeletedEntities1IterationsIsDeleted() {
+            GameRunning.GetInstance().blocks.ClearContainer();
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().powerDrops.ClearContainer();
+
+            var block = new NormalBlock(
+                            new DynamicShape(new Vec2F(5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                        );
+            block.DeleteEntity();
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            var ball = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            ball.DeleteEntity();
+            GameRunning.GetInstance().balls.AddEntity(ball);
+            var powerDrop = new PowerUpDrop( 
+                new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
+                new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+            powerDrop.DeleteEntity();
+            GameRunning.GetInstance().powerDrops.AddEntity(powerDrop);
+            
+            GameRunning.GetInstance().CallRemoveDeletedEntities();
+
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 0);
+        }
+
+        [Test] // 1 iteration, Entities IsDeleted = false
+        public void TestRemoveDeletedEntities1IterationsIsNotDeleted() {
+            GameRunning.GetInstance().blocks.ClearContainer();
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().powerDrops.ClearContainer();
+
+            var block = new NormalBlock(
+                            new DynamicShape(new Vec2F(5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
+                        );
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            var ball = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            GameRunning.GetInstance().balls.AddEntity(ball);
+            var powerDrop = new PowerUpDrop( 
+                new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
+                new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+            GameRunning.GetInstance().powerDrops.AddEntity(powerDrop);
+            
+            GameRunning.GetInstance().CallRemoveDeletedEntities();
+            
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 1);
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 1);
+            Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 1);
+        }
+
+        [Test]
+        public void TestTimerDone() {
+            GameRunning.GetInstance().timeLeft = 0; 
+            GameRunning.GetInstance().CheckGameOver();
+            Assert.True(testBlocks.CountEntities() == 0);
+        }
+    }
+}

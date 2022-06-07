@@ -15,7 +15,7 @@ public class Points : IGameEventProcessor {
         display.SetColor(new Vec3I(255, 0, 0));
     }
 
-        /// <summary>
+        /// <summary> 
         /// increments the point field.
         /// </summary>
         public void AddPoints(int s) {

@@ -46,7 +46,6 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         /// <param name="stateType">the state to switch to</param>
         public void SwitchState(GameStateType stateType) {
-            System.Console.WriteLine("swtich");
             foreach(var elm in stateDic){
                 if (elm.Key == stateType){
                     ActiveState = elm.Value;

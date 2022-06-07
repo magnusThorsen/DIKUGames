@@ -35,8 +35,8 @@ PowerUp: 2
 Meta/
 
 Legend:
-%) blue-block.png
+#) blue-block.png
 0) grey-block.png
-1) orange-block.png
+2) orange-block.png
 a) purple-block.png
 Legend/

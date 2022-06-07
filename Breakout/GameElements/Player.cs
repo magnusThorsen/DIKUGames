@@ -115,6 +115,7 @@ namespace Breakout {
         /// <param name="gameEvent">the gamevent to process.</param>
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.EventType == GameEventType.PlayerEvent) { 
+                System.Console.WriteLine("Proccessed in player");
                 switch (gameEvent.Message) {  
                     case "KeyPress":
                         KeyPress((KeyboardKey)gameEvent.IntArg1);

@@ -1,17 +1,17 @@
 Map:
 ------------
 ------------
-hhhhhhhhhhhh
-hhihhhhhhihh
-------------
-jjjjjijjjjjj
-jjijjjijjijj
-------------
-kkkkkkkkkkkk
-kkkkkkkkkkkk
 ------------
 ------------
 ------------
+------------
+------------
+------------
+------------
+------------
+------------
+-----a------
+---#-0-2----
 ------------
 ------------
 ------------
@@ -27,14 +27,16 @@ kkkkkkkkkkkk
 Map/
 
 Meta:
-Name: LEVEL 2
-Time: 180
-PowerUp: i
+Name: LEVEL 1
+Time: 300
+Hardened: #
+Unbreakable: 0
+PowerUp: 2
 Meta/
 
 Legend:
-h) green-block.png
-i) teal-block.png
-j) blue-block.png
-k) brown-block.png
+5) blue-block.png
+6) grey-block.png
+8) orange-block.png
+7) purple-block.png
 Legend/

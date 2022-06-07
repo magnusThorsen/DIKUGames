@@ -29,7 +29,7 @@ namespace BreakoutTests {
             blocks = new EntityContainer<Block>(288);
             block = new PowerUpBlock(
                             new DynamicShape(new Vec2F(
-                                0.5f, 0.5f), 
+                                0.5f, 0.3f), 
                             new Vec2F(1.0f/12, (1.0f/12)/3f)),
                             new Image(Path.Combine("Assets", "Images", "purple-block.png"))
                             );
@@ -58,6 +58,7 @@ namespace BreakoutTests {
         [Test]
         public void TestMoveball() {
             var startPos = ball.shape.Position;
+            var startDir = ball.shape.Direction;
             BreakoutBus.GetBus().RegisterEvent(
                         new GameEvent {
                             EventType = GameEventType.InputEvent, 
@@ -66,6 +67,7 @@ namespace BreakoutTests {
             );
             ball.Move(player, blocks);
             Assert.AreNotEqual(startPos, ball.shape.Position);
+            Assert.AreEqual(startDir, ball.shape.Direction);
         }
 
         [Test]
@@ -75,6 +77,7 @@ namespace BreakoutTests {
             ball.shape.Direction.X = 0.0f;
             ball.shape.Position = new Vec2F(0.5f, 0.4f);
             block.shape.Position = new Vec2F(0.5f, 0.5f);
+            player.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.Move(player, blocks);
             ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.Y, (-0.1f));             
@@ -85,6 +88,7 @@ namespace BreakoutTests {
             ball.moving = true;
             ball.shape.Position = new Vec2F(0.5f, 0.5f);
             player.shape.Position = new Vec2F(0.5f, 0.4f);
+            block.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.shape.Direction.Y = -0.1f;
             ball.shape.Direction.X = 0.0f;
             ball.Move(player, blocks);
@@ -129,7 +133,7 @@ namespace BreakoutTests {
             ball.shape.Direction.Y = -5.0f;
             ball.Move(player, blocks);
             ball.Move(player, blocks);
-            Assert.True(block.IsDeleted());
+            Assert.True(ball.IsDeleted());
         }
 
 

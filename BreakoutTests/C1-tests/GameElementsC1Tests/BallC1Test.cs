@@ -35,6 +35,7 @@ namespace BreakoutTests {
                             new Vec2F(1.0f/12, (1.0f/12)/3f)),
                             new Image(Path.Combine("Assets", "Images", "purple-block.png"))
                             );
+            blocks.AddEntity(block);
         }
 
         [SetUp]
@@ -102,6 +103,7 @@ namespace BreakoutTests {
             ball.shape.Direction.X = 0.0f;
             ball.shape.Position = new Vec2F(0.5f, 0.4f);
             block.shape.Position = new Vec2F(0.5f, 0.5f);
+            player.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.Move(player, blocks);
             ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.Y, (-0.1f));            
@@ -115,6 +117,7 @@ namespace BreakoutTests {
             ball.shape.Direction.X = 0.0f;
             ball.shape.Position = new Vec2F(0.5f, 0.5f);
             block.shape.Position = new Vec2F(0.5f, 0.4f);
+            player.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.Move(player, blocks);
             ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.Y, (0.1f));     
@@ -127,6 +130,7 @@ namespace BreakoutTests {
             ball.shape.Direction.Y = 0.0f;
             ball.shape.Position = new Vec2F(0.4f, 0.5f);
             block.shape.Position = new Vec2F(0.5f, 0.5f);
+            player.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.X, (-0.1f));     
         }
@@ -138,6 +142,7 @@ namespace BreakoutTests {
             ball.shape.Direction.Y = 0.0f;
             ball.shape.Position = new Vec2F(0.5f, 0.5f);
             block.shape.Position = new Vec2F(0.4f, 0.5f);
+            player.shape.Position = new Vec2F(10.0f, 10.5f);
             ball.Move(player, blocks);
             Assert.AreEqual(ball.shape.Direction.X, (0.1f));        
         }
@@ -149,21 +154,27 @@ namespace BreakoutTests {
             ball.moving = true;
             player.isWide = false;
             ball.shape.Position = new Vec2F(0.51f, 0.51f);
-            ball.shape.Direction.Y = -0.01f;
+            ball.shape.Direction.Y = -0.1f;
             ball.Move(player, blocks);
             ball.Move(player, blocks);
-            Assert.AreEqual(ball.shape.Direction.X, 0.01f);    
+            Assert.True(0.0001f > ball.shape.Direction.X - 0.01f);    
         }
 
         [Test]
         public void TestBouncePlayerWideTrueLeft() {
             ball.moving = true;
             player.isWide = true;
-            ball.shape.Position = new Vec2F(0.48f, 0.51f);
-            ball.shape.Direction.Y = -0.01f;
+            ball.shape.Position = new Vec2F(4.997f, 0.6f);
+            player.shape.Position = new Vec2F(5.0f, 0.5f);
+            ball.shape.Direction.Y = -0.1f;
             ball.Move(player, blocks);
+            System.Console.WriteLine(ball.shape.Position);
+            System.Console.WriteLine(player.shape.Position);
             ball.Move(player, blocks);
+            System.Console.WriteLine(ball.shape.Position);
+            System.Console.WriteLine(player.shape.Position);
             Assert.AreEqual(ball.shape.Direction.X, -0.01f);  
+            Assert.AreEqual(ball.shape.Direction.Y, 0.01f);  
         }
 
 
@@ -202,11 +213,11 @@ namespace BreakoutTests {
         [Test]
         public void TestBounceWallBottom() {
             ball.moving = true;
-            ball.shape.Position.Y = -10.0f;
-            System.Console.WriteLine(block.IsDeleted());
+            ball.shape.Position.X = 1.0f;
+            ball.shape.Position.Y = -3.0f;
+            ball.shape.Direction.Y = -0.1f;
             ball.Move(player, blocks);
-            System.Console.WriteLine(block.IsDeleted());
-            Assert.True(block.IsDeleted());
+            Assert.True(ball.IsDeleted());
         }
 
         [Test]
@@ -228,7 +239,30 @@ namespace BreakoutTests {
         }
 
         [Test]
-        public void ProcessEventTest2() {
+        public void ProcessEventTest2NoCase() {
+            ball.moving = false;
+            ball.ProcessEvent(new GameEvent {
+                            EventType = GameEventType.InputEvent, 
+                            Message = "No Match",
+                            });
+            Assert.False(ball.moving);
+        }
+
+        [Test]
+        public void ProcessEventTest2NotRightEventtype() {
+            ball.moving = false;
+            ball.ProcessEvent(new GameEvent {
+                            EventType = GameEventType.PlayerEvent, 
+                            Message = "No Match",
+                            });
+            Assert.False(ball.moving);
+        }
+
+
+
+
+        [Test]
+        public void ProcessEventTest3() {
             ball.ProcessEvent(new GameEvent {
                             EventType = GameEventType.InputEvent, 
                             Message = "IncSpeed",
@@ -248,5 +282,12 @@ namespace BreakoutTests {
             Assert.False(ball.isFast);
         }
 
+
+        [Test]
+        public void TestBounceBlockForeach() {
+            blocks.ClearContainer();
+            ball.Move(player, blocks);
+            Assert.False(ball.isFast);
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace BreakoutTests {
         public void TestInitialState() {
             Assert.That(stateMachine.ActiveState, Is.InstanceOf<MainMenu>());
         }
-
+ 
 
         [Test]
         public void TestSwitchState() {
@@ -46,7 +46,5 @@ namespace BreakoutTests {
             Assert.True(stateMachine.ActiveState.GetType() != typeof(GameWon));
 
         }
-
-
     }
 }

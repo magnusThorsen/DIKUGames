@@ -21,7 +21,7 @@ namespace Breakout.BreakoutStates {
         private Points points;
         public EntityContainer<Ball> balls{get;private set;}
         public int maxBalls;
-        private EntityContainer<PowerUpDrop> powerDrops;
+        public EntityContainer<PowerUpDrop> powerDrops;
         private double currentTime;
         private Text timeText;
         public int timeLeft;
@@ -90,8 +90,8 @@ namespace Breakout.BreakoutStates {
             HandleTime();
             player.Move();
             MoveBalls();
-            CheckBallsEmpty();
             RemoveDeletedEntities();
+            CheckBallsEmpty();
             CheckGameOver();
             NewLevel();
             PowerUpIterate();
@@ -258,10 +258,10 @@ namespace Breakout.BreakoutStates {
             blocks.Iterate(block => {
                 if (block.IsDeleted()) { 
                     if (block.IsPowerUp() == true) { // Checks if block is a PowerUpBlock
-                    powerDrops.AddEntity(new PowerUpDrop( 
-                        // powerUpDrop is instantiated with positions and image
-                        new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
-                        new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));
+                        powerDrops.AddEntity(new PowerUpDrop( 
+                            // powerUpDrop is instantiated with positions and image
+                            new DynamicShape(block.shape.Position, new Vec2F(0.06f, 0.06f)),
+                            new Image(Path.Combine("Assets", "Images", "RocketPickUp.png"))));
                     }
                     block.DeleteEntity();
                 }
@@ -449,6 +449,13 @@ namespace Breakout.BreakoutStates {
         /// <returns> Returns a player </returns>
         public Points GetPointsField() {
             return points;
+        }
+
+        /// <summary>
+        /// Makes RemoveDeletedEntities able for testing
+        /// </summary>
+        public void CallRemoveDeletedEntities() {
+            RemoveDeletedEntities();
         }
     }
 }

@@ -170,6 +170,26 @@ public class PlayerC1Test{
     }
 
     [Test]
+    public void TestPlayerProcessNoCase(){
+        player.isFast = false;
+        player.ProcessEvent(new GameEvent {
+                        EventType = GameEventType.PlayerEvent, Message = "No Match", 
+                    });
+        Assert.False(player.isFast);
+    }
+
+    [Test]
+    public void TestPlayerProcessWrongEventtype(){
+        player.isFast = false;
+        player.ProcessEvent(new GameEvent {
+                        EventType = GameEventType.InputEvent, Message = "IncSpeed", 
+                    });
+        Assert.False(player.isFast);
+    }
+
+
+
+    [Test]
     public void TestUpdatePlayerPowerups(){
         player.timeWidth = -100;
         player.timeSpeed = -100;

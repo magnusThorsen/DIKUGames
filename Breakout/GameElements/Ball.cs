@@ -237,6 +237,5 @@ namespace Breakout {
                 DecSpeed();
             }
         }
-
     }
 }

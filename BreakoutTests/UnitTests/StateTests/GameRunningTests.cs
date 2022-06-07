@@ -77,9 +77,5 @@ namespace BreakoutTests {
             GameRunning.GetInstance().CheckGameOver();
             Assert.True(testBlocks.CountEntities() == 0);
         }
-
-
-
-
     }
 }
