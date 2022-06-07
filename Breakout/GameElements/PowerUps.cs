@@ -5,8 +5,12 @@ using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
+    /// <summary>
+    ///  Contains the different methods which activates the specific powerups. Its methods are
+    /// called in powerupdrops.
+    /// </summary>  
     public class PowerUps {
-      
+        
 
         /// <summary>
         /// Creates an event that is caught by player to increase life

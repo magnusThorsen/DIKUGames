@@ -183,7 +183,9 @@ namespace BreakoutTests {
             GameRunning.GetInstance().blocks.ClearContainer();
             GameRunning.GetInstance().balls.ClearContainer();
             GameRunning.GetInstance().powerDrops.ClearContainer();
+
             GameRunning.GetInstance().CallRemoveDeletedEntities();
+
             Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
             Assert.True(GameRunning.GetInstance().balls.CountEntities() == 0);
             Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 0);
@@ -229,8 +231,7 @@ namespace BreakoutTests {
             var block = new NormalBlock(
                             new DynamicShape(new Vec2F(5.0f, 5.0f), 
                                 new Vec2F(1.0f/12, (1.0f/12)/3f)),
-                            new Image(Path.Combine("", "Assets", "Images", "brown-block.png"))
-                        );
+                            new Image(Path.Combine("", "Assets", "Images", "brown-block.png")));
             GameRunning.GetInstance().blocks.AddEntity(block);
             var ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
@@ -248,11 +249,124 @@ namespace BreakoutTests {
             Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 1);
         }
 
+        [Test] // 1 iteration, PowerUpBlock. Should create a PowerUpDrop
+        public void TestRemoveDeletedEntitiesDeletedPowerUpBlock() {
+            GameRunning.GetInstance().blocks.ClearContainer();
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().powerDrops.ClearContainer();
+
+            var block = new PowerUpBlock(
+                            new DynamicShape(new Vec2F(5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("", "Assets", "Images", "brown-block.png")));
+            block.DeleteEntity();
+            GameRunning.GetInstance().blocks.AddEntity(block);
+
+            GameRunning.GetInstance().CallRemoveDeletedEntities();
+
+            Assert.True(GameRunning.GetInstance().blocks.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 0);
+            Assert.True(GameRunning.GetInstance().powerDrops.CountEntities() == 1);
+        }
+
+        [Test] // NewLevel and OnlyUnbreakBlocks, 0 blocks, by moving player
+        public void TestNewLevel0Blocks() {
+            GameRunning.GetInstance().UpdateState();
+            GameRunning.GetInstance().blocks.ClearContainer();
+            GameRunning.GetInstance().GetPlayer().shape.MoveX(1.0f);
+            GameRunning.GetInstance().UpdateState();
+            Assert.AreEqual(0.425f ,GameRunning.GetInstance().GetPlayer().shape.Position.X);
+        }
+
+        [Test] // NewLevel and OnlyUnbreakBlocks, 1 Unbreakblock, by moving player
+        public void TestNewLevel1UnbreakableBlock() {
+            GameRunning.GetInstance().UpdateState();
+            GameRunning.GetInstance().blocks.ClearContainer();
+            System.Console.WriteLine(GameRunning.GetInstance().blocks.CountEntities());
+            var block = new UnbreakableBlock(
+                            new DynamicShape(new Vec2F(5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", "brown-block.png")));
+            GameRunning.GetInstance().blocks.AddEntity(block);
+            GameRunning.GetInstance().GetPlayer().shape.MoveX(1.0f);
+            GameRunning.GetInstance().UpdateState();
+            Assert.AreEqual(0.425f ,GameRunning.GetInstance().GetPlayer().shape.Position.X);
+        }
+
+        [Test] // NewLevel and OnlyUnbreakBlocks, 1 normal 1 unbreakable
+        public void TestNewLevel1Unbreakable1NormalBlocks() {
+            GameRunning.GetInstance().UpdateState();
+            GameRunning.GetInstance().blocks.ClearContainer();
+            var Unbreakblock = new UnbreakableBlock(
+                            new DynamicShape(new Vec2F(5.0f, 5.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", "brown-block.png")));
+            var Normalblock = new UnbreakableBlock(
+                            new DynamicShape(new Vec2F(6.0f, 6.0f), 
+                                new Vec2F(1.0f/12, (1.0f/12)/3f)),
+                            new Image(Path.Combine("Assets", "Images", "brown-block.png")));
+            GameRunning.GetInstance().blocks.AddEntity(Unbreakblock);
+            GameRunning.GetInstance().blocks.AddEntity(Normalblock);
+            GameRunning.GetInstance().UpdateState();
+            Assert.AreEqual(0, GameRunning.GetInstance().GetLevel());
+        }
+
         [Test]
         public void TestTimerDone() {
             GameRunning.GetInstance().timeLeft = 0; 
             GameRunning.GetInstance().CheckGameOver();
             Assert.True(testBlocks.CountEntities() == 0);
+        }
+
+        //Testing if a single ball from an entity container containing only that ball moves.
+        [Test]
+        public void TestMoving1Ball(){
+            GameRunning.GetInstance().balls.ClearContainer();
+            var ball = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            GameRunning.GetInstance().balls.AddEntity(ball);
+            ball.moving = true;
+            var startPos = ball.shape.Position;
+            GameRunning.GetInstance().UpdateState();
+            Assert.AreNotEqual(startPos, ball.shape.Position);
+        }
+
+        //Testing if an empty entity container does not move any balls.
+        [Test]
+        public void TestMoving0Balls(){
+            var ball = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            GameRunning.GetInstance().balls.AddEntity(ball);
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().UpdateState();
+            Assert.Pass();
+        }
+
+        //Testing if two balls in the balls entity container are deleted and one new ball is added 
+        //when calling ResetBalls(). 
+        [Test]
+        public void TestResetBalls(){
+            GameRunning.GetInstance().balls.ClearContainer();
+            var ball1 = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            GameRunning.GetInstance().balls.AddEntity(ball1);
+            var ball2 = new Ball (
+                new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
+                new Image(Path.Combine("Assets", "Images", "ball2.png")));
+            GameRunning.GetInstance().balls.AddEntity(ball2);
+            GameRunning.GetInstance().ResetState();
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 1);
+        }
+
+        //Testing if a new ball is created when the balls entity container is empty.
+        [Test]
+        public void TestCheckBallsEmpty(){
+            GameRunning.GetInstance().balls.ClearContainer();
+            GameRunning.GetInstance().UpdateState();
+            Assert.True(GameRunning.GetInstance().balls.CountEntities() == 1);
         }
     }
 }

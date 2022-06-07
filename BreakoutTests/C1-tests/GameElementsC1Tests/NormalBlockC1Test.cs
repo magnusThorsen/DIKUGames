@@ -33,6 +33,8 @@ namespace BreakoutTests {
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
 
+        
+        //Testing if the block has 0 health and is deleted when it takes 1 damage.
         [Test]
         public void TestHealthUnder1(){
             var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 1};
@@ -41,6 +43,8 @@ namespace BreakoutTests {
             Assert.IsTrue(block.IsDeleted() == true);
         }
 
+
+        //Testing that the block has still 1 health and is not deleted when taking 0 damage.
         [Test]
         public void TestHealthOver1(){
             var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 0};

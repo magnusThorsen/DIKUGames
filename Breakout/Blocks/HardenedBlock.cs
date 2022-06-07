@@ -5,7 +5,9 @@ using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
-    
+    /// <summary>
+    ///  This class represents Hardened Blocks. Has two lives and changes picture.
+    /// </summary>  
     public class HardenedBlock : Block {
         private int health; 
         private int value;
@@ -43,7 +45,7 @@ namespace Breakout {
             }
             
         }
-        
+
 
         /// <summary>
         /// Returns the block value
@@ -79,6 +81,7 @@ namespace Breakout {
             Image = new Image(Path.Combine("Assets","Images", Color));
         }
 
+        
         public override bool IsPowerUp() {
             return false;
         }

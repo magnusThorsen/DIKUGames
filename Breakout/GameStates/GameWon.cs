@@ -7,6 +7,9 @@ using DIKUArcade.Entities;
 using System.IO;
 
 namespace Breakout.BreakoutStates {
+    /// <summary>
+    ///  This class represents the state that is active when the game has been won.
+    /// </summary>  
 
     public class GameWon : IGameState, IGameEventProcessor{
 

@@ -6,6 +6,9 @@ using DIKUArcade.Math;
 
 public class Points : IGameEventProcessor {
 
+    /// <summary>
+    ///  This class represents the points. Increasing points and rendering them.
+    /// </summary>  
     private int points;
     private Text display;
 

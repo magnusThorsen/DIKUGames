@@ -6,7 +6,10 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 
 namespace Breakout {
-
+    /// <summary>
+    ///  This class represents the powerupdrops, which are the powerups that go down the screen
+    /// when a powerupblock is hit. What the powerup does is randomly decided.
+    /// </summary>  
     public class PowerUpDrop : Entity {
         private float Yvelocity;
         private static Vec2F extend; 

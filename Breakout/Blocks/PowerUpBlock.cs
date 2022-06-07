@@ -5,7 +5,9 @@ using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
-    
+    /// <summary>
+    ///  This class represents PowerUpBlocks Blocks. Only class where IsPowerUp returns true.
+    /// </summary>  
     public class PowerUpBlock : Block {
 
         private int health; 

@@ -6,7 +6,10 @@ using DIKUArcade.Physics;
 using DIKUArcade.Timers;
 
 namespace Breakout {
-
+    /// <summary>
+    ///  This class represents the ball. Everything to do with moving it and checking wether it
+    /// collides with other game elements.
+    /// </summary>  
     public class Ball : Entity, IGameEventProcessor {
         private float Xvelocity;
         private float Yvelocity;

@@ -33,6 +33,9 @@ namespace BreakoutTests {
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
 
+
+        //Testing if the block has 1 health and changes image when taking 1 damage.
+        //The change of image is tested succesfully visually.
         [Test]
         public void TestHealthIs1(){
             var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 1};
@@ -40,6 +43,8 @@ namespace BreakoutTests {
             Assert.AreEqual(block.GetHealth(), 1);
         }
 
+
+        //Testing if the block has 0 health and deleted after taking 1 damage twice.
         [Test]
         public void TestHealthUnder1(){
             var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 1};
@@ -49,6 +54,7 @@ namespace BreakoutTests {
             Assert.IsTrue(block.IsDeleted() == true);
         }
 
+        //Testing if the block still has 2 in health and is not deleted after taking 0 damage.
         [Test]
         public void TestHealthOver1(){
             var gameEvent = new GameEvent{EventType = GameEventType.InputEvent, IntArg1 = 0};

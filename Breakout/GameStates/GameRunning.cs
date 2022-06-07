@@ -10,6 +10,9 @@ using DIKUArcade.Timers;
 using System;
 
 namespace Breakout.BreakoutStates {
+    /// <summary>
+    ///  This class represents the state that is active when the game is running.
+    /// </summary>  
     public class GameRunning : IGameState, IGameEventProcessor {
 
         private static GameRunning instance = null;
@@ -79,7 +82,6 @@ namespace Breakout.BreakoutStates {
             player.Reset();
             ResetBalls();
             points.ResetPoints();
-            balls.AddEntity(CreateBall());
             hasTime = false;
         }
 
@@ -456,6 +458,14 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void CallRemoveDeletedEntities() {
             RemoveDeletedEntities();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public int GetLevel() {
+            return level;
         }
     }
 }

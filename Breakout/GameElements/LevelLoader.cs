@@ -10,6 +10,9 @@ using System.Collections.Generic;
 
 
 namespace Breakout { 
+    /// <summary>
+    ///  This class loads new levels from only an ascii-file.
+    /// </summary>  
 
     public class LevelLoader {
 

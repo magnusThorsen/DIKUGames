@@ -5,6 +5,10 @@ using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
+    /// <summary>
+    ///  This class represents Unbreakable Blocks. The DecHealth method does nothing, as such
+    ///  it cannot be destroyed.
+    /// </summary>  
     
     public class UnbreakableBlock : Block {
 

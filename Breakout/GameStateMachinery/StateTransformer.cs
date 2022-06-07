@@ -1,5 +1,7 @@
 using System;
-
+/// <summary>
+    ///  This class transforms strings to states and states to strings.
+    /// </summary>  
 public class StateTransformer {
 
     /// <summary>

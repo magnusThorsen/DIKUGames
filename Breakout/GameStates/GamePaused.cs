@@ -8,6 +8,9 @@ using System.IO;
 using DIKUArcade.Timers;
 
 namespace Breakout.BreakoutStates {
+    /// <summary>
+    ///  This class represents the state that is active when the game is paused.
+    /// </summary>  
 
     public class GamePaused : IGameState {
 

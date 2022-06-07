@@ -6,7 +6,10 @@ using DIKUArcade.Input;
 using DIKUArcade.Timers;
 
 namespace Breakout {
-
+    /// <summary>
+    ///  This class represents the player. Everything to do with moving it and handling the player 
+    /// specific powerups.
+    /// </summary>  
     public class Player : Entity, IGameEventProcessor {
         public Shape shape { get;}
         private float moveLeft;
@@ -115,7 +118,6 @@ namespace Breakout {
         /// <param name="gameEvent">the gamevent to process.</param>
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.EventType == GameEventType.PlayerEvent) { 
-                System.Console.WriteLine("Proccessed in player");
                 switch (gameEvent.Message) {  
                     case "KeyPress":
                         KeyPress((KeyboardKey)gameEvent.IntArg1);

@@ -4,7 +4,9 @@ using DIKUArcade.Events;
 using DIKUArcade.Math;
 
 namespace Breakout {
-
+    /// <summary>
+    ///  This class represents normal Blocks.
+    /// </summary>  
     public class NormalBlock : Block {
         private int health; 
         private int value;

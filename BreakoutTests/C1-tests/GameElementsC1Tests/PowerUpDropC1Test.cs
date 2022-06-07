@@ -14,83 +14,94 @@ namespace BreakoutTests {
 
     public class PowerUpDropC1Test {
 
-        private PowerUpDrop powerUpDrop;
+        private PowerUps powerUps;
+        private DynamicShape shape;
+        private Image image;
         private Player player;
+        private PowerUpDrop drop;
 
         public PowerUpDropC1Test() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            powerUpDrop = new PowerUpDrop( 
-                        new DynamicShape(new Vec2F(0.1f, 0.1f), new Vec2F(0.06f, 0.06f)),
+            powerUps = new PowerUps();
+            shape = new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f));
+            image = new Image(Path.Combine("Assets", "Images", "player.png"));
+            player = new Player(shape, image);
+            drop = new PowerUpDrop( 
+                        new DynamicShape(new Vec2F(0.425f, 0.1f), new Vec2F(0.06f, 0.06f)),
                         new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
-            player  = new Player( // player is instantiated with positions and image
-                new DynamicShape(new Vec2F(0.1f, 0.1f), new Vec2F(0.16f, 0.020f)),
-                new Image(Path.Combine("Assets", "Images", "player.png")));
-                player.shape.Position = new Vec2F(0.1f,0.1f);
         }
 
         [SetUp]
         public void InitiatePowerUpsC1() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
-            powerUpDrop = new PowerUpDrop( 
-                        new DynamicShape(new Vec2F(0.1f, 0.1f), new Vec2F(0.06f, 0.06f)),
+            powerUps = new PowerUps();
+            shape = new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f));
+            image = new Image(Path.Combine("Assets", "Images", "player.png"));
+            player = new Player(shape, image);
+            drop = new PowerUpDrop( 
+                        new DynamicShape(new Vec2F(0.425f, 0.1f), new Vec2F(0.06f, 0.06f)),
                         new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
-            player  = new Player( // player is instantiated with positions and image
-                new DynamicShape(new Vec2F(0.1f, 0.1f), new Vec2F(0.16f, 0.020f)),
-                new Image(Path.Combine("Assets", "Images", "player.png")));
-            player.shape.Position = new Vec2F(0.1f,0.1f);
         }
 
         [Test]
         public void TestC1Collision0() {
-            //powerUpDrop.Move();
-            System.Console.WriteLine(powerUpDrop.shape.Position);
-            System.Console.WriteLine(player.shape.Position);
-            powerUpDrop.Consume(player, 0);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,10);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
 
 
         [Test]
         public void TestC1Collision1() {
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 1);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,1);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
 
         [Test]
         public void TestC1Collision2() {
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 2);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,2);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
 
         [Test]
         public void TestC1Collision3() {
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 3);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,3);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
         [Test]
         public void TestC1Collision4() {
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 4);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,4);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
         [Test]
         public void TestC1Collision5nomatch() {
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 5);
-            Assert.True(powerUpDrop.IsDeleted());
+            for (int i = 0; i < 100; i++) {
+                drop.Move();
+                drop.Consume(player,5);
+            }
+            Assert.AreEqual(drop.IsDeleted(), true); 
         }
         [Test]
         public void TestC1NoCollision() {
-            powerUpDrop.shape.Position = new Vec2F(0.5f,0.5f);
-            powerUpDrop.Move();
-            powerUpDrop.Consume(player, 1);
-            Assert.False(powerUpDrop.IsDeleted());
+            drop.shape.Position = new Vec2F(0.5f,0.5f);
+            drop.Move();
+            drop.Consume(player, 1);
+            Assert.False(drop.IsDeleted());
         }
-
-
 
     }
 }
