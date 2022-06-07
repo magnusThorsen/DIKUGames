@@ -251,10 +251,12 @@ namespace Breakout {
                 }
         }
 
+        //Returns the window limit for C1 testing.
         public float C1GetWindowLimit() {
             return windowLimit;
         }
 
+        //Updates player powerups for C1 testing.
         public void C1UpdatePlayerPowerups(){
             UpdatePlayerPowerups();
         }

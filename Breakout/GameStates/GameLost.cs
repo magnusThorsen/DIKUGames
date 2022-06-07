@@ -22,7 +22,7 @@ namespace Breakout.BreakoutStates {
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;
-        private int points;
+        public int points;
         private Text pointsText;
         
         public static GameLost GetInstance() {
@@ -141,9 +141,8 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         /// <param name="gameEvent">the event to process</param>
         public void ProcessEvent(GameEvent gameEvent){
-            if (gameEvent.EventType == GameEventType.ControlEvent) { //Checks if it a InputEvent
-                switch (gameEvent.Message) { //switches on message, only does something with 
-                                             //KeyPress and KeyRelease
+            if (gameEvent.EventType == GameEventType.ControlEvent) { 
+                switch (gameEvent.Message) {
                     case "WonLostPoints": 
                         points = gameEvent.IntArg1;
                         break;

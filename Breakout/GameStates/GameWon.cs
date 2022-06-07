@@ -22,7 +22,7 @@ namespace Breakout.BreakoutStates {
         private Entity BackgroundImage;
         private StationaryShape shape;
         private IBaseImage image;
-        private int points;
+        public int points;
         private Text pointsText;
         
         public static GameWon GetInstance() {

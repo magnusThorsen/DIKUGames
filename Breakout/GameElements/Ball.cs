@@ -50,7 +50,7 @@ namespace Breakout {
                 shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * 
                 new Vec2F(Xvelocity, Yvelocity);
             }
-            if (!moving){
+            if (!moving){ ///corrects players posiiton if player is wide.
                 if (p.isWide == true){
                     startPos = 2.5f;
                 }
@@ -88,13 +88,13 @@ namespace Breakout {
         public void BounceBlock(EntityContainer<Block> b) {      
             foreach(Block block in b){
                 if (CollisionDetection.Aabb(shape, block.Shape).Collision) {
-                        BreakoutBus.GetBus().RegisterEvent(
+                        BreakoutBus.GetBus().RegisterEvent( //Sends the event that damages the block
                             new GameEvent{
                                 EventType = GameEventType.InputEvent, 
                                 IntArg1 = block.GetValue()
                             }
                         );
-                  
+                    //What directions to move in now.
                     switch ((CollisionDetection.Aabb(this.shape.AsDynamicShape(), 
                             block.Shape).CollisionDir)) {
                         case CollisionDirection.CollisionDirUp:
@@ -123,22 +123,22 @@ namespace Breakout {
         public void BouncePlayer(Player p) {          
             if (DIKUArcade.Physics.CollisionDetection.Aabb(
                 this.shape, p.shape).Collision) {
-                if (p.isWide == true) {
+                if (p.isWide == true) { //If wide is true corrects the hitedge
                     hitEdge = 0.2f;
                 }
                 else {
                     hitEdge = 0.1f;
                 }
-                if (shape.Position.X > p.GetPosition().X + hitEdge) {
+                if (shape.Position.X > p.GetPosition().X + hitEdge) { //Right side of player
                     shape.Direction.X = 0.01f;
                     shape.Direction.Y = 0.01f;
                 }
-                else if (shape.Position.X < p.GetPosition().X - (0.002)) {
+                else if (shape.Position.X < p.GetPosition().X - (0.002)) { //left side of player
                     shape.Direction.X = -0.01f;
                     shape.Direction.Y = 0.01f;
 
                 }
-                else {
+                else { //always bounce back up
                     shape.Direction.Y = -shape.Direction.Y;
                 }
             }
@@ -149,7 +149,7 @@ namespace Breakout {
         /// Checks if the ball should bounce on a wall.
         /// </summary>
         private void BounceWall(){
-            if (shape.Position.Y < -0.05f){
+            if (shape.Position.Y < -0.05f){ //bottom of screen
                 BreakoutBus.GetBus().RegisterEvent(
                             new GameEvent{
                                 EventType = GameEventType.InputEvent, 
@@ -159,10 +159,10 @@ namespace Breakout {
                 DeleteEntity();
                 moving = false;
             }
-            if (shape.Position.X > 0.95f || shape.Position.X < 0.0f) {
+            if (shape.Position.X > 0.95f || shape.Position.X < 0.0f) { //right side
                 shape.Direction.X = -shape.Direction.X;
             }
-            if (shape.Position.Y > 0.95f) {
+            if (shape.Position.Y > 0.95f) { //left side
                 shape.Direction.Y = -shape.Direction.Y;
             }
         }

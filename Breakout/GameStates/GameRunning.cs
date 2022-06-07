@@ -51,7 +51,8 @@ namespace Breakout.BreakoutStates {
                 new DynamicShape(new Vec2F(0.425f, 0.03f), new Vec2F(0.16f, 0.020f)),
                 new Image(Path.Combine("Assets", "Images", "player.png")));
             BreakoutBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
-
+            
+            //elements
             blocks = new EntityContainer<Block>(288);
             levelLoader = new LevelLoader();
             gameOver = false;
@@ -63,6 +64,7 @@ namespace Breakout.BreakoutStates {
             balls.AddEntity(CreateBall());
             powerDrops = new EntityContainer<PowerUpDrop>();
 
+            //Time related
             currentTime = 0.0;
             startTime = 0.0;
             timeLeft = 0;
@@ -203,7 +205,8 @@ namespace Breakout.BreakoutStates {
                     ResetBalls();
                     player.Reset();
                     level++;
-                    string levelstring = "level" + this.level + ".txt";
+                    //The current level as string
+                    string levelstring = "level" + this.level + ".txt"; 
                     blocks = levelLoader.LoadLevel(levelstring);
                     hasTime=false;
                     powerDrops.ClearContainer();
@@ -461,11 +464,19 @@ namespace Breakout.BreakoutStates {
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        /// Makes level able for testing
+        /// /// </summary>
+        /// <returns> Returns an int </returns>
         public int GetLevel() {
             return level;
+        }
+
+        /// <summary>
+        /// Makes hasTime able for testing
+        /// </summary>
+        /// <returns> Returns a bool </returns>
+        public bool GetHasTime() {
+            return hasTime;
         }
     }
 }

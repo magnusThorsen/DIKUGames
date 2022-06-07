@@ -58,5 +58,28 @@ namespace BreakoutTests {
             GameWon.GetInstance().HandleKeyEvent(KeyboardAction.KeyPress, KeyboardKey.Enter);
             Assert.Pass();
         }
+
+
+        [Test]
+        public void TestProcessEvent() {
+            GameWon.GetInstance().ProcessEvent(new GameEvent{
+                                EventType = GameEventType.ControlEvent, 
+                                Message = "WonLostPoints",
+                                IntArg1 = 5
+                            });
+            Assert.True(GameWon.GetInstance().points == 5);
+        }
+
+        [Test]
+        public void TestProcessEventNoMatch() {
+            GameWon.GetInstance().points = 0;
+            GameWon.GetInstance().ProcessEvent(new GameEvent{
+                                EventType = GameEventType.ControlEvent, 
+                                Message = "NO_MATCH",
+                                IntArg1 = 5
+                            });
+            System.Console.WriteLine(GameWon.GetInstance().points);
+            Assert.True(GameWon.GetInstance().points == 0);
+        }
     }
 }

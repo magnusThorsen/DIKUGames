@@ -11,16 +11,16 @@ using DIKUArcade;
 namespace BreakoutTests {
 
     [TestFixture]
-    public class NormalBlockTest {
-        private NormalBlock block;
+    public class PowerUpBlockTest {
+        private PowerUpBlock block;
         private Shape shape;
         private Image image;
 
-        public NormalBlockTest() {
+        public PowerUpBlockTest() {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
-            block = new NormalBlock(shape, image);
+            block = new PowerUpBlock(shape, image);
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
         }
 
@@ -29,7 +29,7 @@ namespace BreakoutTests {
             DIKUArcade.GUI.Window.CreateOpenGLContext();
             shape = new DynamicShape(new Vec2F(0.5f, 0.5f), new Vec2F(1.0f/12, (1.0f/12)/3f));
             image = new Image(@"../Breakout/Assets/Images/blue-block.png");
-            block = new NormalBlock(shape, image);
+            block = new PowerUpBlock(shape, image);
             BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, block);
 
         }
@@ -55,6 +55,7 @@ namespace BreakoutTests {
             Assert.IsTrue(block.GetValue() == 1);
         }
 
+
         [Test]
         public void TestSetValue() {
             block.SetValue(4); 
@@ -66,6 +67,11 @@ namespace BreakoutTests {
         public void TestGetPosition() {
             Assert.IsTrue(block.GetPosition().X == 0.5f);
             Assert.IsTrue(block.GetPosition().Y == 0.5f);
+        }
+
+        [Test]
+        public void TestIsPowerUp() {
+            Assert.IsTrue(block.IsPowerUp());
         }
 
     }

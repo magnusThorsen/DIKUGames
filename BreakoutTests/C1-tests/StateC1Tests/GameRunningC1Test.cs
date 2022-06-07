@@ -311,16 +311,9 @@ namespace BreakoutTests {
             Assert.AreEqual(0, GameRunning.GetInstance().GetLevel());
         }
 
-        [Test]
-        public void TestTimerDone() {
-            GameRunning.GetInstance().timeLeft = 0; 
-            GameRunning.GetInstance().CheckGameOver();
-            Assert.True(testBlocks.CountEntities() == 0);
-        }
-
         //Testing if a single ball from an entity container containing only that ball moves.
         [Test]
-        public void TestMoving1Ball(){
+        public void TestMoving1Ball() {
             GameRunning.GetInstance().balls.ClearContainer();
             var ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
@@ -334,7 +327,7 @@ namespace BreakoutTests {
 
         //Testing if an empty entity container does not move any balls.
         [Test]
-        public void TestMoving0Balls(){
+        public void TestMoving0Balls() {
             var ball = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
                 new Image(Path.Combine("Assets", "Images", "ball2.png")));
@@ -347,7 +340,7 @@ namespace BreakoutTests {
         //Testing if two balls in the balls entity container are deleted and one new ball is added 
         //when calling ResetBalls(). 
         [Test]
-        public void TestResetBalls(){
+        public void TestResetBalls() {
             GameRunning.GetInstance().balls.ClearContainer();
             var ball1 = new Ball (
                 new DynamicShape(new Vec2F(0.49f, 0.05f), new Vec2F(0.04f, 0.04f)),
@@ -363,10 +356,57 @@ namespace BreakoutTests {
 
         //Testing if a new ball is created when the balls entity container is empty.
         [Test]
-        public void TestCheckBallsEmpty(){
+        public void TestCheckBallsEmpty() {
             GameRunning.GetInstance().balls.ClearContainer();
             GameRunning.GetInstance().UpdateState();
             Assert.True(GameRunning.GetInstance().balls.CountEntities() == 1);
+        }
+        
+        [Test] // Testing if 0 iteration. Passing if compiling since nothing happens
+        public void TestPowerUpIterate0Iterations() {
+            GameRunning.GetInstance().powerDrops.ClearContainer();
+            GameRunning.GetInstance().PowerUpIterate();
+            Assert.Pass();
+        }
+
+        [Test] // Testing if 1 iteration
+        public void TestPowerUpIterate1Iterations() {
+            var powerDrop = new PowerUpDrop( 
+                new DynamicShape(new Vec2F(5.0f, 5.0f), new Vec2F(0.06f, 0.06f)),
+                new Image(Path.Combine("Assets", "Images", "RocketPickUp.png")));
+            GameRunning.GetInstance().powerDrops.AddEntity(powerDrop);
+            GameRunning.GetInstance().PowerUpIterate();
+            Assert.True(0.001 > powerDrop.shape.Position.Y-4.99f);
+        }
+
+        [Test]
+        public void TestHandleTimeHasTime() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            GameRunning.GetInstance().HandleTime();
+            Assert.True(GameRunning.GetInstance().GetHasTime());
+            Assert.AreEqual(GameRunning.GetInstance().startTime, 30.0);
+        }
+
+        [Test]
+        public void TestHandleTimeHasNoTime() {
+            GameRunning.GetInstance().ProcessEvent(new GameEvent {
+                        EventType = GameEventType.StatusEvent, Message = "Time", 
+                        StringArg1 = "30"
+                    });
+            GameRunning.GetInstance().HandleTime();
+            Assert.True(GameRunning.GetInstance().GetHasTime());
+            Assert.AreEqual(GameRunning.GetInstance().startTime, 30.0);
+        }
+
+
+        [Test]
+        public void TestTimerDone() {
+            GameRunning.GetInstance().timeLeft = 0; 
+            GameRunning.GetInstance().CheckGameOver();
+            Assert.True(testBlocks.CountEntities() == 0);
         }
     }
 }
