@@ -62,7 +62,8 @@ namespace Breakout {
         /// Moves the powerupdrop down.
         /// </summary>
         public void Move() {
-            shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) * new Vec2F(0.0f, Yvelocity);
+            shape.Position += new Vec2F(shape.Direction.X, shape.Direction.Y) *
+                new Vec2F(0.0f, Yvelocity);
             shape.Move();
         }
 
