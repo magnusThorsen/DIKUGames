@@ -5,6 +5,7 @@ using System.IO;
 using DIKUArcade.Math;
 
 namespace Breakout {
+
     /// <summary>
     ///  This class represents PowerUpBlocks Blocks. Only class where IsPowerUp returns true.
     /// </summary>  
@@ -71,8 +72,8 @@ namespace Breakout {
         /// processes a gameEvent
         /// </summary>
         /// <param name="gameEvent">the gameEvent to process</param>
-        public override void ProcessEvent(GameEvent gameEvent){
-            if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { //Checks if it a InputEvent
+        public override void ProcessEvent(GameEvent gameEvent) { //Checks if it a InputEvent
+            if (gameEvent.EventType == GameEventType.InputEvent && gameEvent.IntArg1 == value) { 
                 DecHealth();
             } 
         }

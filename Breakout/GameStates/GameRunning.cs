@@ -10,6 +10,7 @@ using DIKUArcade.Timers;
 using System;
 
 namespace Breakout.BreakoutStates {
+    
     /// <summary>
     ///  This class represents the state that is active when the game is running.
     /// </summary>  
