@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Breakout.BreakoutStates {
     /// <summary>
-    ///  This class represents handles swithcing bewteen states and containing the active state.
+    ///  This class handles swithcing bewteen states and containing the active state.
     /// </summary>  
 
     public class StateMachine : IGameEventProcessor {
