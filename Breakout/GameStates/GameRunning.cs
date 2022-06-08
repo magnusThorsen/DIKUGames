@@ -424,7 +424,8 @@ namespace Breakout.BreakoutStates {
             if (hasTime) {
                 currentTime = StaticTimer.GetElapsedSeconds();
                 timeLeft = Convert.ToInt32(startTime-currentTime);
-                timeText = new Text(timeLeft.ToString(), new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
+                timeText = new Text(timeLeft.ToString(), new Vec2F(0.05f, 0.5f), 
+                    new Vec2F(0.5f, 0.5f));
                 timeText.SetColor(new Vec3I(255,0,0));
             } else {
                 timeText = new Text("", new Vec2F(0.05f, 0.5f), new Vec2F(0.5f, 0.5f));
