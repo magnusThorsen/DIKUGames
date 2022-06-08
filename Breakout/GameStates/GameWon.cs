@@ -49,7 +49,8 @@ namespace Breakout.BreakoutStates {
             image = new Image(Path.Combine("Assets", "Images", "shipit_titlescreen.png"));
             BackgroundImage = new Entity(shape, image);
             BreakoutBus.GetBus().Subscribe(GameEventType.ControlEvent, this);
-            pointsText = new Text("Score: " + points.ToString(), new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
+            pointsText = new Text("Score: " + points.ToString(), new Vec2F(0.05f, 0.2f), 
+                new Vec2F(0.5f, 0.5f));
             pointsText.SetColor(new Vec3I(255,255,0));
         }
 
@@ -65,7 +66,8 @@ namespace Breakout.BreakoutStates {
         /// </summary>
         public void UpdateState() {
             GetPoints();
-            pointsText = pointsText = new Text("Score: " + points.ToString(), new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
+            pointsText = pointsText = new Text("Score: " + points.ToString(),
+                 new Vec2F(0.05f, 0.2f), new Vec2F(0.5f, 0.5f));
             pointsText.SetColor(new Vec3I(255,255,0));
         }
 

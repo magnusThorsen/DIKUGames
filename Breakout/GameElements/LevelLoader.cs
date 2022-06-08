@@ -49,7 +49,8 @@ namespace Breakout {
         /// </summary>
         /// <param name="filename">A string that is the name of an Ascii file</param>
         private void ReadAscii(string filename){
-            string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", filename));
+            string[] FileLines = System.IO.File.ReadAllLines(Path.Combine("Assets", "Levels", 
+                filename));
                 
                 //Adding Map section to map
                 int StartMapIndex = Array.IndexOf(FileLines, "Map:")+1;
@@ -100,7 +101,8 @@ namespace Breakout {
         private void AddMetaElement(char c) {
             foreach (var legendElm in legendStringDic){
                 foreach(var metaElm in metaDic){
-                    if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "Hardened") {
+                    if (c == legendElm.Key && legendElm.Key.ToString() == 
+                        metaElm.Value && metaElm.Key == "Hardened") {
 
                         string textPart = legendElm.Value.Substring(0, legendElm.Value.Length-10);
                         var newBlock = new HardenedBlock(
@@ -114,7 +116,8 @@ namespace Breakout {
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
 
-                    if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "Unbreakable") {
+                    if (c == legendElm.Key && legendElm.Key.ToString() == 
+                        metaElm.Value && metaElm.Key == "Unbreakable") {
                         var newBlock = new UnbreakableBlock(
                             new DynamicShape(new Vec2F(
                                 0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
@@ -127,7 +130,8 @@ namespace Breakout {
                         BreakoutBus.GetBus().Subscribe(GameEventType.InputEvent, newBlock);
                     }
 
-                    if (c == legendElm.Key && legendElm.Key.ToString() == metaElm.Value && metaElm.Key == "PowerUp") {
+                    if (c == legendElm.Key && legendElm.Key.ToString() == 
+                        metaElm.Value && metaElm.Key == "PowerUp") {
                         var newBlock = new PowerUpBlock(
                             new DynamicShape(new Vec2F(
                                 0.0f + x * 1.0f/12, 0.9f - y * (1.0f/12)/3f), 
