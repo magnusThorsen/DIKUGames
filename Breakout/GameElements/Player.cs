@@ -33,7 +33,8 @@ namespace Breakout {
             life = 3;
             isWide = false;
             isFast = false;
-            display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), new Vec2F(0.5f,0.5f));
+            display = new Text ("HP: " + life.ToString(), new Vec2F(0.05f, -0.4f), 
+                new Vec2F(0.5f,0.5f));
             display.SetColor(new Vec3I(255, 0, 0));
             timeSpeed=-100;
             timeWidth=-100;
@@ -60,7 +61,8 @@ namespace Breakout {
             shape.AsDynamicShape().Direction.X < windowLimit) {
                 shape.Move();
             }
-            else if (isWide == true && shape.Position.X + shape.AsDynamicShape().Direction.X > windowLimit){
+            else if (isWide == true && shape.Position.X +
+                shape.AsDynamicShape().Direction.X > windowLimit){
                 shape.Position.X = 0.681f;
             }
             UpdatePlayerPowerups();
@@ -239,12 +241,14 @@ namespace Breakout {
         /// tie has passed to end the poweeup.
         /// </summary>
         private void UpdatePlayerPowerups(){
-                if (isWide && timeWidth + 10  < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (isWide && timeWidth + 10  < System.Convert.ToInt32(
+                        StaticTimer.GetElapsedSeconds())){
                     timeWidth = -100;
                     isWide = false;
                     shape.Extent = new Vec2F(0.16f, 0.020f);
                 }
-                if (isFast && timeSpeed + 10 < System.Convert.ToInt32(StaticTimer.GetElapsedSeconds())){
+                if (isFast && timeSpeed + 10 < System.Convert.ToInt32(
+                        StaticTimer.GetElapsedSeconds())){
                     timeSpeed = -100;
                     isFast = false;
                     MOVEMENT_SPEED = 0.02f;
